@@ -50,7 +50,8 @@ The main goal is to have a clean GDSII without human intervention.
 OpenLane ASIC flow diagram is given below:
 
  
-<img width="991" height="676" alt="image" src="https://github.com/user-attachments/assets/bf1759e2-741a-43ac-9444-fdc09d063eb0" />
+<img width="1081" height="615" alt="image" src="https://github.com/user-attachments/assets/f11c5bef-0c0f-438d-bc2e-1dfde73e6681" />
+
 
 In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
 
@@ -82,6 +83,38 @@ Screenshots are attached below:
 <img width="940" height="641" alt="image" src="https://github.com/user-attachments/assets/200871bb-c7ca-451a-851c-21c539eb5cba" />
 
 <img width="940" height="694" alt="image" src="https://github.com/user-attachments/assets/0431aeef-a4e7-43b4-b7c1-08079d1f489f" />
+
+Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
+
+In this phase we will look into some Floorplan concepts and run floorplan in Openlane.
+
+1)	Utilization factor and aspect ratio:
+
+Aspect ratio: The ratio of the height of the chip core to its width.
+
+<img width="551" height="175" alt="image" src="https://github.com/user-attachments/assets/72aca877-071f-4f47-8249-fa6a0e63ff4c" />
+
+2) Utilisation factor: Ratio of  Area occupied by standard cell to the total core Area.
+
+Concept of MACROS:
+
+A macro is a large pre-designed functional block used in chip design that is treated as a single unit during placement and routing.
+
+Unlike standard cells, macros are pre-designed, Pre-characterised, Pre-verified and larger in size.
+
+Macros ae placed manually during floor planning.
+
+
+A short explanation (your own words): why macros like RAM behave differently than standard cells:
+
+RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
+
+Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
+
+During synthesis, standard cells can be optimised but macros cannot be optimised.
+
+
+
 
 
 

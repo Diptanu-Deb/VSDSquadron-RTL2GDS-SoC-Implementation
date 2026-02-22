@@ -56,19 +56,19 @@ We will run “picorv32a” design synthesis using OpenLANE flow and generate ne
 Commands to invoke the OpenLANE flow and perform synthesis:
 
 1)	Once noVNC Desktop is opened, go to terminal -> cd OpenLane
-2)	
-3)	Then type make mount (to invoke OpenLane flow)
-4)	
-5)	Type ./flow.tcl  -interactive (we can invoke the OpenLANE flow in the Interactive mode using this command)
-6)	
-7)	Then type package require openlane (required packages for proper functionality of the OpenLANE flow)
-8)	
-9)	prep -design picorv32a (As OpenLANE flow is ready to run any design and initially we have to prepare the design creating some necessary files and we run this command and our design name is picorv32a)
-10)	
-11)	run_synthesis (To synthesize the RTL code of the design)
-12)	
-13)	To get out of the OpenLane flow type exit.
-14)	
+   
+2)	Then type make mount (to invoke OpenLane flow)
+   
+3)	Type ./flow.tcl  -interactive (we can invoke the OpenLANE flow in the Interactive mode using this command)
+   
+4)	Then type package require openlane (required packages for proper functionality of the OpenLANE flow)
+   
+5)	prep -design picorv32a (As OpenLANE flow is ready to run any design and initially we have to prepare the design creating some necessary files and we run this command and our design name is picorv32a)
+    
+6)	run_synthesis (To synthesize the RTL code of the design)
+    
+7)	To get out of the OpenLane flow type exit.
+    
 
 Screenshots are attached below:
 

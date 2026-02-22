@@ -3,6 +3,7 @@
 
 
 
+
 The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.
 In WEEK 1, we will be deep diving into Digital VLSI SoC Design and Planning, which is the foundation of this workshop.
 Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
@@ -12,9 +13,13 @@ Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
  
 
 Now what is PDK?
+
 The main motto of our work is to make our design manufacturable. The place where designs are realised physically in silicon wafer is called Fab or fabrication Facility.
+
 So, while designing any chip we need to consider some rules imposed by fabrication facility to make our chip physically realisable.
+
 PDK stands for Process Design Kit, which act as an interface between designer and fabrication facility. It is a set of files and tools used in the semiconductor industry to model a foundry's manufacturing process inside an EDA tool.
+
 In our entire design process, we will use the same required PDK.
 
 Now moving to RTL2GSDII Flow,

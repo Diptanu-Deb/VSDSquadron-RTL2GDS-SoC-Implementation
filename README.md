@@ -47,4 +47,39 @@ OpenLane ASIC flow diagram is given below:
  
 <img width="991" height="676" alt="image" src="https://github.com/user-attachments/assets/bf1759e2-741a-43ac-9444-fdc09d063eb0" />
 
+In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
+
+Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy)
+
+We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
+
+Commands to invoke the OpenLANE flow and perform synthesis:
+
+1)	Once noVNC Desktop is opened, go to terminal -> cd OpenLane
+2)	
+3)	Then type make mount (to invoke OpenLane flow)
+4)	
+5)	Type ./flow.tcl  -interactive (we can invoke the OpenLANE flow in the Interactive mode using this command)
+6)	
+7)	Then type package require openlane (required packages for proper functionality of the OpenLANE flow)
+8)	
+9)	prep -design picorv32a (As OpenLANE flow is ready to run any design and initially we have to prepare the design creating some necessary files and we run this command and our design name is picorv32a)
+10)	
+11)	run_synthesis (To synthesize the RTL code of the design)
+12)	
+13)	To get out of the OpenLane flow type exit.
+14)	
+
+Screenshots are attached below:
+
+<img width="1004" height="596" alt="image" src="https://github.com/user-attachments/assets/3b1a5e32-cb00-41e3-a732-ace4e5628fef" />
+
+<img width="940" height="641" alt="image" src="https://github.com/user-attachments/assets/200871bb-c7ca-451a-851c-21c539eb5cba" />
+
+<img width="940" height="694" alt="image" src="https://github.com/user-attachments/assets/0431aeef-a4e7-43b4-b7c1-08079d1f489f" />
+
+
+
+
+
 

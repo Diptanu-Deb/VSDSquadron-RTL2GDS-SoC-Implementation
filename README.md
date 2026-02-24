@@ -113,6 +113,64 @@ Standard cells Can be resized (different drive strengths) whereas macros are of 
 
 During synthesis, standard cells can be optimised but macros cannot be optimised.
 
+Screenshots are attached below:
+
+Invoking floor plan command
+
+![Screenshot 2026-02-23 001813](https://github.com/user-attachments/assets/11cf4eb6-11bb-49b1-b5a7-1e964da13788)
+
+System default configuration
+
+![Screenshot 2026-02-23 002636](https://github.com/user-attachments/assets/c2777f19-e4a5-4765-9561-fa5354c725c8)
+
+![Screenshot 2026-02-23 002517](https://github.com/user-attachments/assets/0d968735-ae9e-402d-96c5-e11019328099)
+
+Config.tcl details inside picorv32a folder
+
+![Screenshot 2026-02-23 003007](https://github.com/user-attachments/assets/12c19ddc-e35d-4594-8194-06602646cbad)
+
+Floor plan def file
+
+![Screenshot 2026-02-23 004222](https://github.com/user-attachments/assets/e59ed83b-c90a-4cf2-877a-0227cef5faa1)
+
+After floorplan configuration
+
+![Screenshot 2026-02-23 010111](https://github.com/user-attachments/assets/b1c8c23a-24ae-4d6d-b377-d7e69faab3bd)
+
+Layout in  Magic
+
+![Screenshot 2026-02-23 013235](https://github.com/user-attachments/assets/83fc78a3-0b93-4ad8-8aa5-0c209a4e2b29)
+
+Pin Details:
+![Screenshot 2026-02-23 013402](https://github.com/user-attachments/assets/b01223ee-dc3d-45f9-b980-d903280f71c5)
+
+![Screenshot 2026-02-23 013439](https://github.com/user-attachments/assets/60a4ec04-b069-4176-bb51-269020d6a212)
+
+![Screenshot 2026-02-23 013816](https://github.com/user-attachments/assets/0052f0da-c8a0-4bb8-b9c4-e4318ecd2f97)
+
+![Screenshot 2026-02-23 012200](https://github.com/user-attachments/assets/f7b41943-bdda-4502-975d-bc829f05d54b)
+
+Phase 3 — Timing Literacy with Ideal Clocks (OpenSTA + ECO mindset)
+
+Timing checks like setup and Hold time checks are carried out to ensure that timing constraints are met.
+
+Setup Time: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
+
+Hold Time: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

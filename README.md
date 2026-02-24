@@ -129,13 +129,37 @@ Config.tcl details inside picorv32a folder
 
 ![Screenshot 2026-02-23 003007](https://github.com/user-attachments/assets/12c19ddc-e35d-4594-8194-06602646cbad)
 
-Floor plan def file
+With this config.tcl we get floorplan output as:
 
-![Screenshot 2026-02-23 004222](https://github.com/user-attachments/assets/e59ed83b-c90a-4cf2-877a-0227cef5faa1)
+![Screenshot 2026-02-23 010111](https://github.com/user-attachments/assets/5eded601-6006-4610-b614-053ff9c8adee)
 
-After floorplan configuration
 
-![Screenshot 2026-02-23 010111](https://github.com/user-attachments/assets/b1c8c23a-24ae-4d6d-b377-d7e69faab3bd)
+
+
+Floor plan def file with this config.tcl file:
+
+![Screenshot 2026-02-23 004222](https://github.com/user-attachments/assets/3c6dc64f-c2be-4840-b932-ff1689b91d37)
+
+Once we add the sky130A_sky130_fd_sc_hd_config.tcl file and to have its impact on design, that is to overwrite the config.tcl we need to modify the config.tcl as below:
+
+sky130A_sky130_fd_sc_hd_config.tcl file
+
+![Screenshot 2026-02-24 230718](https://github.com/user-attachments/assets/8d67aa2f-7eea-4589-aa10-2a69e85abf74)
+
+Modified config.tcl:
+
+![Screenshot 2026-02-24 230816](https://github.com/user-attachments/assets/1e9622b9-a429-462c-b3a2-f1a994330dce)
+
+With this,we get floorplan output as:
+
+![Screenshot 2026-02-24 230213](https://github.com/user-attachments/assets/ed2d3ebf-8a5e-4331-af3d-1d22869b2ba9)
+
+Floorplan def after adding the sky130A_sky130_fd_sc_hd_config.tcl file
+
+![Screenshot 2026-02-24 231559](https://github.com/user-attachments/assets/1e3b4ab8-ee5d-4e91-9568-860676879f47)
+
+
+
 
 Layout in  Magic
 

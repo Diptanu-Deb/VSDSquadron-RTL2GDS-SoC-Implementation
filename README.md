@@ -182,6 +182,33 @@ Setup Time: It is the minimum amount of time required for the data signal to be 
 
 Hold Time: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
 
+To run STA, we need a pre_sta.conf file but it is not available. So we have created a file:
+
+![Screenshot 2026-02-26 011455](https://github.com/user-attachments/assets/a6f135b2-9d40-4d44-acaf-06c1456a5f84)
+
+Then we have copied lib file in picorv32afolder inside src.
+
+Then we run STA using command
+
+ sta pre_sta.conf
+
+ ![Screenshot 2026-02-26 004100](https://github.com/user-attachments/assets/d736332b-9d21-4a2b-a916-20dd4c0e4c4d)
+
+
+Hold Slack details:
+
+![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/921960f0-d266-4ead-a8b0-9014030d55fb)
+
+Setup slack details:
+
+![Screenshot 2026-02-26 004246](https://github.com/user-attachments/assets/eae59b26-4c08-48ef-b0b1-1095ef10fa08)
+
+![Screenshot 2026-02-26 004203](https://github.com/user-attachments/assets/aebfd2f0-d198-4432-8919-f7aea1a1273b)
+
+
+
+
+
 
 
 

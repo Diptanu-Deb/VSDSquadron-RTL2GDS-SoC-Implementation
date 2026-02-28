@@ -1,4 +1,4 @@
-![Screenshot 2026-02-27 025704](https://github.com/user-attachments/assets/c7da0891-7af9-48d1-bf5f-9ba8fb32a409)# VSDSquadron-RTL2GDS-SoC-Implementation
+# VSDSquadron-RTL2GDS-SoC-Implementation
 6 Weeks RTL2GDS SoC Implementation programme by VSD which focuses on System &amp; RTL Foundations to Physical Design and sign-Off using OPENLANE
 
 
@@ -269,6 +269,32 @@ SETUP Slack:
 ![Screenshot 2026-02-27 231602](https://github.com/user-attachments/assets/3ee20893-8520-4777-b416-a6a03d75f36a)
 
 ![Screenshot 2026-02-27 231531](https://github.com/user-attachments/assets/38397e35-ffee-441c-be62-d2659679a77d)
+
+Phase 5 — PDN Awareness (required vocabulary for ORFS and signoff thinking)
+
+For power routing, higher metal layer is used for routing. In higher metal layer resistance is low due higher metal area. So IR drop is reduced.
+
+Invoking PDN:
+
+After cts stage is completed, we can invoke gen_pdn command for power routing.
+
+Screenshot:
+
+![Screenshot 2026-02-28 212638](https://github.com/user-attachments/assets/aef26461-ccc9-4ce4-b1a2-be5a5e444475)
+
+![Screenshot 2026-02-28 212742](https://github.com/user-attachments/assets/4ec39637-1cba-4bbe-b903-0869623d008c)
+
+![Screenshot 2026-02-28 213226](https://github.com/user-attachments/assets/1cb45248-6a8f-4b77-886c-1791b32604ed)
+
+![Screenshot 2026-02-28 213313](https://github.com/user-attachments/assets/76dd1663-7c15-4f50-9042-7aefa56eeece)
+
+![Screenshot 2026-02-28 213445](https://github.com/user-attachments/assets/5b23ef2e-b78d-41d1-aabe-1afbca355063)
+
+
+PDN must be created before routing because it reserves routing resources, ensures proper IR drop control, and provides stable voltage distribution. Since timing, EM, and reliability signoff depend heavily on supply integrity, early PDN planning prevents late-stage timing failures and ECO rework.
+
+
+
 
 
 

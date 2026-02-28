@@ -1,4 +1,4 @@
-# VSDSquadron-RTL2GDS-SoC-Implementation
+![Screenshot 2026-02-27 025704](https://github.com/user-attachments/assets/c7da0891-7af9-48d1-bf5f-9ba8fb32a409)# VSDSquadron-RTL2GDS-SoC-Implementation
 6 Weeks RTL2GDS SoC Implementation programme by VSD which focuses on System &amp; RTL Foundations to Physical Design and sign-Off using OPENLANE
 
 
@@ -204,6 +204,86 @@ Setup slack details:
 ![Screenshot 2026-02-26 004246](https://github.com/user-attachments/assets/eae59b26-4c08-48ef-b0b1-1095ef10fa08)
 
 ![Screenshot 2026-02-26 004203](https://github.com/user-attachments/assets/aebfd2f0-d198-4432-8919-f7aea1a1273b)
+
+
+To improve the slack we can either increase buffer strength or we can reduce fanout.
+
+![Screenshot 2026-02-27 012455](https://github.com/user-attachments/assets/b0521f6c-6323-418f-a192-b6557b9f7280)
+
+![Screenshot 2026-02-27 022228](https://github.com/user-attachments/assets/9014b66a-965c-4f0d-9839-3aa577e651dc)
+
+![Screenshot 2026-02-27 022303](https://github.com/user-attachments/assets/69523f8d-9aa3-4832-acce-2dc17a21d502)
+
+![Screenshot 2026-02-27 022847](https://github.com/user-attachments/assets/8b82cfc3-e4d3-4f8a-8b30-91e57ff28f65)
+
+![Screenshot 2026-02-27 022326](https://github.com/user-attachments/assets/42e76075-c01f-4830-b19c-d405f59a8660)
+
+![Screenshot 2026-02-27 023710](https://github.com/user-attachments/assets/bc1113a7-e963-4e3e-aad5-3d8299e4d5a7)
+
+![Screenshot 2026-02-27 025637](https://github.com/user-attachments/assets/2a35c9e3-9d02-494c-b6cf-ef7900bf8337)
+
+![Screenshot 2026-02-27 025704](https://github.com/user-attachments/assets/b0de2d79-dff9-4176-ab74-b00099b71269)
+
+We can observe that slack is improved.
+
+Phase 4 — CTS and Timing with Real Clocks
+
+CTS run proof screenshot:
+
+![Screenshot 2026-02-27 225631](https://github.com/user-attachments/assets/2eebafcd-d353-479c-bcfb-11d047334636)
+
+![Screenshot 2026-02-27 225658](https://github.com/user-attachments/assets/bce7f45e-b971-4091-816a-087f774eb532)
+
+Post-CTS OpenROAD timing analysis.
+
+Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrated OpenSTA in OpenROAD:
+
+openroad
+
+read_lef /home/vscode/OpenLane/designs/picorv32a/runs/26.02.27-17.20.00/tmp/merged.max.lef
+
+read_def  /home/vscode/OpenLane/designs/picorv32a/runs/26.02.27-17.20.00/results/cts/picorv32a.def
+
+write_db pico_cts.db
+
+read_db pico_cts.db
+
+read_verilog / home/vscode/OpenLane/designs/picorv32a/runs/24-03_10-03/results/synthesis/picorv32a.synthesis.v
+
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+link_design picorv32a
+
+read_sdc /openLANE_flow/designs/picorv32a/src/picorv32a.sdc
+
+set_propagated_clock [all_clocks]
+
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+HOLD Slack:
+
+![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/8ecb4745-9990-4fa0-8633-72d092ef56ab)
+
+SETUP Slack:
+
+![Screenshot 2026-02-27 231602](https://github.com/user-attachments/assets/3ee20893-8520-4777-b416-a6a03d75f36a)
+
+![Screenshot 2026-02-27 231531](https://github.com/user-attachments/assets/38397e35-ffee-441c-be62-d2659679a77d)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -32,15 +32,15 @@ Now what is PDK?
 
 Once we have the required RTL Code, the first step is to synthesize the RTL.
 
-**Synthesis**: This process gives us the optimised gate level netlist.
+* **Synthesis**: This process gives us the optimised gate level netlist.
 
-**Floor planning and power planning**: In this step, we will define the aspect ratio of the core, Place the Macros and De-cap cells, carryout power planning, place pre-placement cells, define pin location.
+* **Floor planning and power planning**: In this step, we will define the aspect ratio of the core, Place the Macros and De-cap cells, carryout power planning, place pre-placement cells, define pin location.
 
-**Placement**: In this stage we will place the standard cell in standard cell Row site and legalize their placement.
+* **Placement**: In this stage we will place the standard cell in standard cell Row site and legalize their placement.
 
-**CTS**: Clock tree synthesis is the stage where we will give clock signal to every block in a way that we have minimum skew and low latency.
+* **CTS**: Clock tree synthesis is the stage where we will give clock signal to every block in a way that we have minimum skew and low latency.
 
-**Routing**: Routing is making physical connections between signal pins using metal layers.
+* **Routing**: Routing is making physical connections between signal pins using metal layers.
 
 It can be divided into two steps:
 

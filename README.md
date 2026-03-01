@@ -155,11 +155,11 @@ In this phase we will look into some Floorplan concepts and run floorplan in Ope
 
 ## A short explanation (your own words): why macros like RAM behave differently than standard cells:
 
-a) RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
+  a) RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
 
-b) Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
+  b) Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
 
-c) During synthesis, standard cells can be optimised but macros cannot be optimised.
+  c) During synthesis, standard cells can be optimised but macros cannot be optimised.
 
 Screenshots are attached below:
 

@@ -278,6 +278,12 @@ Invoking PDN:
 
 After cts stage is completed, we can invoke gen_pdn command for power routing.
 
+To view in magic, following commands are provided:
+
+
+<img width="1245" height="163" alt="image" src="https://github.com/user-attachments/assets/0bc9455b-91b7-4335-bb1b-e206a4ace8bd" />
+
+
 Screenshot:
 
 ![Screenshot 2026-02-28 212638](https://github.com/user-attachments/assets/aef26461-ccc9-4ce4-b1a2-be5a5e444475)
@@ -291,7 +297,26 @@ Screenshot:
 ![Screenshot 2026-02-28 213445](https://github.com/user-attachments/assets/5b23ef2e-b78d-41d1-aabe-1afbca355063)
 
 
-PDN must be created before routing because it reserves routing resources, ensures proper IR drop control, and provides stable voltage distribution. Since timing, EM, and reliability signoff depend heavily on supply integrity, early PDN planning prevents late-stage timing failures and ECO rework.
+ PDN must be created before routing because it defines the power backbone of the chip.
+ 
+-  It reserves metal resources that signal routing must avoid.
+-  
+- If PDN is added after routing, signals will be ripped up and rerouted.
+- 
+- PDN blocks routing tracks, so congestion must be planned early.
+- 
+- Early PDN allows early IR drop estimation and correction.
+- 
+- Weak PDN causes voltage drop, which increases cell delay.
+- 
+- Increased delay leads to setup timing violations at signoff.
+- 
+- Poor PDN can also cause electromigration (EM) failures.
+- 
+-  EM issues cannot be fixed easily at late stages without major redesign.
+-  
+-Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN must be built before placement and routing to avoid late-stage ECOs and timing instability.
+
 
 
 

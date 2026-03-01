@@ -1,6 +1,9 @@
 # VSDSquadron-RTL2GDS-SoC-Implementation
-6 Weeks RTL2GDS SoC Implementation programme by VSD which focuses on System &amp; RTL Foundations to Physical Design and sign-Off using OPENLANE
+> 6 Weeks RTL2GDS SoC Implementation programme by VSD which focuses on System &amp; RTL Foundations to Physical Design and sign-Off using OPENLANE
 
+![Static Badge](https://img.shields.io/badge/OS-linux-orange)
+![Static Badge](https://img.shields.io/badge/EDA%20Tools-OpenLANE--Flow%2C_Yosys%2C_abc%2C_OpenROAD%2C_TritonRoute%2C_OpenSTA%2C_magic%2C_netgen%2C_GUNA-navy)
+![Static Badge](https://img.shields.io/badge/languages-verilog%2C_bash%2C_TCL-crimson)
 
 
 
@@ -57,9 +60,8 @@ OpenLane ASIC flow diagram is given below:
 
 In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
 
-## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy)
-
-We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
+> ## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) ...
+> We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
 ### Commands to invoke the OpenLANE flow and perform synthesis:
 
@@ -96,6 +98,8 @@ Screenshots are attached below:
 <img width="940" height="641" alt="image" src="https://github.com/user-attachments/assets/200871bb-c7ca-451a-851c-21c539eb5cba" />
 
 <img width="940" height="694" alt="image" src="https://github.com/user-attachments/assets/0431aeef-a4e7-43b4-b7c1-08079d1f489f" />
+
+
 
 ## Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
 
@@ -344,9 +348,9 @@ Screenshot:
   
 - Poor PDN can also cause electromigration (EM) failures.
   
- EM issues cannot be fixed easily at late stages without major redesign.
+ - EM issues cannot be fixed easily at late stages without major redesign.
 
--Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN must be built before placement and routing to avoid late-stage ECOs and timing instability.
+ -Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN      must be built before placement and routing to avoid late-stage ECOs and timing instability.
 
 
 

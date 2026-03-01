@@ -7,7 +7,9 @@
 
 
 
-The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.
+***The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.***
+
+# WEEK 1
 
 In WEEK 1, we will be deep diving into Digital VLSI SoC Design and Planning, which is the foundation of this workshop.
 

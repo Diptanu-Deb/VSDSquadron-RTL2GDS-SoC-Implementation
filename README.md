@@ -42,11 +42,11 @@ Once we have the required RTL Code, the first step is to synthesize the RTL.
 
 * **Routing**: Routing is making physical connections between signal pins using metal layers.
 
-It can be divided into two steps:
+    It can be divided into two steps:
 
-a)	**Global Routing**: This step identifies the possible routing tracks.
+     a)	**Global Routing**: This step identifies the possible routing tracks.
 
-b)	**Detailed Routing**: This step physically connects the signal pins.
+     b)	**Detailed Routing**: This step physically connects the signal pins.
 
 * **Sign-Off**: This steps checks whether there is any DRC violations or not, carry out schematic vs LVS check, and perform STA analysis.
 

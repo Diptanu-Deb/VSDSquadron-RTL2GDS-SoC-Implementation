@@ -120,10 +120,12 @@ Calculation of Flop Ratio and DFF % from synthesis statistics report file
 
 ```math
 Flop\ Ratio = \frac{Number\ of\ D\ Flip\ Flops}{Total\ Number\ of\ Cells}
+
 Flop\ Ratio = \frac{1613}{18508} = 0.0871515
 ```
 ```math
 Percentage\ of\ DFF's = Flop\ Ratio * 100
+
 Percentage\ of\ DFF's = 0.0871515 * 100 = 8.71515\ \%
 ```
 

@@ -55,11 +55,11 @@ OpenLane ASIC flow diagram is given below:
 
 In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
 
-Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy)
+## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy)
 
 We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
-Commands to invoke the OpenLANE flow and perform synthesis:
+### Commands to invoke the OpenLANE flow and perform synthesis:
 
 1)	Once noVNC Desktop is opened, go to terminal -> cd OpenLane
    
@@ -84,19 +84,19 @@ Screenshots are attached below:
 
 <img width="940" height="694" alt="image" src="https://github.com/user-attachments/assets/0431aeef-a4e7-43b4-b7c1-08079d1f489f" />
 
-Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
+## Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
 
 In this phase we will look into some Floorplan concepts and run floorplan in Openlane.
 
-1)	Utilization factor and aspect ratio:
+### 1)	Utilization factor and aspect ratio:
 
-Aspect ratio: The ratio of the height of the chip core to its width.
+#### Aspect ratio: The ratio of the height of the chip core to its width.
 
 <img width="551" height="175" alt="image" src="https://github.com/user-attachments/assets/72aca877-071f-4f47-8249-fa6a0e63ff4c" />
 
-2) Utilisation factor: Ratio of  Area occupied by standard cell to the total core Area.
+#### Utilisation factor: Ratio of  Area occupied by standard cell to the total core Area.
 
-Concept of MACROS:
+#### Concept of MACROS:
 
 A macro is a large pre-designed functional block used in chip design that is treated as a single unit during placement and routing.
 
@@ -105,7 +105,7 @@ Unlike standard cells, macros are pre-designed, Pre-characterised, Pre-verified 
 Macros ae placed manually during floor planning.
 
 
-A short explanation (your own words): why macros like RAM behave differently than standard cells:
+##### A short explanation (your own words): why macros like RAM behave differently than standard cells:
 
 RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
 

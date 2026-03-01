@@ -384,7 +384,7 @@ Screenshot:
   
  - EM issues cannot be fixed easily at late stages without major redesign.
 
- -Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN      must be built before placement and routing to avoid late-stage ECOs and timing instability.
+ - Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN      must be built before placement and routing to avoid late-stage ECOs and timing instability.
 
 
 

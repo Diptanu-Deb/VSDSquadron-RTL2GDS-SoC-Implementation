@@ -63,11 +63,24 @@ OpenLane ASIC flow diagram is given below:
 
 In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
 
+The below link provides steps to setup github codepsace:
+
+https://github.com/vsdip/vsd-openlane
+
 ## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) 
 
  We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
 ### Commands to invoke the OpenLANE flow and perform synthesis:
+
+```bash 
+# Change directory to openlane flow directory
+cd /home/vscode/Desktop/openlane
+
+# Since we have aliased the long command to "make mount" we can invoke the OpenLANE flow docker sub-system by just running this command
+make mount
+
+```
 
 
  ```tcl
@@ -103,6 +116,15 @@ Screenshots are attached below:
 
 <img width="940" height="694" alt="image" src="https://github.com/user-attachments/assets/0431aeef-a4e7-43b4-b7c1-08079d1f489f" />
 
+Calculation of Flop Ratio and DFF % from synthesis statistics report file
+
+```math
+Flop\ Ratio = \frac{1613}{14876} = 0.108429685
+```
+```math
+Percentage\ of\ DFF's = 0.108429685 * 100 = 10.84296854\ \%
+```
+
 
 
 ## Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
@@ -129,9 +151,7 @@ Macros ae placed manually during floor planning.
 ## A short explanation (your own words): why macros like RAM behave differently than standard cells:
 
 a) RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
-
 b) Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
-
 c) During synthesis, standard cells can be optimised but macros cannot be optimised.
 
 Screenshots are attached below:

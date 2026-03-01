@@ -83,6 +83,8 @@ We will run “picorv32a” design synthesis using OpenLANE flow and generate ne
     
 # 	To get out of the OpenLane flow type
  exit.
+'''
+
     
 
 Screenshots are attached below:

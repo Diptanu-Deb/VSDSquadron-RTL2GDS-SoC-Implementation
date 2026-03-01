@@ -48,7 +48,7 @@ a)	**Global Routing**: This step identifies the possible routing tracks.
 
 b)	**Detailed Routing**: This step physically connects the signal pins.
 
-**Sign-Off**: This steps checks whether there is any DRC violations or not, carry out schematic vs LVS check, and perform STA analysis.
+* **Sign-Off**: This steps checks whether there is any DRC violations or not, carry out schematic vs LVS check, and perform STA analysis.
 
 
 The entire design will be done using OpenLane, which is a flow and comprised of many open-source EDA tools like Yosis+abc,magic,Ngspice etc.
@@ -135,19 +135,18 @@ In this phase we will look into some Floorplan concepts and run floorplan in Ope
 
 ## Utilization factor and aspect ratio:
 
-**Aspect ratio:** The ratio of the height of the chip core to its width.
+* **Aspect ratio:** The ratio of the height of the chip core to its width.
 
 <img width="551" height="175" alt="image" src="https://github.com/user-attachments/assets/72aca877-071f-4f47-8249-fa6a0e63ff4c" />
 
-**Utilisation factor:*** Ratio of  Area occupied by standard cell to the total core Area.
+
+* **Utilisation factor:** Ratio of  Area occupied by standard cell to the total core Area.
 
 ## Concept of MACROS:
 
-A macro is a large pre-designed functional block used in chip design that is treated as a single unit during placement and routing.
-
-Unlike standard cells, macros are pre-designed, Pre-characterised, Pre-verified and larger in size.
-
-Macros ae placed manually during floor planning.
+* A macro is a large pre-designed functional block used in chip design that is treated as a single unit during placement and routing.
+* Unlike standard cells, macros are pre-designed, Pre-characterised, Pre-verified and larger in size.
+* Macros ae placed manually during floor planning.
 
 
 ## A short explanation (your own words): why macros like RAM behave differently than standard cells:
@@ -230,9 +229,9 @@ Pin Details:
 
 Timing checks like setup and Hold time checks are carried out to ensure that timing constraints are met.
 
-**Setup Time**: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
+* **Setup Time**: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
 
-**Hold Time**: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
+* **Hold Time**: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
 
 To run STA, we need a **pre_sta.conf** file but it is not available. So we have created a file:
 

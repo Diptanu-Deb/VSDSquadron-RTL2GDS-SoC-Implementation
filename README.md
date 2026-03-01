@@ -8,8 +8,10 @@
 
 
 The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.
+
 In WEEK 1, we will be deep diving into Digital VLSI SoC Design and Planning, which is the foundation of this workshop.
-Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
+
+    Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
 
 <img width="999" height="304" alt="image" src="https://github.com/user-attachments/assets/d4d4853d-d09e-4123-aa95-e4294c988c51" />
 

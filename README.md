@@ -133,11 +133,11 @@ In this phase we will look into some Floorplan concepts and run floorplan in Ope
 
 ## Utilization factor and aspect ratio:
 
-## Aspect ratio: The ratio of the height of the chip core to its width.
+**Aspect ratio:** The ratio of the height of the chip core to its width.
 
 <img width="551" height="175" alt="image" src="https://github.com/user-attachments/assets/72aca877-071f-4f47-8249-fa6a0e63ff4c" />
 
-#### Utilisation factor: Ratio of  Area occupied by standard cell to the total core Area.
+**Utilisation factor:*** Ratio of  Area occupied by standard cell to the total core Area.
 
 ## Concept of MACROS:
 
@@ -247,11 +247,11 @@ Then we run STA using command
  ![Screenshot 2026-02-26 004100](https://github.com/user-attachments/assets/d736332b-9d21-4a2b-a916-20dd4c0e4c4d)
 
 
-# Hold Slack details:
+**Hold Slack details:**
 
 ![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/921960f0-d266-4ead-a8b0-9014030d55fb)
 
-# Setup slack details:
+**Setup slack details:**
 
 ![Screenshot 2026-02-26 004246](https://github.com/user-attachments/assets/eae59b26-4c08-48ef-b0b1-1095ef10fa08)
 

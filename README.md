@@ -11,7 +11,8 @@ The curriculum of this workshop will be carried out in different phases and will
 
 In WEEK 1, we will be deep diving into Digital VLSI SoC Design and Planning, which is the foundation of this workshop.
 
-    Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
+Now Let’s begin with a simplified RTL2GDSII Flow which is given below:
+
 
 <img width="999" height="304" alt="image" src="https://github.com/user-attachments/assets/d4d4853d-d09e-4123-aa95-e4294c988c51" />
 
@@ -27,27 +28,27 @@ PDK stands for Process Design Kit, which act as an interface between designer an
 
 In our entire design process, we will use the same required PDK.
 
-Now moving to RTL2GSDII Flow,
+# Now moving to RTL2GSDII Flow,
 
 Once we have the required RTL Code, the first step is to synthesize the RTL.
 
-Synthesis: This process gives us the optimised gate level netlist.
+**Synthesis**: This process gives us the optimised gate level netlist.
 
-Floor planning and power planning: In this step, we will define the aspect ratio of the core, Place the Macros and De-cap cells, carryout power planning, place pre-placement cells, define pin location.
+**Floor planning and power planning**: In this step, we will define the aspect ratio of the core, Place the Macros and De-cap cells, carryout power planning, place pre-placement cells, define pin location.
 
-Placement: In this stage we will place the standard cell in standard cell Row site and legalize their placement.
+**Placement**: In this stage we will place the standard cell in standard cell Row site and legalize their placement.
 
-CTS: Clock tree synthesis is the stage where we will give clock signal to every block in a way that we have minimum skew and low latency.
+**CTS**: Clock tree synthesis is the stage where we will give clock signal to every block in a way that we have minimum skew and low latency.
 
-Routing: Routing is making physical connections between signal pins using metal layers.
+**Routing**: Routing is making physical connections between signal pins using metal layers.
 
 It can be divided into two steps:
 
-a)	Global Routing: This step identifies the possible routing tracks.
+a)	**Global Routing**: This step identifies the possible routing tracks.
 
-b)	Detailed Routing: This step physically connects the signal pins.
+b)	**Detailed Routing**: This step physically connects the signal pins.
 
-Sign-Off: This steps checks whether there is any DRC violations or not, carry out schematic vs LVS check, and perform STA analysis.
+**Sign-Off**: This steps checks whether there is any DRC violations or not, carry out schematic vs LVS check, and perform STA analysis.
 
 
 The entire design will be done using OpenLane, which is a flow and comprised of many open-source EDA tools like Yosis+abc,magic,Ngspice etc.
@@ -181,7 +182,7 @@ Floorplan def after adding the sky130A_sky130_fd_sc_hd_config.tcl file
 
 
 
-Layout in  Magic
+**Layout in  Magic**
 
 Coomands to view def in Magic:
 ```tcl
@@ -205,11 +206,11 @@ Pin Details:
 
 Timing checks like setup and Hold time checks are carried out to ensure that timing constraints are met.
 
-Setup Time: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
+**Setup Time**: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
 
-Hold Time: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
+**Hold Time**: It is the minimum amount of time required for the data signal to be remain stable after the arrival of active edge of the clock.
 
-To run STA, we need a pre_sta.conf file but it is not available. So we have created a file:
+To run STA, we need a **pre_sta.conf** file but it is not available. So we have created a file:
 
 ![Screenshot 2026-02-26 011455](https://github.com/user-attachments/assets/a6f135b2-9d40-4d44-acaf-06c1456a5f84)
 

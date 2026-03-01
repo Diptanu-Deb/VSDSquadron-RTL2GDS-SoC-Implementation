@@ -60,8 +60,9 @@ OpenLane ASIC flow diagram is given below:
 
 In this Week all the labs will be carried out in GitHub Codespaces (vsd-openlane).
 
-> ## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) ...
-> We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
+## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) 
+
+ We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
 ### Commands to invoke the OpenLANE flow and perform synthesis:
 

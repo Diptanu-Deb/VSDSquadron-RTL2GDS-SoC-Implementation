@@ -151,7 +151,9 @@ Macros ae placed manually during floor planning.
 ## A short explanation (your own words): why macros like RAM behave differently than standard cells:
 
 a) RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
+
 b) Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
+
 c) During synthesis, standard cells can be optimised but macros cannot be optimised.
 
 Screenshots are attached below:
@@ -313,11 +315,11 @@ report_checks -path_delay min_max -fields {slew trans net cap input_pins} -forma
 
 ```
 
-# HOLD Slack:
+**HOLD Slack:**
 
 ![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/8ecb4745-9990-4fa0-8633-72d092ef56ab)
 
-# SETUP Slack:
+**SETUP Slack:**
 
 ![Screenshot 2026-02-27 231602](https://github.com/user-attachments/assets/3ee20893-8520-4777-b416-a6a03d75f36a)
 
@@ -330,6 +332,9 @@ For power routing, higher metal layer is used for routing. In higher metal layer
 # Invoking PDN:
 
 After cts stage is completed, we can invoke gen_pdn command for power routing.
+
+![Screenshot 2026-02-28 212252](https://github.com/user-attachments/assets/bca7c03f-519a-4035-8598-b33ca9e1f145)
+
 
 To view in magic, following commands are provided:
 ```tcl

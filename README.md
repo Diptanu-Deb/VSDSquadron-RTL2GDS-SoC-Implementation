@@ -23,7 +23,9 @@ PDK stands for Process Design Kit, which act as an interface between designer an
 In our entire design process, we will use the same required PDK.
 
 Now moving to RTL2GSDII Flow,
+
 Once we have the required RTL Code, the first step is to synthesize the RTL.
+
 Synthesis: This process gives us the optimised gate level netlist.
 
 Floor planning and power planning: In this step, we will define the aspect ratio of the core, Place the Macros and De-cap cells, carryout power planning, place pre-placement cells, define pin location.
@@ -99,15 +101,15 @@ Screenshots are attached below:
 
 In this phase we will look into some Floorplan concepts and run floorplan in Openlane.
 
-### 1)	Utilization factor and aspect ratio:
+## Utilization factor and aspect ratio:
 
-#### Aspect ratio: The ratio of the height of the chip core to its width.
+## Aspect ratio: The ratio of the height of the chip core to its width.
 
 <img width="551" height="175" alt="image" src="https://github.com/user-attachments/assets/72aca877-071f-4f47-8249-fa6a0e63ff4c" />
 
 #### Utilisation factor: Ratio of  Area occupied by standard cell to the total core Area.
 
-#### Concept of MACROS:
+## Concept of MACROS:
 
 A macro is a large pre-designed functional block used in chip design that is treated as a single unit during placement and routing.
 
@@ -116,17 +118,17 @@ Unlike standard cells, macros are pre-designed, Pre-characterised, Pre-verified 
 Macros ae placed manually during floor planning.
 
 
-##### A short explanation (your own words): why macros like RAM behave differently than standard cells:
+## A short explanation (your own words): why macros like RAM behave differently than standard cells:
 
-RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
+a) RAM macros behave differently from standard cells because they are large, custom-designed memory blocks treated as fixed black boxes in the design flow, with timing and power dominated by internal memory array effects rather than simple gate delay.
 
-Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
+b) Standard cells Can be resized (different drive strengths) whereas macros are of fixed size and cannot be resized.
 
-During synthesis, standard cells can be optimised but macros cannot be optimised.
+c) During synthesis, standard cells can be optimised but macros cannot be optimised.
 
 Screenshots are attached below:
 
-Invoking floor plan command
+# Invoking floor plan command
 
 ![Screenshot 2026-02-23 001813](https://github.com/user-attachments/assets/11cf4eb6-11bb-49b1-b5a7-1e964da13788)
 
@@ -174,6 +176,13 @@ Floorplan def after adding the sky130A_sky130_fd_sc_hd_config.tcl file
 
 Layout in  Magic
 
+Coomands to view def in Magic:
+```tcl
+cd /home/vscode/Desktop/Openlane/designs/picorv32a/runs/RUN_2026.02.27_17.20.00/results/floorplan/
+magic -T /home/vscode/.ciel/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read picorv32a.def
+
+```
+
 ![Screenshot 2026-02-23 013235](https://github.com/user-attachments/assets/83fc78a3-0b93-4ad8-8aa5-0c209a4e2b29)
 
 Pin Details:
@@ -185,7 +194,7 @@ Pin Details:
 
 ![Screenshot 2026-02-23 012200](https://github.com/user-attachments/assets/f7b41943-bdda-4502-975d-bc829f05d54b)
 
-Phase 3 — Timing Literacy with Ideal Clocks (OpenSTA + ECO mindset)
+## Phase 3 — Timing Literacy with Ideal Clocks (OpenSTA + ECO mindset)
 
 Timing checks like setup and Hold time checks are carried out to ensure that timing constraints are met.
 
@@ -200,17 +209,19 @@ To run STA, we need a pre_sta.conf file but it is not available. So we have crea
 Then we have copied lib file in picorv32afolder inside src.
 
 Then we run STA using command
+```tcl
 
  sta pre_sta.conf
 
+```
  ![Screenshot 2026-02-26 004100](https://github.com/user-attachments/assets/d736332b-9d21-4a2b-a916-20dd4c0e4c4d)
 
 
-Hold Slack details:
+# Hold Slack details:
 
 ![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/921960f0-d266-4ead-a8b0-9014030d55fb)
 
-Setup slack details:
+# Setup slack details:
 
 ![Screenshot 2026-02-26 004246](https://github.com/user-attachments/assets/eae59b26-4c08-48ef-b0b1-1095ef10fa08)
 
@@ -237,7 +248,7 @@ To improve the slack we can either increase buffer strength or we can reduce fan
 
 We can observe that slack is improved.
 
-Phase 4 — CTS and Timing with Real Clocks
+# Phase 4 — CTS and Timing with Real Clocks
 
 CTS run proof screenshot:
 
@@ -245,9 +256,10 @@ CTS run proof screenshot:
 
 ![Screenshot 2026-02-27 225658](https://github.com/user-attachments/assets/bce7f45e-b971-4091-816a-087f774eb532)
 
-Post-CTS OpenROAD timing analysis.
+# Post-CTS OpenROAD timing analysis.
 
 Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrated OpenSTA in OpenROAD:
+```tcl
 
 openroad
 
@@ -271,25 +283,33 @@ set_propagated_clock [all_clocks]
 
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
 
-HOLD Slack:
+```
+
+# HOLD Slack:
 
 ![Screenshot 2026-02-26 004126](https://github.com/user-attachments/assets/8ecb4745-9990-4fa0-8633-72d092ef56ab)
 
-SETUP Slack:
+# SETUP Slack:
 
 ![Screenshot 2026-02-27 231602](https://github.com/user-attachments/assets/3ee20893-8520-4777-b416-a6a03d75f36a)
 
 ![Screenshot 2026-02-27 231531](https://github.com/user-attachments/assets/38397e35-ffee-441c-be62-d2659679a77d)
 
-Phase 5 — PDN Awareness (required vocabulary for ORFS and signoff thinking)
+# Phase 5 — PDN Awareness (required vocabulary for ORFS and signoff thinking)
 
 For power routing, higher metal layer is used for routing. In higher metal layer resistance is low due higher metal area. So IR drop is reduced.
 
-Invoking PDN:
+# Invoking PDN:
 
 After cts stage is completed, we can invoke gen_pdn command for power routing.
 
 To view in magic, following commands are provided:
+```tcl
+cd /home/vscode/Desktop/Openlane/designs/picorv32a/runs/RUN_2026.02.27_17.20.00/results/floorplan/
+magic -T /home/vscode/.ciel/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read picorv32a.def
+
+```
+
 
 
 <img width="1245" height="163" alt="image" src="https://github.com/user-attachments/assets/0bc9455b-91b7-4335-bb1b-e206a4ace8bd" />
@@ -311,21 +331,21 @@ Screenshot:
  PDN must be created before routing because it defines the power backbone of the chip.
  
 -  It reserves metal resources that signal routing must avoid.
--  
+   
 - If PDN is added after routing, signals will be ripped up and rerouted.
-- 
+  
 - PDN blocks routing tracks, so congestion must be planned early.
-- 
+  
 - Early PDN allows early IR drop estimation and correction.
-- 
+  
 - Weak PDN causes voltage drop, which increases cell delay.
-- 
+ 
 - Increased delay leads to setup timing violations at signoff.
-- 
+  
 - Poor PDN can also cause electromigration (EM) failures.
-- 
--  EM issues cannot be fixed easily at late stages without major redesign.
--  
+  
+ EM issues cannot be fixed easily at late stages without major redesign.
+
 -Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN must be built before placement and routing to avoid late-stage ECOs and timing instability.
 
 

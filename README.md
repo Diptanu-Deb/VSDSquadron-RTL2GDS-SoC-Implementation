@@ -334,7 +334,7 @@ report_checks -path_delay min_max -fields {slew trans net cap input_pins} -forma
 
 For power routing, higher metal layer is used for routing. In higher metal layer resistance is low due higher metal area. So IR drop is reduced.
 
-# Invoking PDN:
+**Invoking PDN:**
 
 After cts stage is completed, we can invoke gen_pdn command for power routing.
 

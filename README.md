@@ -388,6 +388,46 @@ Screenshot:
 
 
 
+# WEEK–2
+
+**Toolchain Mastery and ORFS Execution (Cloud to Local)**
+
+Week-2 Focuses on:
+
+1.	Running ORFS (OpenROAD Flow Scripts) in GitHub Codespaces
+2.	Understanding the complete toolchain inside the devcontainer
+3.	Installing ORFS locally
+4.	Installing official OpenROAD locally
+5.	Re-executing the same testcase locally
+6.	Developing Unix and environment debugging literacy
+
+# PHASE 1 — ORFS Execution in GitHub Codespaces
+
+## Task 1.1 — Repository Setup
+
+1. First we fork the repository from https://github.com/vsdip/vsd-scl180-orfs
+2. Then we run	and Launch GitHub Codespaces.
+3. Then 	allow devcontainer to build fully
+4. Fianlly we	Confirmed that container environment is ready to use.
+
+**Screenshot**
+![Screenshot 2026-03-02 230255](https://github.com/user-attachments/assets/752e8638-f1dd-4447-81a8-2c9d02015358)
+
+![Screenshot 2026-03-02 230445](https://github.com/user-attachments/assets/f2a1e0d3-e839-4198-a713-ce5a5e297f2f)
+
+![Screenshot 2026-03-07 222615](https://github.com/user-attachments/assets/bdd48656-7de7-4b34-af7c-92db1bc18e05)
+
+# Task 1.2 — Run Sky130 Testcase in Cloud
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -979,13 +979,21 @@ make gui_6_merged.gds
 # PHASE 5 — Debugging and Unix Literacy
 
 ●	pwd: Gives present working directory
+
 ●	ls: lists files
+
 ●	cd:moves between folders
+
 ●	grep: The grep command in Linux is used to search for specific text patterns inside files or command outputs. It is very useful for filtering logs, reports, or large files.
+
 ●	find: Used to find a file by name.
+
 ●	cat: View the contents of a file
+
 ●	less:The less command in Linux is used to view the contents of a file one screen at a time. It is very useful for reading large files like logs and reports.
+
 ●	echo:The echo command in Linux is used to display text or the value of variables on the terminal.
+
 ●	export: The export command in Linux is used to set environment variables and make them available to other programs or child processes.
 
 ## Screenshot:

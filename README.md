@@ -422,6 +422,11 @@ Week-2 Focuses on:
 ## Full RTL-to-GDS flow using the provided Makefile
 
  ## Synthesis:
+  ```bash
+make synth
+# To view Gui
+make gui_synth
+```
  
   ![Screenshot 2026-03-04 143815](https://github.com/user-attachments/assets/1c153540-31ea-486c-bb83-aad9c650afac)
 
@@ -431,6 +436,12 @@ Week-2 Focuses on:
 
   ## Floorplan:
 
+  ```bash
+make floorplan
+# To view Gui
+make gui_floorplan
+```
+
   ![Screenshot 2026-03-04 144851](https://github.com/user-attachments/assets/b13beac6-59b2-4c5e-9c8a-886f635351fb)
 
   ![Screenshot 2026-03-04 145002](https://github.com/user-attachments/assets/8ee42d65-5318-4d53-9040-c83a10c245f2)
@@ -438,6 +449,12 @@ Week-2 Focuses on:
   ![Screenshot 2026-03-04 144945](https://github.com/user-attachments/assets/20f3a486-b0a3-43c1-ae86-2e9a50596760)
 
 ## Placement:
+
+```bash
+make place
+# To view Gui
+make gui_place
+```
 
 ![Screenshot 2026-03-04 145351](https://github.com/user-attachments/assets/869b214c-48b0-4876-885f-6f22ad325d1c)
 
@@ -451,6 +468,12 @@ Week-2 Focuses on:
 
 # CTS:
 
+```bash
+make cts
+# To view Gui
+make gui_cts
+```
+
 ![Screenshot 2026-03-04 150052](https://github.com/user-attachments/assets/a95a1e1f-50f5-410f-9eb9-aeda33d1e468)
 
 ![Screenshot 2026-03-04 151214](https://github.com/user-attachments/assets/58b5f3db-cd3b-449d-9a4f-5d845a6373fd)
@@ -462,6 +485,12 @@ Week-2 Focuses on:
 ![Screenshot 2026-03-04 150758](https://github.com/user-attachments/assets/6db735c2-e4bb-42a6-a9f6-18bc6e971294)
 
 # Route:
+
+```bash
+make route
+# To view Gui
+make gui_route
+```
 
 ![Screenshot 2026-03-04 155755](https://github.com/user-attachments/assets/09f5ea30-7c95-44b3-a693-2cb50f150433)
 
@@ -738,7 +767,7 @@ KLayout (Visualization)
 
 Use Oracle VirtualBox + Ubuntu 22.04 ISO.
 
-## Task 3.1 — Install ORFS Locally
+## Task 3.1 — Install ORFS Locally && Task 3.2 — Install Official OpenROAD
 
 Following dependencies are installed before clonit vsd-scl180-orfs:
 
@@ -797,6 +826,202 @@ cmake .. \
 
    make -j$(nproc)
    sudo make install
+```
+Once OpenROAD and yosys is builded properly, Lets check the version
+
+ ```bash
+openroad -version
+26Q1-1736-g93742072ba
+
+yosys -V
+Yosys 0.63+87.
+
+make --version
+GNU Make 4.3
+```
+# PHASE 4 — Re-Run RTL-to-GDS Locally
+
+Once yosys and OpenROAD is installed we need to set their path in file "synth.sh" available in script folder.
+
+```bash
+export YOSYS_EXE = $(which yosys)
+export OPENROAD_EXE=$(which openroad)
+```
+
+once path is set we will go to location 
+```
+cd vsd-scl180-orfs/orfs/flow
+```
+and change pdk to sky130hd.
+
+Then we started to run  commands
+## Synthesis:
+ ```bash
+make synth
+# To view Gui
+make gui_synth
+```
+## Screenshot:
+
+![Synth](https://github.com/user-attachments/assets/d011dbe6-4622-4b77-9881-4c811182b025)
+
+![Synth_1](https://github.com/user-attachments/assets/ab75c634-0b48-4e3f-8114-20a2364ee606)
+
+![Synth_gui_command](https://github.com/user-attachments/assets/42a59874-f5e1-4cdf-9905-0ca1ef330fb5)
+
+![Sunth_gui](https://github.com/user-attachments/assets/694d6d12-2e55-4296-a768-d2f0dc920bbe)
+
+## Floorplan:
+
+```bash
+make floorplan
+# To view Gui
+make gui_floorplan
+```
+## Screenshot:
+
+![Floorpaln](https://github.com/user-attachments/assets/b530ce88-e835-47e6-b501-e6ab58f5203b)
+
+![florrpal_gui_command](https://github.com/user-attachments/assets/dbe99061-9be3-472e-8b11-2109846896f9)
+
+![Floorpal_gui](https://github.com/user-attachments/assets/19767373-f250-4554-9b23-ce5024d2940b)
+
+
+
+## Placement:
+
+```bash
+make place
+# To view Gui
+make gui_place
+```
+We encountered some error due to tight placement. So we reduced placement density from 0.2 to 0.1 and utilisation factor from 45 to 40.
+
+## Screenshot:
+
+![place](https://github.com/user-attachments/assets/a70ce6d2-8244-41cc-b2c4-216b2c16b929)
+
+![pace1](https://github.com/user-attachments/assets/b0008ecf-cded-4200-b1b8-6041538e0161)
+
+![palce_gui](https://github.com/user-attachments/assets/2df4af3c-5123-41c3-bb6b-301b0975eccc)
+
+![palce_gui2](https://github.com/user-attachments/assets/f0742f75-8abb-4190-b022-198e74c6d7f4)
+
+## CTS:
+
+```bash
+make cts
+# To view Gui
+make gui_cts
+```
+## Screenshot:
+
+![cts](https://github.com/user-attachments/assets/72f404e9-e4f6-4e48-b64a-9f8f12463093)
+
+![cts2](https://github.com/user-attachments/assets/038e65f0-8559-4e87-85bb-7db874dc8a49)
+
+![cts_gui command](https://github.com/user-attachments/assets/862dccb4-71ba-4dd1-999f-8f88871a184c)
+
+![cts_gui](https://github.com/user-attachments/assets/82e0a833-3a6d-42c7-8b52-332e798e297c)
+
+![cts_gui1](https://github.com/user-attachments/assets/d7e6ab91-6a0e-44ba-9fe6-8a96f34a13d2)
+
+## Route:
+
+```bash
+make route
+# To view Gui
+make gui_route
+```
+## Screenshot:
+
+![route](https://github.com/user-attachments/assets/d0ee1c21-21d5-4d24-a47c-fc8c78bc00d9)
+
+![route2](https://github.com/user-attachments/assets/50bb20ef-5ca1-4720-ac9a-f5eadae270e9)
+
+![route_gui command](https://github.com/user-attachments/assets/fb66b02e-ecf4-4372-b56f-bbd98ed00930)
+
+![route_gui](https://github.com/user-attachments/assets/b1393f30-55b5-4597-b7ac-ada5d2b3de32)
+
+![route_gui1](https://github.com/user-attachments/assets/4a402090-5cb3-468a-a12b-cf69046354fe)
+
+![route_gui 2](https://github.com/user-attachments/assets/7bde32b5-f000-4bda-aa6f-4b1116ce119c)
+
+To generate final report/gds file, we use following command:
+
+```bash
+make final
+# To view Gui
+make gui_6_merged.gds
+```
+## Screenshot:
+
+![final](https://github.com/user-attachments/assets/d0778dbe-d946-4cae-9fbb-b431bf86f4ad)
+
+![final1](https://github.com/user-attachments/assets/81c3ae20-f76b-46c0-b7e5-8472f17a3e0f)
+
+![final command](https://github.com/user-attachments/assets/c73c0370-1e97-477a-a16e-9303c1013a5c)
+
+![make_final](https://github.com/user-attachments/assets/9df56ee2-22c5-4ace-acb1-618056213c94)
+
+![make_final1](https://github.com/user-attachments/assets/369f8294-fcb7-491d-8c8b-78b82a244d9c)
+
+
+# PHASE 5 — Debugging and Unix Literacy
+
+●	pwd: Gives present working directory
+●	ls: lists files
+●	cd:moves between folders
+●	grep: The grep command in Linux is used to search for specific text patterns inside files or command outputs. It is very useful for filtering logs, reports, or large files.
+●	find: Used to find a file by name.
+●	cat: View the contents of a file
+●	less:The less command in Linux is used to view the contents of a file one screen at a time. It is very useful for reading large files like logs and reports.
+●	echo:The echo command in Linux is used to display text or the value of variables on the terminal.
+●	export: The export command in Linux is used to set environment variables and make them available to other programs or child processes.
+
+## Screenshot:
+
+![commands](https://github.com/user-attachments/assets/ccb65d4a-214e-45b6-a1e0-286fb263958b)
+
+![comm1](https://github.com/user-attachments/assets/6cbd5d00-1568-4a0a-9930-540609f94e85)
+
+![comm2](https://github.com/user-attachments/assets/54bda0bc-34bd-4653-bea7-55c24333267e)
+
+![comm](https://github.com/user-attachments/assets/72b45400-79d5-404d-b19c-98904c69a61c)
+
+![comm2](https://github.com/user-attachments/assets/65ca9765-2335-4a04-ad49-eb8a75eb69ee)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

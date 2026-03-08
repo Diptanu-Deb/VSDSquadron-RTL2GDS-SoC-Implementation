@@ -421,6 +421,13 @@ Week-2 Focuses on:
 
 ## Full RTL-to-GDS flow using the provided Makefile
 
+Before starting we choose the pdk as sky130 replacing scl180 in Makefile.
+
+vim Makefile
+
+![Screenshot 2026-03-04 130555](https://github.com/user-attachments/assets/e2d91ef0-849c-4ec7-8283-ce74b397fc11)
+
+
  ## Synthesis:
   ```bash
 make synth
@@ -608,6 +615,8 @@ This confirms:
 •	OpenROAD, OpenSTA, TritonCTS, FastRoute → compiled from source
 •	Python, Make, Git → installed via apt
 •	KLayout → apt or prebuilt binary
+
+## Task 2.2 — Flow Architecture Explanation
 
 
 Flow Architecture Explanation (RTL → GDS using ORFS)

@@ -419,6 +419,411 @@ Week-2 Focuses on:
 
 # Task 1.2 — Run Sky130 Testcase in Cloud
 
+## Full RTL-to-GDS flow using the provided Makefile
+
+ ## Synthesis:
+ 
+  ![Screenshot 2026-03-04 143815](https://github.com/user-attachments/assets/1c153540-31ea-486c-bb83-aad9c650afac)
+
+  ![Screenshot 2026-03-04 144622](https://github.com/user-attachments/assets/145d1549-36c9-4a60-886a-2dbcf9ad5d6c)
+
+  ![Screenshot 2026-03-04 144604](https://github.com/user-attachments/assets/babe4a08-8e6e-4ddb-8678-bd5dd250bfe2)
+
+  ## Floorplan:
+
+  ![Screenshot 2026-03-04 144851](https://github.com/user-attachments/assets/b13beac6-59b2-4c5e-9c8a-886f635351fb)
+
+  ![Screenshot 2026-03-04 145002](https://github.com/user-attachments/assets/8ee42d65-5318-4d53-9040-c83a10c245f2)
+
+  ![Screenshot 2026-03-04 144945](https://github.com/user-attachments/assets/20f3a486-b0a3-43c1-ae86-2e9a50596760)
+
+## Placement:
+
+![Screenshot 2026-03-04 145351](https://github.com/user-attachments/assets/869b214c-48b0-4876-885f-6f22ad325d1c)
+
+![Screenshot 2026-03-04 145748](https://github.com/user-attachments/assets/64ea907a-e181-4971-9032-c140a1823a9b)
+
+![Screenshot 2026-03-04 145424](https://github.com/user-attachments/assets/f9cc22ef-f179-49c7-b109-64c2a7a9c0cd)
+
+![Screenshot 2026-03-04 145458](https://github.com/user-attachments/assets/6f033cd7-ba83-4705-bd1f-3ce1b48a0437)
+
+![Screenshot 2026-03-04 145523](https://github.com/user-attachments/assets/f8718c15-8354-4b14-92b5-91d069bef758)
+
+# CTS:
+
+![Screenshot 2026-03-04 150052](https://github.com/user-attachments/assets/a95a1e1f-50f5-410f-9eb9-aeda33d1e468)
+
+![Screenshot 2026-03-04 151214](https://github.com/user-attachments/assets/58b5f3db-cd3b-449d-9a4f-5d845a6373fd)
+
+![Screenshot 2026-03-04 150500](https://github.com/user-attachments/assets/5311b3a9-97d9-4884-af55-6655e413074c)
+
+![Screenshot 2026-03-04 150544](https://github.com/user-attachments/assets/39b82ac1-8703-49a1-9b76-5dae5376051c)
+
+![Screenshot 2026-03-04 150758](https://github.com/user-attachments/assets/6db735c2-e4bb-42a6-a9f6-18bc6e971294)
+
+# Route:
+
+![Screenshot 2026-03-04 155755](https://github.com/user-attachments/assets/09f5ea30-7c95-44b3-a693-2cb50f150433)
+
+![Screenshot 2026-03-04 155848](https://github.com/user-attachments/assets/79f0ec3e-8d9c-455d-b794-629d015e00af)
+
+![Screenshot 2026-03-04 155924](https://github.com/user-attachments/assets/5543b2e8-bbe2-4ec8-bdf7-70d8370134c2)
+
+![Screenshot 2026-03-04 160023](https://github.com/user-attachments/assets/5fa435d6-4fe6-499c-919e-cc5d91d843a3)
+
+![Screenshot 2026-03-04 160102](https://github.com/user-attachments/assets/b2d47122-d8b8-4edd-b2a4-c453d730ffe1)
+
+![Screenshot 2026-03-04 160141](https://github.com/user-attachments/assets/49f2eb7f-ce1a-486e-aa09-7ea72b30c16c)
+
+
+# To generate Final report following is the command:
+
+```bash
+make final
+
+# To view gds file
+
+make gui_6_merged.gds   or
+klayout 6_merged.gds
+
+```
+![Screenshot 2026-03-04 161651](https://github.com/user-attachments/assets/9062aa15-be51-4446-9dcc-d5547ff7dbce)
+
+![Screenshot 2026-03-04 161947](https://github.com/user-attachments/assets/270ba0a6-6145-4de5-a966-a2019bdf78c7)
+
+![Screenshot 2026-03-04 194039](https://github.com/user-attachments/assets/0791824e-c9c4-43cc-a0ce-60dd12b6aed3)
+
+# PHASE 2 — Toolchain Understanding (Devcontainer Deep Dive)
+
+Based on a standard OpenROAD devcontainer setup (Dockerfile + install-openroad.sh), below is the structured Toolchain Mapping for RTL-to-GDS flow.
+
+🔧 RTL-to-GDS Toolchain Mapping (Dockerfile + install-openroad.sh)
+Tool	Version Source	How Installed	Purpose in RTL → GDS Flow
+OpenROAD	GitHub clone (OpenROAD repo)	Compiled from source using CMake	Core physical design engine. Performs floorplanning, placement, CTS, routing, optimization, and generates final DEF/GDS.
+Yosys	GitHub clone or package manager	Usually compiled from source	RTL synthesis tool. Converts Verilog RTL → gate-level netlist (mapped to standard cells).
+TritonCTS	Built as part of OpenROAD	Compiled within OpenROAD build	Clock Tree Synthesis (CTS). Inserts clock buffers to reduce skew and balance clock delays.
+FastRoute	Integrated inside OpenROAD	Compiled as OpenROAD module	Global routing engine. Assigns routing tracks before detailed routing.
+OpenSTA	GitHub clone (Parallax/OpenSTA) or bundled	Compiled from source	Static Timing Analysis (STA). Checks setup/hold violations pre- and post-route.
+KLayout	Package manager (apt) or official binary	Installed via apt-get	Layout viewer. Used to visualize DEF/GDS and perform DRC/LVS checks.
+Python	Package manager	apt-get install python3	Used for scripting flow automation, PDK setup, OpenROAD flow control scripts.
+GNU Make	Package manager	apt-get install make	Builds OpenROAD and manages flow targets (make flow, make build, etc.).
+Git	Package manager	apt-get install git	Clones OpenROAD, Yosys, OpenSTA repositories from GitHub.
+________________________________________
+📌 Tool Roles in Complete RTL-to-GDS Flow
+1️⃣ RTL Synthesis Stage
+•	Yosys
+•	Output: Gate-level netlist (.v mapped to std cells)
+2️⃣ Floorplanning & Placement
+•	OpenROAD
+•	Performs:
+o	Floorplan creation
+o	IO placement
+o	Standard cell placement
+o	Optimization
+3️⃣ Clock Tree Synthesis
+•	TritonCTS (inside OpenROAD)
+•	Inserts clock buffers
+•	Reduces skew and insertion delay
+4️⃣ Routing
+•	FastRoute → Global Routing
+•	OpenROAD detailed router → Detailed Routing
+5️⃣ Timing Analysis
+•	OpenSTA
+•	Checks:
+o	Setup/hold timing
+o	Slack
+o	Path analysis
+6️⃣ Signoff & Visualization
+•	KLayout
+•	Used to:
+o	View GDS
+o	Inspect metal layers
+o	Run DRC/LVS (if configured)
+Flow Dependency Diagram (Conceptual)
+RTL (Verilog)
+   ↓
+Yosys (Synthesis)
+   ↓
+Gate-level Netlist
+   ↓
+OpenROAD (Floorplan + Placement)
+   ↓
+TritonCTS (Clock Tree)
+   ↓
+FastRoute (Global Routing)
+   ↓
+Detailed Routing
+   ↓
+OpenSTA (Timing Signoff)
+   ↓
+GDS
+   ↓
+KLayout (Visualization)
+________________________________________
+🔎 Important Observations from Dockerfile Pattern
+Typical OpenROAD devcontainer:
+•	Uses Ubuntu base image
+•	Installs build dependencies:
+o	gcc/g++
+o	cmake
+o	swig
+o	bison
+o	flex
+•	Clones OpenROAD repo
+•	Builds using:
+mkdir build
+cd build
+cmake ..
+make -j$(nproc)
+This confirms:
+•	OpenROAD, OpenSTA, TritonCTS, FastRoute → compiled from source
+•	Python, Make, Git → installed via apt
+•	KLayout → apt or prebuilt binary
+
+
+Flow Architecture Explanation (RTL → GDS using ORFS)
+
+1️⃣ What ORFS Automates
+OpenROAD-flow-scripts (ORFS) automates the complete RTL-to-GDSII digital implementation flow.
+In simple words, ORFS acts like a flow manager that connects all EDA tools together and runs them in the correct sequence without manual intervention.
+Instead of manually running:
+•	synthesis
+•	floorplanning
+•	placement
+•	clock tree synthesis
+•	routing
+•	timing checks
+•	GDS generation
+ORFS provides:
+•	Predefined directory structure
+•	Technology (PDK) integration
+•	Automated script sequencing
+•	Constraint handling
+•	Report generation
+•	Reproducible builds
+So essentially, ORFS converts:
+RTL + Constraints + PDK
+        ↓
+Fully placed, routed, timing-verified GDSII
+It ensures consistency, automation, and minimal human error in physical design flow execution.
+________________________________________
+2️⃣ How Makefiles Orchestrate the Flow
+ORFS uses Makefiles as the control engine of the flow.
+Make works using:
+•	Targets
+•	Dependencies
+•	Rules
+Each major flow stage is a Make target, such as:
+make synth
+make floorplan
+make place
+make cts
+make route
+make final
+🔹 How It Works Internally
+•	If you run make, it checks:
+o	What files already exist
+o	What dependencies are outdated
+•	It executes only the required steps.
+•	Each stage generates outputs used by the next stage.
+For example:
+synth → produces netlist.v
+
+place → depends on netlist.v
+
+cts → depends on placed DEF
+
+route → depends on CTS DEF
+
+So Make ensures:
+•	Correct execution order
+•	Incremental builds
+•	Flow reproducibility
+•	Dependency tracking
+
+In short, Makefiles act as the flow scheduler and dependency manager.
+________________________________________
+
+3️⃣ Where Synthesis Ends and Physical Design Begins?
+
+🔹 Synthesis Stage
+
+Performed by:
+•	Yosys
+Input:
+•	RTL (Verilog)
+•	Timing constraints (.sdc)
+•	Liberty (.lib)
+Output:
+•	Gate-level netlist mapped to standard cells
+At this stage:
+•	No placement
+•	No routing
+•	No physical coordinates
+•	Purely logical structure
+________________________________________
+🔹 Physical Design Begins
+Physical design begins when:
+•	The synthesized netlist is imported into OpenROAD
+•	Floorplan is created
+•	Standard cells get physical locations
+So the boundary is:
+Gate-level netlist  →  Physical floorplan
+           ↑
+     Synthesis ends here
+________________________________________
+ Where Timing Is Checked?
+ 
+Timing is checked at multiple stages using:
+OpenSTA
+
+🔹 Timing Checks Occur:
+
+1.	After synthesis
+o	Ensures logic meets constraints
+2.	After placement
+o	Checks pre-route timing with estimated wire delays
+3.	After CTS
+o	Verifies clock skew and insertion delay
+4.	After routing (signoff timing)
+o	Final setup/hold verification with real parasitics
+Timing analysis includes:
+•	Setup checks
+•	Hold checks
+•	Slack calculation
+•	Critical path reporting
+So timing verification is continuous — not a single-step process.
+________________________________________
+5️⃣ Where GDS Is Produced
+The final layout database (GDSII) is produced at the end of the physical design flow by:
+OpenROAD
+After:
+•	Placement
+•	CTS
+•	Global routing
+•	Detailed routing
+•	Parasitic extraction
+•	Final timing checks
+The tool exports:
+design.gds
+This GDS file:
+•	Contains all metal layers
+•	Via definitions
+•	Standard cell geometries
+•	Ready for fabrication
+The layout can then be viewed in:
+KLayout
+________________________________________
+
+🏗️ Complete Flow Summary (Conceptual View)
+RTL (Verilog)
+   ↓
+Yosys  →  Gate-level Netlist
+   ↓
+OpenROAD
+   ├─ Floorplan
+   ├─ Placement
+   ├─ CTS
+   ├─ Routing
+   ├─ Parasitic Extraction
+   ├─ Timing (OpenSTA)
+   ↓
+Final GDSII
+   ↓
+KLayout (Visualization)
+
+# PHASE 3 — Local Installation (Self-Owned Environment)
+
+## Requirements:
+
+Use Oracle VirtualBox + Ubuntu 22.04 ISO.
+
+## Task 3.1 — Install ORFS Locally
+
+Following dependencies are installed before clonit vsd-scl180-orfs:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
+    wget curl unzip git git-lfs tcl-tclreadline make python3 python3-pip python3-numpy python3-pandas python3-matplotlib python3-jinja2 python3-xlsxwriter \
+    xvfb xfce4 xfce4-session xfce4-panel locales xfdesktop4 xfwm4 xfce4-terminal thunar dbus-x11 x11vnc novnc websockify supervisor \
+    magic ngspice gtkwave verilator iverilog \
+    build-essential autoconf automake libtool m4 cmake ninja-build clang \
+    tcl tcl-dev tcllib tcl-trf tclx tk tk-dev locales \
+    perl libfile-which-perl ca-certificates gnupg lsb-release pkg-config \
+    libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev \
+    libx11-dev libxext-dev libxrender-dev libxpm-dev libxaw7-dev libfontconfig1-dev \
+    libreadline-dev libncurses-dev flex bison gawk tcsh time bc vim gedit \
+    libqt5charts5 libyaml-cpp0.7
+```
+Now cloning of vsd-scl180-orfs is done
+
+```bash
+# Clone the ORFS repository
+git clone https://github.com/vsdip/vsd-scl180-orfs
+cd vsd-scl180-orfs
+```
+
+Now we build yosys usinf following command:
+
+```bash
+# Build Yosys
+# Clone the repository
+cd vsd-scl180-orfs/orfs/tools
+git clone https://github.com/YosysHQ/yosys.git
+cd yosys
+# Entire path is cd vsd-scl180-orfs/orfs/tools/yosys
+make config-gcc
+make -j$(nproc)
+sudo make install
+```
+```bash
+# Building OpenROAD
+cd vsd-scl180-orfs/orfs/tools/OpenROAD
+# cloning OpenROAD repository
+git clone --recursive https://github.com/The-OpenROAD-Project/OpenROAD.git
+cd OpenROAD
+# Actual path is now  cd vsd-scl180-orfs/orfs/tools/OpenROAD
+# Creating build directory
+mkdir build
+cd build
+# Configure with CMake
+cmake .. \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DTCL_LIBRARY=/usr/lib/x86_64-linux-gnu/libtcl.so \
+    -DTCL_HEADER=/usr/include/tcl.h \
+    -DCMAKE_INSTALL_PREFIX=/usr/local
+
+
+   make -j$(nproc)
+   sudo make install
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

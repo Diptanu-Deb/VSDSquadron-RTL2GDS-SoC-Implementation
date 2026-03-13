@@ -72,8 +72,8 @@ The below link provides steps to setup github codepsace:
 
 https://github.com/vsdip/vsd-openlane
 
-## Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) 
-
+<details>
+<summary>Day Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) </summary>
  We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
 ### Commands to invoke the OpenLANE flow and perform synthesis:
@@ -137,6 +137,12 @@ Flop\ Ratio = \frac{1613}{18508} = 0.0871515
 ```math
 Percentage\ of\ DFF's = 0.0871515 * 100 = 8.71515\ \%
 ```
+
+
+
+</details>
+ 
+
 
 ## Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
 

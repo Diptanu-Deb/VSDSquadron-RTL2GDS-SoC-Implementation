@@ -73,7 +73,7 @@ The below link provides steps to setup github codepsace:
 https://github.com/vsdip/vsd-openlane
 
 <details>
-<summary>Day Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) </summary>
+<summary>Phase 1 — OpenLANE Flow Familiarity (RTL → Synthesis literacy) </summary>
  We will run “picorv32a” design synthesis using OpenLANE flow and generate necessary outputs.
 
 ### Commands to invoke the OpenLANE flow and perform synthesis:
@@ -138,14 +138,11 @@ Flop\ Ratio = \frac{1613}{18508} = 0.0871515
 Percentage\ of\ DFF's = 0.0871515 * 100 = 8.71515\ \%
 ```
 
-
-
 </details>
  
 
-
-## Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)
-
+<details>
+<summary>Phase 2 — Floorplan Fundamentals (macro awareness for Caravel blocks)</summary>
 In this phase we will look into some Floorplan concepts and run floorplan in Openlane.
 
 ## Utilization factor and aspect ratio:
@@ -240,8 +237,10 @@ Pin Details:
 
 ![Screenshot 2026-02-23 012200](https://github.com/user-attachments/assets/f7b41943-bdda-4502-975d-bc829f05d54b)
 
-## Phase 3 — Timing Literacy with Ideal Clocks (OpenSTA + ECO mindset)
+</details>
 
+<details>
+<summary>Phase 3 — Timing Literacy with Ideal Clocks (OpenSTA + ECO mindset)</summary>
 Timing checks like setup and Hold time checks are carried out to ensure that timing constraints are met.
 
 * **Setup Time**: It is the minimum amount of time required for the data signal to be remain stable before the arrival of active edge of the clock.
@@ -294,7 +293,12 @@ To improve the slack we can either increase buffer strength or we can reduce fan
 
 We can observe that slack is improved.
 
-# Phase 4 — CTS and Timing with Real Clocks
+
+</details>
+
+ 
+<details>
+<summary> Phase 4 — CTS and Timing with Real Clocks</summary>
 
 CTS run proof screenshot:
 
@@ -340,8 +344,10 @@ report_checks -path_delay min_max -fields {slew trans net cap input_pins} -forma
 ![Screenshot 2026-02-27 231602](https://github.com/user-attachments/assets/3ee20893-8520-4777-b416-a6a03d75f36a)
 
 ![Screenshot 2026-02-27 231531](https://github.com/user-attachments/assets/38397e35-ffee-441c-be62-d2659679a77d)
+</details>
 
-# Phase 5 — PDN Awareness (required vocabulary for ORFS and signoff thinking)
+<details>
+<summary>Phase 5 — PDN Awareness (required vocabulary for ORFS and signoff thinking </summary>
 
 For power routing, higher metal layer is used for routing. In higher metal layer resistance is low due higher metal area. So IR drop is reduced.
 
@@ -396,6 +402,12 @@ Screenshot:
  - EM issues cannot be fixed easily at late stages without major redesign.
 
  - Stable PDN ensures predictable timing and reliable signoff. Since IR drop, EM, and timing are signoff checks, PDN quality directly affects signoff success. Therefore, PDN      must be built before placement and routing to avoid late-stage ECOs and timing instability.
+
+</details>
+
+
+
+
 
 
 

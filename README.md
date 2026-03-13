@@ -424,7 +424,8 @@ Week-2 Focuses on:
 5.	Re-executing the same testcase locally
 6.	Developing Unix and environment debugging literacy
 
-# PHASE 1 — ORFS Execution in GitHub Codespaces
+   <details>
+<summary>PHASE 1 — ORFS Execution in GitHub Codespaces</summary>
 
 ## Task 1.1 — Repository Setup
 
@@ -552,9 +553,12 @@ klayout 6_merged.gds
 
 ![Screenshot 2026-03-04 194039](https://github.com/user-attachments/assets/0791824e-c9c4-43cc-a0ce-60dd12b6aed3)
 
-# PHASE 2 — Toolchain Understanding (Devcontainer Deep Dive)
+</details>
 
-Based on a standard OpenROAD devcontainer setup (Dockerfile + install-openroad.sh), below is the structured Toolchain Mapping for RTL-to-GDS flow.
+
+
+<details>
+<summary>PHASE 2 — Toolchain Understanding (Devcontainer Deep Dive)</summary>
 
 🔧 RTL-to-GDS Toolchain Mapping (Dockerfile + install-openroad.sh)
 Tool	Version Source	How Installed	Purpose in RTL → GDS Flow
@@ -793,7 +797,13 @@ Final GDSII
    ↓
 KLayout (Visualization)
 
-# PHASE 3 — Local Installation (Self-Owned Environment)
+</details>
+
+
+
+
+<details>
+<summary>PHASE 3 — Local Installation (Self-Owned Environment)</summary>
 
 ## Requirements:
 
@@ -871,7 +881,13 @@ Yosys 0.63+87.
 make --version
 GNU Make 4.3
 ```
-# PHASE 4 — Re-Run RTL-to-GDS Locally
+</details>
+
+
+
+
+<details>
+<summary>PHASE 4 — Re-Run RTL-to-GDS Locally</summary>
 
 Once yosys and OpenROAD is installed we need to set their path in file "synth.sh" available in script folder.
 
@@ -997,9 +1013,12 @@ make gui_6_merged.gds
 ![make_final](https://github.com/user-attachments/assets/9df56ee2-22c5-4ace-acb1-618056213c94)
 
 ![make_final1](https://github.com/user-attachments/assets/369f8294-fcb7-491d-8c8b-78b82a244d9c)
+</details>
 
 
-# PHASE 5 — Debugging and Unix Literacy
+
+<details>
+<summary> PHASE 5 — Debugging and Unix Literacy</summary>
 
 ●	pwd: Gives present working directory
 
@@ -1030,6 +1049,10 @@ make gui_6_merged.gds
 ![comm](https://github.com/user-attachments/assets/72b45400-79d5-404d-b19c-98904c69a61c)
 
 ![comm2](https://github.com/user-attachments/assets/65ca9765-2335-4a04-ad49-eb8a75eb69ee)
+
+</details>
+
+
 
 
 

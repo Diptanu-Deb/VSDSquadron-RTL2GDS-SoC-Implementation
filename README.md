@@ -5,6 +5,11 @@
 ![Static Badge](https://img.shields.io/badge/EDA%20Tools-OpenLANE--Flow%2C_Yosys%2C_abc%2C_OpenROAD%2C_TritonRoute%2C_OpenSTA%2C_magic%2C_netgen%2C_GUNA-navy)
 ![Static Badge](https://img.shields.io/badge/languages-verilog%2C_bash%2C_TCL-crimson)
 
+![OpenROAD](https://img.shields.io/badge/OpenROAD-EDA-blue?style=for-the-badge)
+![SKY130](https://img.shields.io/badge/PDK-SKY130-green?style=for-the-badge)
+![Verilog](https://img.shields.io/badge/Verilog-HDL-red?style=for-the-badge)
+![Linux](https://img.shields.io/badge/Linux-Ubuntu-black?style=for-the-badge)
+
 
 
 ***The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.***

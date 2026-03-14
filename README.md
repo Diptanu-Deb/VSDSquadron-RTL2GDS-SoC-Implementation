@@ -995,6 +995,7 @@ make gui_route
 
 ![route_gui 2](https://github.com/user-attachments/assets/7bde32b5-f000-4bda-aa6f-4b1116ce119c)
 
+
 To generate final report/gds file, we use following command:
 
 ```bash
@@ -1083,16 +1084,173 @@ Task 1 — Run SPI Master Test
     cd ~/Desktop
     curl -O https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
 ```
-3. Now we have navigated to standalone test directory and checked all the hardwre blocks.
+3. Now we have navigated to standalone test directory and the available directories are the hardwre blocks that needs to be tested.
    
 ```bash
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
  ls
 ```
+4. We have to change the path.
+   Make file showing design path as
+   ```bash
+    /home/vsduser/
+   ```
+   but repository cloned at the location
+   ```bash
+    /home/diptanu/Desktop/vsdsquadron-soc
+   ```
+so the dsign path is changed to
+   ```bash
+    /home/diptanu/Desktop/vsdsquadron-soc
+   ```
+5. Now we went to the directory spi_master and run the simulation using commands:
+   ```bash
+   make clean  # To clean previous build
+   make
+   ```
+6. But an error is encountered asking :
+   ```bash
+   sky130_sram_2kbyte_1rw1r_32x512_8.v: No such file or directory
+   ```
+6.This issue is resolve by creating a placeholder SRAM cell.
+```bash
+touch /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/cvc-pdk/sky130_sram_2kbyte_1rw1r_32x512_8.v
+```
+7. Again simulation is done.
+   ```bash
+   
+   make clean  # To clean previous build
+   make
+   ```
+8. Simulation Output:
 
+
+
+
+# Task 2 — Understand the Verification Flow
+
+ Standalone verification tests are controlled by a Makefile-based simulation flow.
+
+ When the make command is executed, the Makefile automatically performs a sequence of steps to compile the firmware, prepare the simulation environment, run the simulator, and determine the PASS/FAIL result.
+
+The Verification flow is described below:
+
+Lets take the case for spi_master block.
+
+Once makecommand is invoked steps are:
+**Step 1: Firmware Compilation**
+The firmware program (spi_master.c) is compiled using the RISC-V cross compiler.
+During this step, the source code is translated into machine instructions compatible with the simulated RISC-V processor.
+
+This process generates an executable file:
+
+    spi_master.elf
+
+The .elf file contains the compiled machine code that will run on the processor during simulation.
+
+This file may not appear in the directory listing because the Makefile automatically removes intermediate build files after execution.
+
+ **Step 2: ELF to HEX Conversion** 
+ 
+ he compiled ELF file is converted into a memory initialization file.
+ 
+This process generates a .hex file, which contains the firmware instructions in a format suitable for loading into the simulated memory.
+
+During simulation, the .hex file is used to initialize the instruction memory of the processor, allowing the firmware to run inside the simulated SoC environment.
+
+**Step 3: Verilog Compilation** 
+
+The RTL design files and the verification testbench are compiled using the Icarus Verilog simulator.
+
+In this step, all required Verilog source files are compiled together to create a simulation executable.
+
+This process generates the following file:
+
+    spi_master.vvp
+
+The .vvp file is the compiled simulation binary that will be executed by the simulator to run the verification test.
+
+After the simulation finishes, the Makefile automatically removes temporary intermediate files, including:
+
+     spi_master.elf
+
+     spi_master.vvp
+
+This cleanup ensures that only the final output files remain in the directory.
+
+**Step 4: Simulation Execution** 
+
+The compiled simulation is executed using the Verilog runtime simulator:
+
+    vvp spi_master.vvp
+
+In this stage:
+
+The firmware file (spi_master.hex) is loaded into the simulated memory.
+
+The testbench initializes and starts the simulation.
+
+The processor begins executing the firmware instructions.
+
+The hardware signals are evaluated and simulated cycle by cycle to verify the system behavior.
+
+As the simulation runs, a waveform file is generated:
+
+     RTL-spi_master.vcd
+
+This waveform file records the signal activity during simulation and can be viewed using waveform viewers such as GTKWave for debugging and analysis.
+
+ **Step 5: Detection Of PASS / FAIL**   
+ 
+ The testbench monitors specific debug registers and conditions to determine whether the test passed or failed. In our case result is 
+ 
+     Monitor: Test SPI Master (RTL) Passed
+
+# Verification Flow:
+ ```bash
+make
+   ↓
+Firmware Compilation
+(spi_master.c → spi_master.elf)
+Temporary build file generated using the RISC-V cross compiler.
+
+   ↓
+ELF to HEX Conversion
+(spi_master.elf → spi_master.hex)
+The compiled ELF file is converted into a memory initialization format
+that can be loaded into the simulated memory.
+
+   ↓
+Verilog Compilation
+(iverilog → spi_master.vvp)
+RTL design files and the verification testbench are compiled using
+the Icarus Verilog simulator to create the simulation executable.
+
+   ↓
+Simulation Execution
+(vvp spi_master.vvp)
+The simulation runs, the testbench starts execution, and the processor
+executes the firmware instructions.
+
+   ↓
+Waveform Generation
+(RTL-spi_master.vcd)
+Signal activity during simulation is recorded in a waveform file
+for debugging and analysis.
+
+   ↓
+Disassembly Generation
+(spi_master.lst)
+An assembly listing of the compiled firmware is generated.
+
+   ↓
+Automatic Cleanup
+Temporary files created during the build process are removed
+(spi_master.elf, spi_master.vvp).
+```
+
+ 
 </details>
-
-
 
 
 

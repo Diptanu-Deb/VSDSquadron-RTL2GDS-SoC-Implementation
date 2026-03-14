@@ -1089,7 +1089,8 @@ Task 1 — Run SPI Master Test
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
  ls
 ```
-<details>
+
+</details>
 
 
 

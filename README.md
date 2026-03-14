@@ -1083,15 +1083,13 @@ Task 1 — Run SPI Master Test
     cd ~/Desktop
     curl -O https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
 ```
-3. Now we have navigated to standalone test directoey and checked all the hardwre blocks.
+3. Now we have navigated to standalone test directory and checked all the hardwre blocks.
+   
 ```bash
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
-ls
+ ls
+
 ```
-
-   
-
-
 </details>
 
 

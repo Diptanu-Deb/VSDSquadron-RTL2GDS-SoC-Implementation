@@ -1067,7 +1067,7 @@ Activities that will be carried out in this week are given below:
 ```
 
 
-</details>
+<details>
 <summary> PHASE 1 — Standalone Block Verification</summary>
 
 Task 1 — Run SPI Master Test
@@ -1088,9 +1088,8 @@ Task 1 — Run SPI Master Test
 ```bash
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
  ls
-
 ```
-</details>
+<details>
 
 
 

@@ -1252,13 +1252,42 @@ Temporary files created during the build process are removed
  
 </details>
 
+<details>
+<summary> PHASE 2 — Run All Standalone Tests</summary>
+
+The verification tests are executed for all hardware blocks available in the tests-standalone directory. Each block is verified individually using the same Makefile-based verification flow that we have carried out in Phase-1.
+
+First we have navigated to standalone  test directory using command:
+```bash
+cd /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/dv/tests-standalone
+```
+For each block we have navigated to that oparticular block and run simulation using command:
+
+   ```bash
+   
+   make clean  # To clean previous build
+   make
+   ```
+# Block: Uart
+
+
+
+| **Standalone Test** | **sky130 Result** |
+| ------------------- | ----------------- |
+| uart                | PASS              |
+| debug               | FAIL              |
+| spi_master          | PASS              |
+| mem                 | PASS              |
+| irq                 | FAIL              |
+| gpio_mgmt           | PASS              |
+| timer               | FAIL              |
 
 
 
 
 
 
-
+</details>
 
 
 

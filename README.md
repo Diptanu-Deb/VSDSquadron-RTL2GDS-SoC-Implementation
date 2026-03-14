@@ -1052,6 +1052,48 @@ make gui_6_merged.gds
 
 </details>
 
+# WEEK 3 Block-Level Verification of VSDSquadron SoC
+
+The objective of this week is to understand block-level verification flow of the VSDSquadron SoC that is required for full-chip implementation.
+
+Activities that will be carried out in this week are given below:
+```bash
+1.	Clone the VSDSquadron SoC repository.
+2.	Run standalone verification tests.
+3.	Run Caravel-integrated verification tests.
+4.	Understand the Makefile-driven verification flow.
+5.	Draw block diagrams explaining how the verification flow works.
+6.	Record pass/fail results for all tests.
+```
+
+
+</details>
+<summary> PHASE 1 — Standalone Block Verification</summary>
+
+Task 1 — Run SPI Master Test
+
+1. First we have to setup the repository:
+
+   ```bash
+    git clone https://github.com/vsdip/vsdsquadron-soc.git
+    cd vsdsquadron-soc
+   ```
+2. Now we have to install required Toolchain like RISC-V compiler.
+ ```bash
+    cd ~/Desktop
+    curl -O https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+```
+3. Now we have navigated to standalone test directoey and checked all the hardwre blocks.
+```bash
+ cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
+ls
+```
+
+   
+
+
+</details>
+
 
 
 

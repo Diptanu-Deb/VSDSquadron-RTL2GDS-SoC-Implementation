@@ -1112,7 +1112,6 @@ so the dsign path is changed to
    ```bash
    sky130_sram_2kbyte_1rw1r_32x512_8.v: No such file or directory
    ```
-   ![SPI Test](images/Screenshot 2026-03-11 182528.jpg)
    
 6.This issue is resolve by creating a placeholder SRAM cell.
 ```bash

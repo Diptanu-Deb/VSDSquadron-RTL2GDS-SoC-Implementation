@@ -1291,8 +1291,7 @@ For each block we have navigated to that oparticular block and run simulation us
 
 </details>
 
-
-![screenshot](Screenshot 2026-03-11 221411.jpg)
+![screenshot](Screenshot%202026-03-11%20221411.jpg)
 
 
 

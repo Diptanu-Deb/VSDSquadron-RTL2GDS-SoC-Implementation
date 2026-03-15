@@ -1611,7 +1611,7 @@ Results:
 
 The objective of this phase is to analyze and understand the complete verification flow used in Caravel DV tests.
 
-1. What happens when make is executed
+## What happens when make is executed
 
 When the make command is executed, GNU Make reads the Makefile and performs several automated steps to build the firmware and run the simulation.
 

@@ -1116,7 +1116,7 @@ so the dsign path is changed to
    ```bash
    sky130_sram_2kbyte_1rw1r_32x512_8.v: No such file or directory
    ```
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20182528.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20182528.jpg" width="700">
 
 6.This issue is resolve by creating a placeholder SRAM cell.
 ```bash
@@ -1129,9 +1129,9 @@ touch /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/cvc-p
    make
    ```
 8. Simulation Output:
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221411.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20221411.jpg" width="700">
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20194315.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20194315.jpg" width="700">
  
 
 
@@ -1294,6 +1294,7 @@ make
 ```
 Result:
 <img src="WEEK%203/Screenshot%202026-03-11%20221715.jpg" width="700">
+
 <img src="WEEK%203/Screenshot%202026-03-11%20221751.jpg" width="700">
 
 #Block: mem
@@ -1316,6 +1317,7 @@ make
 Result:
 
 <img src="WEEK%203/irq.jpg" width="700">
+
 <img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/irq1.jpg" width="700">
 
 #Block: gpio_mgmt 
@@ -1327,6 +1329,7 @@ make
 Result:
 
 <img src="WEEK%203/Screenshot%202026-03-11%20235806.jpg" width="700">
+
 <img src="Screenshot%202026-03-11%20235831.jpg" width="700">
 
 #Block: timer   
@@ -1338,6 +1341,7 @@ make
 Result:
 
 <img src="WEEK%203/timer.jpg" width="700">
+
 <img src="WEEK%203/timer1.jpg" width="700">
 
 

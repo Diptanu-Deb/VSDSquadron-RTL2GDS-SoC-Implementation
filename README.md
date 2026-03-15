@@ -1090,7 +1090,7 @@ Task 1 — Run SPI Master Test
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
  ls
 ```
-Available indepndent blocks are:
+Available independent blocks are:
 
 <img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20220443.jpg" width="700">
 
@@ -1129,6 +1129,7 @@ touch /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/cvc-p
    make
    ```
 8. Simulation Output:
+   
 <img src="WEEK%203/Screenshot%202026-03-11%20221411.jpg" width="700">
 
 <img src="WEEK%203/Screenshot%202026-03-11%20194315.jpg" width="700">
@@ -1306,6 +1307,7 @@ make
 Result:
 
 <img src="WEEK%203/mem.jpg" width="700">
+
 <img src="WEEK%203/mem1.jpg" width="700">
 
 #Block: irq

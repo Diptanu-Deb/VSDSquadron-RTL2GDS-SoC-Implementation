@@ -1090,6 +1090,10 @@ Task 1 — Run SPI Master Test
  cd caravel_mgmt_soc_litex/verilog/dv/tests-standalone
  ls
 ```
+Available indepndent blocks are:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20220443.jpg" width="700">
+
 4. We have to change the path.
    Make file showing design path as
    ```bash
@@ -1112,7 +1116,7 @@ so the dsign path is changed to
    ```bash
    sky130_sram_2kbyte_1rw1r_32x512_8.v: No such file or directory
    ```
-
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20182528.jpg" width="700">
 
 6.This issue is resolve by creating a placeholder SRAM cell.
 ```bash
@@ -1125,8 +1129,10 @@ touch /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/cvc-p
    make
    ```
 8. Simulation Output:
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221411.jpg" width="700">
 
-
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20194315.jpg" width="700">
+ 
 
 
 # Task 2 — Understand the Verification Flow
@@ -1271,6 +1277,68 @@ For each block we have navigated to that oparticular block and run simulation us
    make
    ```
 # Block: Uart
+```bash
+cd /uart
+make clean
+make
+```
+Result:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/WEEK%203/Screenshot%202026-03-13%20172508.jpg" width="700">
+
+#Block: debug
+```bash
+cd ../debug
+make clean
+make
+```
+Result:
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221715.jpg" width="700">
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221751.jpg" width="700">
+
+#Block: mem
+```bash
+cd ../mem
+make clean
+make
+```
+Result:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/mem.jpg" width="700">
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/mem1.jpg" width="700">
+
+#Block: irq
+```bash
+cd ../irq
+make clean
+make
+```
+Result:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/irq.jpg" width="700">
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/irq1.jpg" width="700">
+
+#Block: gpio_mgmt 
+```bash
+cd ../gpio_mgmt 
+make clean
+make
+```
+Result:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20235806.jpg" width="700">
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20235831.jpg" width="700">
+
+#Block: timer   
+```bash
+cd ../timer  
+make clean
+make
+```
+Result:
+
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/timer.jpg" width="700">
+<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/timer1.jpg" width="700">
 
 
 
@@ -1285,13 +1353,13 @@ For each block we have navigated to that oparticular block and run simulation us
 | timer               | FAIL              |
 
 
+</details>
 
-
+<details>
+<summary> PHASE 3 — Caravel Integrated Tests</summary>
 
 
 </details>
-
-
 
 
 

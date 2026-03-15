@@ -1721,7 +1721,7 @@ If they do not match, the test is reported as FAIL.
 
 ## Verification Flow Diagram
 
-<img src="WEEK%203/WEEK%203/Mar%2015%2C%202026%2C%2005_51_05%20PM.png" width="700">
+<img src="WEEK%203/Mar%2015%2C%202026%2C%2005_51_05%20PM.png" width="700">
 
 </details>
 

@@ -1,4 +1,4 @@
-# VSDSquadron-RTL2GDS-SoC-Implementation
+# VSDSquadron-RTL2GDS-SoC-Implementation 
 > 6 Weeks RTL2GDS SoC Implementation programme by VSD which focuses on System &amp; RTL Foundations to Physical Design and sign-Off using OPENLANE
 
 ![Static Badge](https://img.shields.io/badge/OS-linux-orange)
@@ -33,7 +33,7 @@ Now what is PDK?
 * PDK stands for Process Design Kit, which act as an interface between designer and fabrication facility. It is a set of files and tools used in the semiconductor industry to model a foundry's manufacturing process inside an EDA tool.
 * In our entire design process, we will use the same required PDK.
 
-# Now moving to RTL2GSDII Flow,
+# Now moving to RTL2GDSII Flow,
 
 Once we have the required RTL Code, the first step is to synthesize the RTL.
 
@@ -1112,7 +1112,8 @@ so the dsign path is changed to
    ```bash
    sky130_sram_2kbyte_1rw1r_32x512_8.v: No such file or directory
    ```
-   
+
+
 6.This issue is resolve by creating a placeholder SRAM cell.
 ```bash
 touch /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/cvc-pdk/sky130_sram_2kbyte_1rw1r_32x512_8.v
@@ -1291,6 +1292,7 @@ For each block we have navigated to that oparticular block and run simulation us
 </details>
 
 
+![screenshot](Screenshot 2026-03-11 221411.jpg)
 
 
 

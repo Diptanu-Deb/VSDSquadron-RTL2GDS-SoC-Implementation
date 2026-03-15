@@ -1689,6 +1689,8 @@ The testbench is a verification module that interacts with the DUT (Design Under
 
 The testbench performs the following tasks:
 
+```bash
+
 Generates clock and reset signals
 
 Provides input stimulus to the DUT
@@ -1698,6 +1700,8 @@ Loads firmware into memory
 Observes output signals from the DUT
 
 Compares outputs with expected results
+
+```
 
 The DUT represents the hardware block being verified, such as GPIO, SPI, UART, or memory modules.
 

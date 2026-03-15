@@ -1327,7 +1327,7 @@ make
 Result:
 
 <img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20235806.jpg" width="700">
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20235831.jpg" width="700">
+<img src="Screenshot%202026-03-11%20235831.jpg" width="700">
 
 #Block: timer   
 ```bash

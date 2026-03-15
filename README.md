@@ -1284,7 +1284,7 @@ make
 ```
 Result:
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/WEEK%203/Screenshot%202026-03-13%20172508.jpg" width="700">
+<img src="WEEK%203/WEEK%203/Screenshot%202026-03-13%20172508.jpg" width="700">
 
 #Block: debug
 ```bash
@@ -1293,8 +1293,8 @@ make clean
 make
 ```
 Result:
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221715.jpg" width="700">
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20221751.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20221715.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20221751.jpg" width="700">
 
 #Block: mem
 ```bash
@@ -1304,8 +1304,8 @@ make
 ```
 Result:
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/mem.jpg" width="700">
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/mem1.jpg" width="700">
+<img src="WEEK%203/mem.jpg" width="700">
+<img src="WEEK%203/mem1.jpg" width="700">
 
 #Block: irq
 ```bash
@@ -1315,7 +1315,7 @@ make
 ```
 Result:
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/irq.jpg" width="700">
+<img src="WEEK%203/irq.jpg" width="700">
 <img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/irq1.jpg" width="700">
 
 #Block: gpio_mgmt 
@@ -1326,7 +1326,7 @@ make
 ```
 Result:
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/Screenshot%202026-03-11%20235806.jpg" width="700">
+<img src="WEEK%203/Screenshot%202026-03-11%20235806.jpg" width="700">
 <img src="Screenshot%202026-03-11%20235831.jpg" width="700">
 
 #Block: timer   
@@ -1337,8 +1337,8 @@ make
 ```
 Result:
 
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/timer.jpg" width="700">
-<img src="VSDSquadron-RTL2GDS-SoC-Implementation/WEEK%203/timer1.jpg" width="700">
+<img src="WEEK%203/timer.jpg" width="700">
+<img src="WEEK%203/timer1.jpg" width="700">
 
 
 

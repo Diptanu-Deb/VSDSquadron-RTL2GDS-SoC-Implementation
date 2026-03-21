@@ -1721,6 +1721,206 @@ If they do not match, the test is reported as FAIL.
 
 </details>
 
+# WEEK-4: RTL-to-GDS Implementation of User Project Wrapper
+
+The objective of Week–4 is  gate-level full-chip verification by implementing the top-level wrapper using the OpenROAD flow.
+
+Here we will:
+
+Use the top-level wrapper from the VSDSquadron SoC repository.
+
+Prepare a working OpenROAD Flow Scripts (ORFS) setup for this block.
+
+Identify and organize all RTL dependencies required by the wrapper.
+
+Apply a 100 MHz clock constraint.
+
+Run a complete RTL-to-GDS flow.
+
+Generate the final filled database and netlist required for gate-level verification preparation.
+
+This task is designed to build the ability to set up a real design flow independently, including resolving hierarchy, dependencies, and configuration.
+
+We must prepare a real physical implementation flow for a top-level SoC wrapper.
+
+We have to generate the following artifacts for 100 MHz target frequency:
+●       Synthesized netlist
+●       Floorplanned design
+●       Placed design database
+●       Clock-tree inserted design
+●       Routed database
+●       Final filled database
+●       Final netlist
+●       Final GDSII
+●       Timing reports
+
+Design Block
+We must work with the following wrapper:
+caravel/verilog/rtl/__user_project_wrapper.v
+
+<details>
+ <summary> PHASE 1 — Analyze the Top-Level Wrapper </summary>
+ The user_project_wrapper is the top-level integration module that connects the user design to the Caravel SoC environment.
+
+ Identified Instantiated Modules
+From analysis of user_project_wrapper.v, the following modules are instantiated:
+Mandatory Module
+debug_regs → Handles debug register interface via Wishbone bus
+
+
+Conditional Modules (based on preprocessor macros)
+user_project_la_example → Instantiated only if LA_TESTING is defined
+
+
+user_project_gpio_example → Instantiated only if GPIO_TESTING is defined
+
+
+
+ 
+ Dependency Tree of the Wrapper
+user_project_wrapper
+│
+├── debug_regs   (mandatory)
+│
+├── user_project_la_example   (optional - LA_TESTING)
+│
+└── user_project_gpio_example (optional - GPIO_TESTING)
+
+  
+
+List of RTL Files Used in the Design
+
+Minimum Required RTL Files
+user_project_wrapper.v
+Debug_regs.v
+
+ Optional RTL Files (only if enabled)
+user_project_la_example.v
+user_project_gpio_example.v
+
+ 
+Module Hierarchy Explanation
+Key Functional Blocks:
+ 1. Wishbone Interface
+Inputs: wb_clk_i, wb_rst_i, wbs_*
+Used to communicate with internal modules
+Address decoding splits traffic into:
+User space
+Debug space
+
+
+
+ 2. Address Decoding Logic
+wbs_cyc_i_user  → normal user transactions 
+wbs_cyc_i_debug → debug register access
+Last address region reserved for debug registers
+
+
+
+ 3. Debug Module (debug_regs)
+Always instantiated
+
+
+Handles:
+Debug read/write operations
+Wishbone acknowledgment
+
+
+Provides:
+
+wbs_ack_o_debug
+wbs_dat_o_debug
+
+
+
+ 4. Optional Modules
+a) Logic Analyzer Block
+user_project_la_example
+Activated only when LA_TESTING is defined
+
+
+Used for internal signal monitoring
+
+
+b) GPIO Testing Block
+user_project_gpio_example
+Activated only when GPIO_TESTING is defined
+
+
+Drives IO pins for testing
+
+
+
+ 5. Default Behavior (Important)
+No real user logic is connected
+
+
+wbs_ack_o_user = 0
+
+
+Design behaves as a pass-through + debug wrapper
+
+
+ Compilation Dependencies
+Required for successful synthesis:
+user_project_wrapper.v
+debug_regs.v
+ Not required unless macros enabled:
+user_project_la_example.v
+user_project_gpio_example.v
+
+
+Key Insight
+The wrapper is not a standalone functional design
+
+
+It acts as an integration shell
+
+
+Only debug_regs is actively contributing logic in default configuration.
+
+ In our code:
+`ifndef GPIO_TESTING
+assign wbs_ack_o_user = 0;
+`endif
+
+            
+  This means:
+No real user logic is connected
+Only debug_regs is active
+Our design is basically a dummy wrapper
+
+
+
+What This Means for ORFS
+We  DO NOT need full SoC RTL
+ We only need:
+user_project_wrapper.v
+debug_regs.v
+User_defines.v —For defining Macro
+
+
+The user_project_wrapper module serves as the top-level integration block for the user design within the Caravel SoC framework.
+
+It primarily instantiates the debug_regs module for handling debug transactions via the Wishbone interface. Additional modules such as user_project_la_example and user_project_gpio_example are conditionally included based on compile-time macros.
+
+The minimal RTL dependency required for synthesis includes only user_project_wrapper.v and debug_regs.v, making the design lightweight and suitable for initial RTL-to-GDS flow implementation.
+
+</details>
+
+<details>
+ <summary> PHASE 2 — Prepare the ORFS Design Environment </summary>
+ 
+ In this phase we will  configure the OpenROAD Flow Scripts environment for this design to perform automated, high-quality, and rapid RTL-to-GDSII physical design.
+ 
+## Design Workspace Preparation
+
+A new design directory called usr_wrapper is created inside the OpenROAD Flow Scripts design directory.
+
+
+
+</details>
+
 
 
 

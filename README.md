@@ -1752,21 +1752,22 @@ caravel/verilog/rtl/__user_project_wrapper.v
 
 <details>
  <summary> PHASE 1 — Analyze the Top-Level Wrapper </summary>
+ 
  The user_project_wrapper is the top-level integration module that connects the user design to the Caravel SoC environment.
 
- Identified Instantiated Modules
+### Identified Instantiated Modules
+
 From analysis of user_project_wrapper.v, the following modules are instantiated:
-Mandatory Module
+### Mandatory Module
 debug_regs → Handles debug register interface via Wishbone bus
 
-
-Conditional Modules (based on preprocessor macros)
-user_project_la_example → Instantiated only if LA_TESTING is defined
-
-
-user_project_gpio_example → Instantiated only if GPIO_TESTING is defined
+### Conditional Modules (based on preprocessor macros)
+1. user_project_la_example → Instantiated only if LA_TESTING is defined
+   
+2. user_project_gpio_example → Instantiated only if GPIO_TESTING is defined
 
  ## Dependency Tree of the Wrapper
+ ```bash
 user_project_wrapper
 │
 ├── debug_regs   (mandatory)
@@ -1774,23 +1775,25 @@ user_project_wrapper
 ├── user_project_la_example   (optional - LA_TESTING)
 │
 └── user_project_gpio_example (optional - GPIO_TESTING)
-
+```
   
 
 List of RTL Files Used in the Design
 
-Minimum Required RTL Files
+### Minimum Required RTL Files
 user_project_wrapper.v
 debug_regs.v
 
- Optional RTL Files (only if enabled)
+### Optional RTL Files (only if enabled)
 user_project_la_example.v
 user_project_gpio_example.v
 user_defines.v (To define Macros)
 
  
-Module Hierarchy Explanation
+### Module Hierarchy Explanation
+
 Key Functional Blocks:
+
  1. Wishbone Interface
 Inputs: wb_clk_i, wb_rst_i, wbs_*
 Used to communicate with internal modules
@@ -1798,13 +1801,10 @@ Address decoding splits traffic into:
 User space
 Debug space
 
-
-
  2. Address Decoding Logic
 wbs_cyc_i_user  → normal user transactions 
 wbs_cyc_i_debug → debug register access
 Last address region reserved for debug registers
-
 
 3. Debug Module (debug_regs)
 Always instantiated
@@ -1855,6 +1855,7 @@ user_project_gpio_example.v
 
 
 ## Key Insight
+
 The wrapper is not a standalone functional design
 It acts as an integration shell
 Only debug_regs is actively contributing logic in default configuration.
@@ -1866,13 +1867,15 @@ assign wbs_ack_o_user = 0;
 
             
  This means:
+ 
 No real user logic is connected
 Only debug_regs is active
 Our design is basically a dummy wrapper
 
 
 
-What This Means for ORFS
+What This Means for ORFS:
+
 We DO NOT need full SoC RTL
  We only need:
 user_project_wrapper.v
@@ -1925,6 +1928,7 @@ user_project_wrapper   (TOP MODULE)
 └── user_project_la_example     (ONLY if LA_TESTING defined)
 
 ## Directory Structure:
+```bash
 
 OpenROAD-flow-scripts/
 └── flow/
@@ -1939,6 +1943,8 @@ OpenROAD-flow-scripts/
                 ├── user_project_wrapper.v
                 ├── debug_regs.v
                 └── user_defines.v (To define Macros)
+```
+
 
 
 ## user_defines.v is used to:
@@ -2034,6 +2040,7 @@ Looking at synth.sdc file it is observed that constraint.sdc file is linked prop
 We have to run the full OpenROAD flow for this design.
 
 The flow must complete the following stages
+```bash
 
 Synthesis
 Floorplanning
@@ -2043,12 +2050,15 @@ Routing
 Fill insertion
 Final database generation
 Final GDS generation
+```
 
 Once we have linked the verilog file,config.mk file and constraint.sdc file
 
 We have navigated to path
-/home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and run the command one by one.
 
+```bash
+/home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and run the command one by one.
+```
 ## Synthesis
 ```bash
 make synth
@@ -2199,7 +2209,7 @@ klayout  results/sky130hd/usr_wrapper/base/6_1_merged.gds
  Here we have to collect the key outputs from the implementation flow.
 Required Outputs (With Exact ORFS Paths):
 
-## Output:Synthesized Netlist
+## Synthesized Netlist
  Stage: Synthesis
  Purpose: Logic after synthesis (no physical info)
  Location:

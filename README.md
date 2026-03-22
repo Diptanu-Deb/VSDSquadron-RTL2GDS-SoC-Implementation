@@ -1981,13 +1981,15 @@ ORFS to execute this Config.mk file, we need to add this path inside Makefile wh
 ![flow_make](https://github.com/user-attachments/assets/1016e701-96f2-4f21-949c-9e35a4d14bb4)
 
 To run synthesis,
-We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and executed command
+We navigated to path
+```
+/home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and executed command
 run synth
-
+```
 ## But got an error
-
+```
 ERROR: Unimplemented compiler directive or undefined macro MPRJ_IO_PADS. Command exited with non-zero status 1 Elapsed time: 0:00.38[h:]min:sec. CPU time: user 0.32 sys 0.05 (99%). Peak memory: 52096KB. make[1]: *** [Makefile:284: do-yosys-canonicalize] Error 1 make: *** [Makefile:287: results/sky130hd/usr_wrapper/base/1_1_yosys_canonicalize.rtlil] Error 2
-
+```
 To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS. Now it is defined.
 
 ![user_define](https://github.com/user-attachments/assets/770b6e45-0be0-4d63-852c-05403a18ee42)
@@ -2021,9 +2023,11 @@ We have  identified the correct clock port from the RTL which is “wb_clk_i” 
 ![constarint_sdc](https://github.com/user-attachments/assets/9f833ece-c8aa-4df0-ba70-079a969cd9a2)
 
 Path of constraint.sdc file is
+```bash
 /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/designs/sky130hd/usr_wrapper/constarint.sdc
-
+```
 After synthesis,
+
 Looking at synth.sdc file it is observed that constraint.sdc file is linked properly and executed.
 
 ![synth_clock_inssert_mhz](https://github.com/user-attachments/assets/9a8a9de6-3170-47c9-8dff-fdfc7b7ed130)
@@ -2204,14 +2208,16 @@ klayout  results/sky130hd/usr_wrapper/base/6_1_merged.gds
  <summary> PHASE 5 — Generate Outputs for Gate-Level Verification Preparation </summary>
 
  Here we have to collect the key outputs from the implementation flow.
+ 
 Required Outputs (With Exact ORFS Paths):
 
 ## Synthesized Netlist
  Stage: Synthesis
  Purpose: Logic after synthesis (no physical info)
  Location:
+ ```
  results/sky130hd/usr_wrapper/base/2_1_yosys.v
-
+```
  Generated during: make synth
 
 
@@ -2219,7 +2225,9 @@ Required Outputs (With Exact ORFS Paths):
 Stage:Routing
 Purpose: Netlist after placement, CTS, routing
 Location:
+```
 results/sky130hd/usr_wrapper/base/5_1_route.v
+```
 Generated during:
 make route
 
@@ -2227,7 +2235,9 @@ make route
 Stage:Routing
 Purpose: Physical design database after routing
 Location:
+```
 results/sky130hd/usr_wrapper/base/5_1_route.odb
+```
 Generated during
 make route
 
@@ -2236,7 +2246,9 @@ make route
 Stage:Fill
 Purpose: Includes metal fill (needed for verification)
 Location:
+```
 results/sky130hd/usr_wrapper/base/6_1_fill.odb
+```
 Generated after:
 Fill insertion stage
 
@@ -2244,13 +2256,16 @@ Fill insertion stage
 Stage : Merge
 Purpose: Tapeout-ready layout
 Location:
+```bash
 results/sky130hd/usr_wrapper/base/6_1_merged.gds
-
+```
 
 ## Timing Report
  Purpose: Setup & hold timing results
 Locations:
+```
 reports/sky130hd/usr_wrapper/base/5_1_route_sta.rpt
+```
 
 | Output                 | Output file     | File Path                                                                 | Stage      | Purpose                                  |
 |-----------------------|----------------|---------------------------------------------------------------------------|------------|------------------------------------------|
@@ -2271,15 +2286,16 @@ reports/sky130hd/usr_wrapper/base/5_1_route_sta.rpt
 
 <details>
  <summary>PHASE 6 — Debugging and Issue Resolution</summary>
+ 
 Issues faced during the execution of this task:
 
 1. Once we have linked the verilog file,config.mk file and constraint.sdc file
 To run synthesis,
 
 We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and execute command
-
+```
 run synth
-
+```
 But got an error
 
 

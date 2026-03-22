@@ -1734,6 +1734,7 @@ This task is designed to build the ability to set up a real design flow independ
 We must prepare a real physical implementation flow for a top-level SoC wrapper.
 
 We have to generate the following artifacts for 100 MHz target frequency:
+
 ●       Synthesized netlist
 ●       Floorplanned design
 ●       Placed design database
@@ -1747,9 +1748,10 @@ We have to generate the following artifacts for 100 MHz target frequency:
  ### Design Block
  
 We must work with the following wrapper:
+```bash
 
 caravel/verilog/rtl/__user_project_wrapper.v
-
+```
 <details>
  <summary> PHASE 1 — Analyze the Top-Level Wrapper </summary>
  
@@ -1758,8 +1760,10 @@ caravel/verilog/rtl/__user_project_wrapper.v
 ### Identified Instantiated Modules
 
 From analysis of user_project_wrapper.v, the following modules are instantiated:
+
 ### Mandatory Module
-debug_regs → Handles debug register interface via Wishbone bus
+
+1. debug_regs → Handles debug register interface via Wishbone bus
 
 ### Conditional Modules (based on preprocessor macros)
 1. user_project_la_example → Instantiated only if LA_TESTING is defined
@@ -1781,13 +1785,13 @@ user_project_wrapper
 List of RTL Files Used in the Design
 
 ### Minimum Required RTL Files
-user_project_wrapper.v
-debug_regs.v
+1. user_project_wrapper.v
+2. debug_regs.v
 
 ### Optional RTL Files (only if enabled)
-user_project_la_example.v
-user_project_gpio_example.v
-user_defines.v (To define Macros)
+1. user_project_la_example.v
+2. user_project_gpio_example.v
+3. user_defines.v (To define Macros)
 
  
 ### Module Hierarchy Explanation
@@ -1860,21 +1864,7 @@ The wrapper is not a standalone functional design
 It acts as an integration shell
 Only debug_regs is actively contributing logic in default configuration.
 
- In our code:
-`ifndef GPIO_TESTING
-assign wbs_ack_o_user = 0;
-`endif
-
-            
- This means:
- 
-No real user logic is connected
-Only debug_regs is active
-Our design is basically a dummy wrapper
-
-
-
-What This Means for ORFS:
+### What This Means for ORFS:
 
 We DO NOT need full SoC RTL
  We only need:
@@ -1907,18 +1897,22 @@ Design directory is modified in such a way that  verilog files are kept in desig
 Only the required RTL files were included based on dependency analysis:
 
 ## RTL Files Used
-user_project_wrapper.v
-debug_regs.v
-User_defines.v —For defining Macro
+1. user_project_wrapper.v
+2. debug_regs.v
+3. User_defines.v —For defining Macro
 
 For compatibility issues with ORFS,__user_project_wrapper.v renamed to user_project_wrapper.v.
 
 ## My Design Locations
+```bash
 /flow/designs/sky130hd/usr_wrapper        → config + constraints
 /flow/designs/src/usr_wrapper                    → RTL files
+```
 
 ## Logical Design Hierarchy (RTL)
+
 From your user_project_wrapper.v, the hierarchy is:
+```bash
 user_project_wrapper   (TOP MODULE)
 │
 ├── debug_regs         (always instantiated)
@@ -1926,6 +1920,7 @@ user_project_wrapper   (TOP MODULE)
 ├── user_project_gpio_example   (ONLY if GPIO_TESTING defined)
 │
 └── user_project_la_example     (ONLY if LA_TESTING defined)
+```
 
 ## Directory Structure:
 ```bash
@@ -1960,8 +1955,10 @@ To define the clock signal, a new constraint.sdc file is created.
 
 ## ORFS Flow Hierarchy (Execution)
 
-When we run: make DESIGN_CONFIG=designs/sky130hd/usr_wrapper/config.mk
-
+When we run: 
+```bash
+make DESIGN_CONFIG=designs/sky130hd/usr_wrapper/config.mk
+```
 Flow becomes:
 ```
 config.mk

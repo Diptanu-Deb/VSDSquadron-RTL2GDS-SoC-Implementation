@@ -14,7 +14,7 @@
 
 ***The curriculum of this workshop will be carried out in different phases and will be completed in 6 weeks.***
 
-# WEEK 1
+# WEEK-1:Digital VLSI SoC Design and Planning – Foundation Phase
 
 In this WEEK, we will be deep diving into Digital VLSI SoC Design and Planning, which is the foundation of this workshop.
 
@@ -411,12 +411,7 @@ Screenshot:
 </details>
 
 
-
-
-
-
-
-# WEEK–2
+# WEEK–2:Toolchain Mastery and ORFS Execution (Cloud to Local)
 
 **Toolchain Mastery and ORFS Execution (Cloud to Local)**
 
@@ -1058,7 +1053,7 @@ make gui_6_merged.gds
 
 </details>
 
-# WEEK 3 Block-Level Verification of VSDSquadron SoC
+# WEEK-3:Block-Level Verification of VSDSquadron SoC
 
 The objective of this week is to understand block-level verification flow of the VSDSquadron SoC that is required for full-chip implementation.
 
@@ -1727,17 +1722,12 @@ The objective of Week–4 is  gate-level full-chip verification by implementing 
 
 Here we will:
 
-Use the top-level wrapper from the VSDSquadron SoC repository.
-
-Prepare a working OpenROAD Flow Scripts (ORFS) setup for this block.
-
-Identify and organize all RTL dependencies required by the wrapper.
-
-Apply a 100 MHz clock constraint.
-
-Run a complete RTL-to-GDS flow.
-
-Generate the final filled database and netlist required for gate-level verification preparation.
+1. Use the top-level wrapper from the VSDSquadron SoC repository.
+2. Prepare a working OpenROAD Flow Scripts (ORFS) setup for this block.
+3. Identify and organize all RTL dependencies required by the wrapper.
+4. Apply a 100 MHz clock constraint.
+5. Run a complete RTL-to-GDS flow.
+6. Generate the final filled database and netlist required for gate-level verification preparation.
 
 This task is designed to build the ability to set up a real design flow independently, including resolving hierarchy, dependencies, and configuration.
 
@@ -1754,8 +1744,10 @@ We have to generate the following artifacts for 100 MHz target frequency:
 ●       Final GDSII
 ●       Timing reports
 
-Design Block
+ ### Design Block
+ 
 We must work with the following wrapper:
+
 caravel/verilog/rtl/__user_project_wrapper.v
 
 <details>
@@ -1774,10 +1766,7 @@ user_project_la_example → Instantiated only if LA_TESTING is defined
 
 user_project_gpio_example → Instantiated only if GPIO_TESTING is defined
 
-
-
- 
- Dependency Tree of the Wrapper
+ ## Dependency Tree of the Wrapper
 user_project_wrapper
 │
 ├── debug_regs   (mandatory)
@@ -1792,11 +1781,12 @@ List of RTL Files Used in the Design
 
 Minimum Required RTL Files
 user_project_wrapper.v
-Debug_regs.v
+debug_regs.v
 
  Optional RTL Files (only if enabled)
 user_project_la_example.v
 user_project_gpio_example.v
+user_defines.v (To define Macros)
 
  
 Module Hierarchy Explanation
@@ -1816,24 +1806,19 @@ wbs_cyc_i_debug → debug register access
 Last address region reserved for debug registers
 
 
-
- 3. Debug Module (debug_regs)
+3. Debug Module (debug_regs)
 Always instantiated
-
 
 Handles:
 Debug read/write operations
 Wishbone acknowledgment
 
-
 Provides:
-
 wbs_ack_o_debug
 wbs_dat_o_debug
 
-
-
- 4. Optional Modules
+4. Optional Modules
+   
 a) Logic Analyzer Block
 user_project_la_example
 Activated only when LA_TESTING is defined
@@ -1846,12 +1831,10 @@ b) GPIO Testing Block
 user_project_gpio_example
 Activated only when GPIO_TESTING is defined
 
-
 Drives IO pins for testing
 
 
-
- 5. Default Behavior (Important)
+5. Default Behavior (Important)
 No real user logic is connected
 
 
@@ -1861,22 +1844,19 @@ wbs_ack_o_user = 0
 Design behaves as a pass-through + debug wrapper
 
 
- Compilation Dependencies
-Required for successful synthesis:
+## Compilation DependenciesRequired for successful synthesis:
 user_project_wrapper.v
 debug_regs.v
- Not required unless macros enabled:
+user_defines.v (To define Macros)
+
+## Not required unless macros enabled:
 user_project_la_example.v
 user_project_gpio_example.v
 
 
-Key Insight
+## Key Insight
 The wrapper is not a standalone functional design
-
-
 It acts as an integration shell
-
-
 Only debug_regs is actively contributing logic in default configuration.
 
  In our code:
@@ -1885,7 +1865,7 @@ assign wbs_ack_o_user = 0;
 `endif
 
             
-  This means:
+ This means:
 No real user logic is connected
 Only debug_regs is active
 Our design is basically a dummy wrapper
@@ -1893,7 +1873,7 @@ Our design is basically a dummy wrapper
 
 
 What This Means for ORFS
-We  DO NOT need full SoC RTL
+We DO NOT need full SoC RTL
  We only need:
 user_project_wrapper.v
 debug_regs.v
@@ -1915,13 +1895,432 @@ The minimal RTL dependency required for synthesis includes only user_project_wra
  
 ## Design Workspace Preparation
 
-A new design directory called usr_wrapper is created inside the OpenROAD Flow Scripts design directory.
+A new design directory called usr_wrapper is created inside the OpenROAD Flow Scripts 
 
+Design directory is modified in such a way that  verilog files are kept in designs/src/usr_wrapper directory  and  new .sdc, config.mk is created insidded designs/sky130hd/usr_wrapper directory for proper flow.
+
+## RTL Source Integration
+
+Only the required RTL files were included based on dependency analysis:
+
+## RTL Files Used
+user_project_wrapper.v
+debug_regs.v
+User_defines.v —For defining Macro
+
+For compatibility issues with ORFS,__user_project_wrapper.v renamed to user_project_wrapper.v.
+
+## My Design Locations
+/flow/designs/sky130hd/usr_wrapper        → config + constraints
+/flow/designs/src/usr_wrapper                    → RTL files
+
+## Logical Design Hierarchy (RTL)
+From your user_project_wrapper.v, the hierarchy is:
+user_project_wrapper   (TOP MODULE)
+│
+├── debug_regs         (always instantiated)
+│
+├── user_project_gpio_example   (ONLY if GPIO_TESTING defined)
+│
+└── user_project_la_example     (ONLY if LA_TESTING defined)
+
+## Directory Structure:
+
+OpenROAD-flow-scripts/
+└── flow/
+    └── designs/
+        ├── sky130hd/
+        │   └── usr_wrapper/
+        │       ├── config.mk
+        │       ├── constraint.sdc
+        │
+        └── src/
+            └── usr_wrapper/
+                ├── user_project_wrapper.v
+                ├── debug_regs.v
+                └── user_defines.v (To define Macros)
+
+
+## user_defines.v is used to:
+
+1. Define macros (MPRJ_IO_PADS)
+2. Enable conditional logic (USE_POWER_PINS)
+3. Avoid hardcoding values
+4. Ensure synthesis tools understand the RTL
+
+To define the clock signal, a new constraint.sdc file is created.
+
+![constarint_sdc](https://github.com/user-attachments/assets/82b86772-edd2-4f33-9406-17ffc051b816)
+
+## ORFS Flow Hierarchy (Execution)
+
+When we run: make DESIGN_CONFIG=designs/sky130hd/usr_wrapper/config.mk
+
+Flow becomes:
+```
+config.mk
+  ↓
+VERILOG_FILES
+  ↓
+user_project_wrapper (TOP)
+  ↓
+debug_regs
+
+```
+
+
+For proper execution of user_project_wrapper module we have to make some changes in makefile. Screenshot of updated makefile is attached below:
+
+![makefile1](https://github.com/user-attachments/assets/75d4783c-83d5-48bb-8e58-9034f562625b)
+
+ORFS to execute this Config.mk file, we need to add this path inside Makefile which is inside flow directory.
+
+![flow_make](https://github.com/user-attachments/assets/1016e701-96f2-4f21-949c-9e35a4d14bb4)
+
+To run synthesis,
+We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and executed command
+run synth
+
+## But got an error
+
+ERROR: Unimplemented compiler directive or undefined macro MPRJ_IO_PADS. Command exited with non-zero status 1 Elapsed time: 0:00.38[h:]min:sec. CPU time: user 0.32 sys 0.05 (99%). Peak memory: 52096KB. make[1]: *** [Makefile:284: do-yosys-canonicalize] Error 1 make: *** [Makefile:287: results/sky130hd/usr_wrapper/base/1_1_yosys_canonicalize.rtlil] Error 2
+
+To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS. Now it is defined.
+
+![user_define](https://github.com/user-attachments/assets/770b6e45-0be0-4d63-852c-05403a18ee42)
+
+No we again clean our build and run synthesis by command
+```bash
+run synth
+```
+## Screenshot:
+
+![synth](https://github.com/user-attachments/assets/fb0462aa-534e-4ff5-8165-d485e834efcf)
+
+![synth_](https://github.com/user-attachments/assets/04b3ce81-f1d1-4a77-9605-7ea1cec9e6fc)
+
+
+Gui after synthesis:
+
+![gui_synth](https://github.com/user-attachments/assets/c0a719e7-1eea-45af-9391-da5410f3a017)
+
+It is observed that synthesis run without any error.
+
+</details>
+
+<details>
+ <summary> PHASE 3 — Apply 100 MHz Clock Constraint </summary>
+
+Here we have to define the clock constraint for the design which is a 100 MHz clock that corresponds to a 10 ns clock period.
+ 
+We have  identified the correct clock port from the RTL which is “wb_clk_i” and applied  the constraint in the constraint.sdc file.
+
+![constarint_sdc](https://github.com/user-attachments/assets/9f833ece-c8aa-4df0-ba70-079a969cd9a2)
+
+Path of constraint.sdc file is
+/home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/designs/sky130hd/usr_wrapper/constarint.sdc
+
+After synthesis,
+Looking at synth.sdc file it is observed that constraint.sdc file is linked properly and executed.
+
+![synth_clock_inssert_mhz](https://github.com/user-attachments/assets/9a8a9de6-3170-47c9-8dff-fdfc7b7ed130)
 
 
 </details>
 
+<details>
+ <summary> PHASE 4 — Run the RTL-to-GDS Flow</summary>
+ 
+We have to run the full OpenROAD flow for this design.
 
+The flow must complete the following stages
+
+Synthesis
+Floorplanning
+Placement
+Clock Tree Synthesis
+Routing
+Fill insertion
+Final database generation
+Final GDS generation
+
+Once we have linked the verilog file,config.mk file and constraint.sdc file
+
+We have navigated to path
+/home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and run the command one by one.
+
+## Synthesis
+```bash
+make synth
+```
+## Screenshot:
+
+![synth](https://github.com/user-attachments/assets/2fcf815b-9d8a-4ac1-b503-e52fb5163ba1)
+
+![synth_](https://github.com/user-attachments/assets/04c48c2f-f7c8-4851-9d06-d56eaea4e99e)
+
+To view in GUI
+```bash
+make gui_synth
+```
+## Screenshot:
+
+![synth2](https://github.com/user-attachments/assets/35fdb170-61df-4ced-8cb1-ef9426aa596c)
+
+![gui_synth](https://github.com/user-attachments/assets/1bdab494-a4b7-4c07-9095-fd9996926230)
+
+![gui_synth1](https://github.com/user-attachments/assets/6c4bcdb0-3a39-4da0-b53e-e98c2c05b8dd)
+
+## Floorplan
+```
+make floorplan
+```
+To view GUI :
+```bash
+make gui_floorplan
+```
+## Screenshot:
+
+![floorplan](https://github.com/user-attachments/assets/dc73724a-903e-4a7f-ba39-cd281561a1a2)
+
+![floorplan1](https://github.com/user-attachments/assets/932a058d-3172-40a2-aa46-28d6efbbb771)
+
+ Floorplan GUI:
+ 
+ ## Screenshot:
+ 
+ ![gui_floorplan](https://github.com/user-attachments/assets/157e9fe4-8986-4e10-a161-28bc5ecfe488)
+
+ ![gui_floorplan1](https://github.com/user-attachments/assets/dce876f3-92c0-417f-a8c8-4d798fb4201d)
+
+## Placement:
+```bash
+make  place
+```
+
+To view GUI:
+```bash
+make gui_place
+```
+ ## Screenshot:
+ 
+![place1](https://github.com/user-attachments/assets/e054cedf-75a8-4886-bf1d-70cef9f8925d)
+
+![place3](https://github.com/user-attachments/assets/6f3f6b98-3f61-4360-a46d-0c29d438664c)
+
+Placement GUI:
+
+ ## Screenshot:
+
+![gui_place](https://github.com/user-attachments/assets/681be88d-5ba4-4db1-a29c-b1ed1cd4a1b5)
+
+![gui_place2](https://github.com/user-attachments/assets/a24e3595-b052-4c78-8c12-7015c4774ae3)
+
+![gui_place3](https://github.com/user-attachments/assets/08326104-6f31-4a59-b437-379c4c9d5882)
+
+## CTS;
+```bash
+make  cts
+```
+To view GUI:
+```bash
+make gui_cts
+```
+## Screenshot:
+
+![cts1](https://github.com/user-attachments/assets/94d86acf-9094-4a66-b181-b3846f31015b)
+
+![cts2](https://github.com/user-attachments/assets/e14eba16-5f18-432b-9113-8d4e1ffa3317)
+
+CTS GUI:
+
+## Screenshot:
+
+![gui_cts](https://github.com/user-attachments/assets/c18de314-f887-4c14-bbe4-5974f1ecfa3a)
+
+![gui_cts1](https://github.com/user-attachments/assets/9b3ecdf4-c949-4b99-90ab-3d3dbaa9a75e)
+
+## ROUTE:
+```bash
+make route
+````
+To view GUI:
+```bash
+make gui_route
+```
+## Screenshot:
+
+![route1](https://github.com/user-attachments/assets/199fd4d4-65bd-4f59-861c-4b829a9d8d65)
+
+![route 2](https://github.com/user-attachments/assets/12aaa6d8-376b-4106-b536-b0541ad0364e)
+
+
+
+ROUTE GUI:
+
+## Screenshot:
+
+![gui_route](https://github.com/user-attachments/assets/c7a5d05e-5fea-478d-9124-2ad97837341c)
+
+![gui_route1](https://github.com/user-attachments/assets/85723067-287a-4855-a981-3e1eef7e870f)
+
+## Final file generated:
+```bash
+make final
+```
+To view final GDS file:
+```bash
+Make gui_final
+```
+  or
+  
+klayout  results/sky130hd/usr_wrapper/base/6_1_merged.gds 
+
+## Screenshot:
+
+![final](https://github.com/user-attachments/assets/9f7e8b70-0e98-4612-abae-a7032ec7a37e)
+
+![final2](https://github.com/user-attachments/assets/07f46181-c20a-4da1-823a-83a741039432)
+
+## GUI:
+
+## Screenshot:
+
+![final_gui](https://github.com/user-attachments/assets/6839fb94-a732-42e3-ba10-baf0b8beec1d)
+
+![final gds](https://github.com/user-attachments/assets/07499baf-71b2-432c-99f5-f6ac5d2b793d)
+
+
+</details>
+
+<details>
+ <summary> PHASE 5 — Generate Outputs for Gate-Level Verification Preparation </summary>
+
+ Here we have to collect the key outputs from the implementation flow.
+Required Outputs (With Exact ORFS Paths):
+
+## Output:Synthesized Netlist
+ Stage: Synthesis
+ Purpose: Logic after synthesis (no physical info)
+ Location:
+ results/sky130hd/usr_wrapper/base/2_1_yosys.v
+
+ Generated during: make synth
+
+
+## Final Netlist (Post-Implementation)
+Stage:Routing
+Purpose: Netlist after placement, CTS, routing
+Location:
+results/sky130hd/usr_wrapper/base/5_1_route.v
+Generated during:
+make route
+
+## Routed Database (ODB)
+Stage:Routing
+Purpose: Physical design database after routing
+Location:
+results/sky130hd/usr_wrapper/base/5_1_route.odb
+Generated during
+make route
+
+
+## Final Filled Database
+Stage:Fill
+Purpose: Includes metal fill (needed for verification)
+Location:
+results/sky130hd/usr_wrapper/base/6_1_fill.odb
+Generated after:
+Fill insertion stage
+
+## GDSII (Final Layout)
+Stage : Merge
+Purpose: Tapeout-ready layout
+Location:
+results/sky130hd/usr_wrapper/base/6_1_merged.gds
+
+
+## Timing Report
+ Purpose: Setup & hold timing results
+Locations:
+reports/sky130hd/usr_wrapper/base/5_1_route_sta.rpt
+
+| Output                 | Output file     | File Path                                                                 | Stage      | Purpose                                  |
+|-----------------------|----------------|---------------------------------------------------------------------------|------------|------------------------------------------|
+| Synthesized Netlist   | 1_2_yosys.v    | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/1_2_yosys.v | Synthesis  | Logic representation after synthesis     |
+| Final netlist         | 6_final.v      | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/6_final.v | Routing    | Netlist after physical implementation    |
+| Routed database       | 5_2_route.odb  | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/5_2_route.odb | Routing    | Physical design database                 |
+| Final filled database | 6_1_fill.odb   | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/6_1_fill.odb | Fill       | Required for downstream verification     |
+| GDSII                 | 6_1_merged.gds | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/6_1_merged.gds | Merge      | Final layout                             |
+| Timing report         | 6_finish.rpt   | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/reports/sky130hd/usr_wrapper/base/6_finish.rpt | Routing    | Setup and hold timing results            |
+
+## Screenshot of available files:
+
+![results](https://github.com/user-attachments/assets/4e0663c4-0766-4c86-ac4c-04b172a9c913)
+
+![report](https://github.com/user-attachments/assets/bbf9eceb-9412-4e5b-93a2-403ef57e578e)
+
+</details>
+
+<details>
+ <summary>PHASE 6 — Debugging and Issue Resolution</summary>
+Issues faced during the execution of this task:
+
+1. Once we have linked the verilog file,config.mk file and constraint.sdc file
+To run synthesis,
+
+We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and execute command
+
+run synth
+
+But got an error
+
+
+ERROR: Unimplemented compiler directive or undefined macro MPRJ_IO_PADS. Command exited with non-zero status 1 Elapsed time: 0:00.38[h:]min:sec. CPU time: user 0.32 sys 0.05 (99%). Peak memory: 52096KB. make[1]: *** [Makefile:284: do-yosys-canonicalize] Error 1 make: *** [Makefile:287: results/sky130hd/usr_wrapper/base/1_1_yosys_canonicalize.rtlil] Error 2
+
+To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS. Now it is defined.
+
+![user_define](https://github.com/user-attachments/assets/88b13656-32d0-46ee-8b72-aed04df21edf)
+
+No we again clean our build and run synthesis by command
+```bash
+run synth
+```
+![synth](https://github.com/user-attachments/assets/1e1101db-0b41-4d40-8dbf-b6d83a7ca160)
+
+![synth_](https://github.com/user-attachments/assets/d1990b3b-99b5-41bc-bada-a3caa53ea012)
+
+It is observed that synthesis run successfully without any error.
+
+
+2. During the placement stage, it is observed that an error occurred.
+
+   ![place error](https://github.com/user-attachments/assets/08869ce5-0d7f-4b81-baaf-5a8b2536a40f)
+
+   
+To overcome this error, we modified the config.mk file. The utilisation factor is reduced and placement density is also reduced to achieve placement without any error.
+
+## Iteration 1:
+
+![makefile1](https://github.com/user-attachments/assets/edfa02db-f5f6-42ed-b522-9ec297ec7e9a)
+
+
+## Iteration 2:
+
+![makefile2](https://github.com/user-attachments/assets/2d9031a8-6fb8-4f69-ae94-fa308a421bb5)
+
+## Iteration 3:
+
+![make1](https://github.com/user-attachments/assets/ca769767-b2b6-4491-bbb1-40c07e38985f)
+
+![place1](https://github.com/user-attachments/assets/7b8b2084-fb7c-4d9e-86e9-a0dca9a2315b)
+
+ ![place3](https://github.com/user-attachments/assets/f6189a05-46ac-4912-91fb-deff4654fe66)
+
+ It is observed that the placement stage is  successfully executed without any error.
+
+
+</details>
 
 
 

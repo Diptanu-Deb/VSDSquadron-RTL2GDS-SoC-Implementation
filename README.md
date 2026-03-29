@@ -2345,7 +2345,531 @@ To overcome this error, we modified the config.mk file. The utilisation factor i
 
 </details>
 
+# WEEK-5:Gate-Level Simulation (GLS) for Full Block Verification
 
+Objective
+
+The objective of Week–5 is to perform gate-level simulation (GLS) using the synthesized implementation of user_project_wrapper and validate it against the functional verification results from Week–3.
+
+We will:
+```
+Integrate the synthesized netlist of __user_project_wrapper into the verification flow.
+Modify Makefiles to use gate-level netlist instead of RTL.
+Re-run all standalone and Caravel-integrated test cases.
+Compare GLS outputs with Week–3 functional simulation results.
+Visualize gate-level behavior using GTKWave with generated VCD files.
+This task ensures participants understand the transition from RTL simulation → gate-level verification.
+```
+This task ensures participants understand the transition from RTL simulation → gate-level verification.
+
+<details>
+ <summary> PHASE 1 — Prepare Gate-Level Netlist Integration </summary>
+
+ Netlist Used (Path):
+
+orfs/flow/results/sky130hd/usr_wrapper/base/6_final.v
+
+
+How the Correct Netlist Was Chosen
+The file 6_final.v was selected because:
+It is the final routed gate-level netlist generated after placement and routing (Week–4).
+It contains:
+Standard cell instances
+Real interconnects
+Final design structure used for fabrication-level verification
+Compared to earlier outputs like:
+1_2_yosys.v → only synthesized (no physical effects)
+Therefore, 6_final.v gives the most accurate representation for Gate-Level Simulation (GLS).
+
+
+## Dependencies (Standard Cells & Libraries)
+The following libraries are required for simulation:
+ /home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
+/home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
+/home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_io.v
+
+These include:
+Standard cells (AND, OR, DFF, etc.)
+Required for resolving all instances in the netlist
+
+### Include path(-I):
+-I $(CARAVEL_PATH)/gl
+-I $(VERILOG_PATH)/rtl
+-I $(VERILOG_PATH)/gl
+
+### File List(-f)
+-f includes.gl.caravel
+-f includes.gl.$(CONFIG)
+
+### Library Search(-y):
+-y $(VERILOG_PATH)/rtl
+-y $(VERILOG_PATH)/gl
+
+### The netlist was verified as simulation-ready by ensuring:
+1. All module references are resolved.
+2. No missing standard cell errors during compilation
+3. Compatible with the existing verification flow (Makefile updated)
+ 4. Successfully compiles in simulator without errors
+
+The final routed netlist (6_final.v) was selected because it provides the most accurate gate-level representation of the design, and all required standard cell libraries were included to ensure successful simulation.
+
+</details>
+
+<details>
+ <summary> PHASE 2 — Modify Verification Flow for GLS </summary>
+
+ To have Gate-Level Simulation, we need to modify the gate level simulation block in Makefile in both standalone and caravel tests.
+
+### Standalone Tests:
+
+### Gate Level Simulation Block:
+ 
+**Makefile(week-3)**: We have carried out RTL simulation inWeek-3. But this week we need to carry out GL simulation and to compare makefile changes we compare the GL block only.
+```
+ifeq ($(SIM),GL)
+ifeq ($(CONFIG),caravel_user_project)
+iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -f$(VERILOG_PATH)/includes/includes.gl.caravel \
+	  -f$(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
+	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
+else
+iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1  \
+	  -f$(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
+	  -o $@ $(CARAVEL_PATH)/gl/__user_project_wrapper.v $<
+endif
+endif
+```
+![EARLIER AMKE](https://github.com/user-attachments/assets/6633a870-a079-4dc5-a701-d826d9aa93a5)
+
+### Modified Makefile(week-5):
+
+```
+ifeq ($(SIM),GL)
+ifeq ($(CONFIG),caravel_user_project)
+	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -f$(VERILOG_PATH)/includes/includes.gl.caravel \
+	  -f$(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	  -o $@ $<
+else
+    iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -f$(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	   -o $@ /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/6_final.v $<
+endif
+endif
+```
+![make_GL](https://github.com/user-attachments/assets/9bb758a3-69fc-4745-b3aa-0763c58d3108)
+![make_GL1](https://github.com/user-attachments/assets/9acfa33d-ea06-4462-ae80-5336a3a723da)
+
+## For Caravel Tests:
+
+### Gate Level Simulation Block:
+ 
+**Makefile(week-3)**: We have carried out RTL simulation inWeek-3. But this week we need to carry out GL simulation and to compare makefile changes we compare the GL block only.
+```
+ifeq ($(SIM),GL)
+ifeq ($(CONFIG),caravel_user_project)
+iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -f$(VERILOG_PATH)/includes/includes.gl.caravel \
+	  -f$(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
+	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
+else
+iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1  \
+	  -f$(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
+	  -o $@ $(CARAVEL_PATH)/gl/__user_project_wrapper.v $<
+endif
+endif
+```
+
+![Make stand_w3](https://github.com/user-attachments/assets/7d56977e-a14d-477c-bf61-844a41a36b9b)
+
+### Modified Makefile(week-5):
+```
+ifeq ($(SIM),GL)
+ifeq ($(CONFIG),caravel_user_project)
+		iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	-DOPENFRAME_IO_PADS=1 \
+	  -I $(CARAVEL_PATH)/gl \
+	  -I $(VERILOG_PATH)/rtl \
+	  -I $(VERILOG_PATH)/gl \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog \
+	  -y $(VERILOG_PATH)/rtl \
+	  -y $(VERILOG_PATH)/gl \
+	  -f $(VERILOG_PATH)/includes/includes.gl.caravel \
+	  -f $(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog/sky130_fd_io.v \
+	  -o $@ $<
+else
+	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	 -DOPENFRAME_IO_PADS=1 \
+	  -I $(CARAVEL_PATH)/gl \
+	  -I $(VERILOG_PATH)/rtl \
+	  -I $(VERILOG_PATH)/gl \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog \
+	  -y $(VERILOG_PATH)/rtl \
+	  -y $(VERILOG_PATH)/gl \
+	  -f $(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog/sky130_fd_io.v \
+
+	  -o $@ /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/usr_wrapper/base/6_final.v  $<
+endif
+endif
+```
+
+![make_caravel1](https://github.com/user-attachments/assets/b3f72a72-a6c5-45af-a489-625c58b482e3)
+
+![make_caravel](https://github.com/user-attachments/assets/f2578bc9-4623-4da2-b0f1-0e374e233e9b)
+
+<details>
+ <summary> PHASE 3 — Run GLS for Standalone Tests </summary>
+
+ The verification tests are executed for all hardware blocks available in the tests-standalone directory. Each block is verified individually using the same modified Makefile.
+
+First we have navigated to standalone  test directory using command:
+```
+cd /home/diptanu/Desktop/vsdsquadron-soc/caravel_mgmt_soc_litex/verilog/dv/tests-standalone
+```
+For each block we have navigated to that particular block and run simulation using command:
+```
+  make clean  # To clean previous build
+   make SIM=GL #For Gate Level Simulation
+```
+ ### Block: Uart
+```
+cd /uart
+make clean
+make SIM=GL
+```
+Result:
+
+
+![uart_GL_standalone](https://github.com/user-attachments/assets/61b50ba4-3670-43d1-a404-f4a43cf6724c)
+
+![uart_GL_standalone1](https://github.com/user-attachments/assets/d63d9aae-bc7c-4960-a086-c722e5da66d4)
+
+### Block: debug
+```
+cd ../debug
+make clean
+make SIM=GL
+```
+Result:
+
+
+![debug_GL_standalone](https://github.com/user-attachments/assets/3c7de2ed-e259-4ab2-9d54-b7db55e5bf9a)
+
+### Block: mem
+```
+cd ../mem
+make clean
+make SIM=GL
+```
+Result:
+
+![mem_GL_standalone](https://github.com/user-attachments/assets/0aae581a-f3cb-4289-b5ec-6e0c6c01b161)
+
+![mem_GL_standalone1](https://github.com/user-attachments/assets/6ff296bf-f6d8-4be9-9238-76c5681b2936)
+
+![mem_GL_standalone2](https://github.com/user-attachments/assets/5a94a007-52c4-458b-8cbd-174b0fc3dcc5)
+
+![mem_GL_standalone3](https://github.com/user-attachments/assets/64db1982-e99c-4659-adbd-8c9194a09e73)
+
+### Block: irq
+```
+cd ../irq
+make clean
+make SIM=GL
+```
+Result:
+
+![irq_GL_standalone](https://github.com/user-attachments/assets/de1bdc5a-c2d5-408b-92f7-472cce3ba38c)
+
+![irq_GL_standalone1](https://github.com/user-attachments/assets/81443871-3f83-44ee-aaec-3c0b318be5bc)
+
+### Block: gpio_mgmt 
+```
+cd ../gpio_mgmt 
+make clean
+make SIM=GL
+```
+Result:
+
+![Gpio_mgmt_standalone](https://github.com/user-attachments/assets/bdd0079d-4751-4ee5-a305-f0a06fe42368)
+
+![Gpio_mgmt_standalone1](https://github.com/user-attachments/assets/de2eb164-c736-4824-917a-73e132a36b3c)
+
+### Block: timer   
+```
+cd ../timer  
+make clean
+make SIM=GL
+```
+Result:
+
+![timer_GL_stanalone](https://github.com/user-attachments/assets/88433aa0-9cbd-48be-a169-fa301027b0c4)
+
+![timer_GL_stanalone1](https://github.com/user-attachments/assets/6c320bb9-d40c-42c5-b11b-ad24bfa50fba)
+
+### Block: spi_master 
+```
+cd ../spi_master  
+make clean
+make SIM=GL
+```
+Result:
+
+![spi_master_standalone](https://github.com/user-attachments/assets/448eaabf-e3d9-4761-afc1-bd727ca20920)
+
+![spi_master_standalone1](https://github.com/user-attachments/assets/b5e2bdb2-bd7f-4956-a145-e2bf62fdbf08)
+
+## Standalone GLS Result Table
+
+| Test       | RTL Status (Week–3) | GLS Status |
+| ---------- | ------------------- | ---------- |
+| GPIO Mgmt  | PASS                | PASS       |
+| mem        | PASS                | PASS       |
+| uart       | PASS                | PASS       |
+| timer      | FAIL                | FAIL       |
+| irq        | FAIL                | FAIL       |
+| debug      | FAIL                | FAIL       |
+| spi_master | PASS                | PASS       |
+
+
+<details>
+ <summary> PHASE 4 — Run GLS for Caravel Integrated Tests </summary>
+ 
+ In this phase we will carry out tests to verify all the blocks inside Caravel Environment.
+
+ | Test Type                | Purpose                                      |
+| ------------------------ | -------------------------------------------- |
+| Standalone Test          | Check if a block logic works                 |
+| Caravel Environment Test | Check if the block works inside the full SoC |
+
+In short we can say that We run these tests to ensure the block integrates correctly with the full chip system, not just works alone.
+
+The firmware for DV tests is compiled using the RISC-V cross-compiler which is already installed.
+
+Now for each block we have navigated inside that  block and carried out simulation using commands:
+```
+make clean   # To clean previous builds.
+make SIM=GL # For Gate Level simulation
+```
+
+### Block: user_pass_thru
+```
+cd /user_pass_thru
+make clean   
+make SIM=GL
+```
+Result:
+
+![user_pass_thru_GL_caravel](https://github.com/user-attachments/assets/618d2bd5-3bcb-4610-93aa-62823e033af3)
+
+![user_pass_thru_GL_caravel1](https://github.com/user-attachments/assets/aa559c30-a60f-4420-835d-63d0b204609a)
+
+### Block: uart
+```
+cd ../uart
+make clean 
+make SIM=GL
+```
+Results:
+
+![uart_GL_caravel](https://github.com/user-attachments/assets/3886c6f1-4786-45f8-92cf-69489dd0f375)
+
+![uart_GL_caravel1](https://github.com/user-attachments/assets/7e790ad3-2536-418d-868e-b0860351c4c4)
+
+### Block: sysctrl
+```
+cd ../sysctrl
+make clean 
+make SIM=GL
+```
+Results:
+
+![sysctrl_GL_caravel](https://github.com/user-attachments/assets/e8b027f3-b88d-4c65-aeac-64bff46472d9)
+
+![sysctrl_GL_caravel1](https://github.com/user-attachments/assets/e40078c5-6809-49e4-ab2e-14181994bcf7)
+
+### Block: sram_exec
+```
+cd ../sram_exec
+make clean 
+make SIM=GL
+```
+Results:
+
+![Sram_exec_GL_caravel](https://github.com/user-attachments/assets/94f7d623-c8ad-4862-aae3-f41d61487f9c)
+
+![Sram_exec_GL_caravel1](https://github.com/user-attachments/assets/5c39d404-9ee5-426e-bde7-fcd9459c7f8a)
+
+### Block: spi_master
+```
+cd ../spi_master
+make clean 
+make SIM=GL
+```
+Results:
+
+![spi_master_GL_caravel](https://github.com/user-attachments/assets/ea425cb2-c91f-41bb-b31a-7aa67dff6d25)
+
+![spi_master_GL_caravel1](https://github.com/user-attachments/assets/12e6f177-1980-4811-8007-c39638a8ca3e)
+
+### Block: pullupdown
+```
+cd ../pullupdown
+make clean  
+make SIM=GL
+```
+Results:
+
+![pullupdown_GL_caravel](https://github.com/user-attachments/assets/6b166058-98a2-4b86-a1c0-9adb100e52ff)
+
+![pullupdown_GL_caravel1](https://github.com/user-attachments/assets/f6ddaff5-9420-4710-98b1-f407b94d0575)
+
+### Block: pll
+```
+cd ../pll
+make clean  
+make SIM=GL
+```
+Results:
+
+![pll_GL_caravel](https://github.com/user-attachments/assets/2bd2d4dc-d461-449b-b338-8d07c06a6d50)
+
+![pll_GL_caravel1](https://github.com/user-attachments/assets/28b20d3a-12ea-4919-a84b-51f23a250061)
+
+### Block: pass_thru_fix
+```
+cd ../pass_thru_fix
+make clean  
+make SIM=GL
+```
+Results:
+
+![pass_thru_fix_GL_caravel](https://github.com/user-attachments/assets/999ad3b2-82de-479c-9ca5-f1bc47c7b686)
+
+![pass_thru_fix_GL_caravel1](https://github.com/user-attachments/assets/59db1106-a6f3-49ef-9edd-a76afc306b58)
+
+### Block: mem
+```
+cd ../mem
+make clean  
+make SIM=GL
+```
+Results:
+
+![mem_GL_caravel](https://github.com/user-attachments/assets/a97c5de7-f57c-48ef-acdc-81ce4057b65a)
+
+![mem_GL_caravel1](https://github.com/user-attachments/assets/6e1e12b8-26ca-427c-9a32-dfcad4c7754b)
+
+![mem_GL_caravel2](https://github.com/user-attachments/assets/bcb96c28-b64b-45e4-a4e5-20b8386c1cb2)
+
+![mem_GL_caravel3](https://github.com/user-attachments/assets/ac223057-84ea-420d-9e38-86f66f86b345)
+
+### Block: hkspi_power
+```
+cd ../hkspi_power
+make clean 
+make SIM=GL
+```
+
+Results:
+
+![hkspi_GL_caravel](https://github.com/user-attachments/assets/deb2ef06-b2d2-462d-90b6-38c8fb184a17)
+
+![hkspi_GL_caravel1](https://github.com/user-attachments/assets/5cfce049-0e11-4fa9-a671-b9d68ff1afac)
+
+### Block: hkspi_power
+```
+cd ../hkspi_power
+make clean 
+make SIM=GL
+```
+Results:
+
+![hkspi_power_GL_caravel](https://github.com/user-attachments/assets/4384527f-53cd-49ee-a978-121a7423633b)
+
+![hkspi_power_GL_caravel1](https://github.com/user-attachments/assets/ff4eba71-b999-4b11-b4ce-723de7892c69)
+
+### Block: gpio_mgmt
+```
+cd ../gpio_mgmt
+make clean  
+make SIM=GL
+```
+Results:
+
+![gpio_mgmt_GL_caravel](https://github.com/user-attachments/assets/36666d5c-30ee-496c-a3c6-c00913280c3b)
+
+![gpio_mgmt_GL_caravel1](https://github.com/user-attachments/assets/b4e57356-6cbd-45c4-bc7d-5be200c41d17)
+
+## Caravel Integration Test Results (SKY130)
+
+| Test           | RTL Status (Week–3) | GLS Status |
+| -------------- | ------------------- | ---------- |
+| user_pass_thru | PASS                | PASS       |
+| uart           | PASS                | PASS       |
+| sysctrl        | FAIL                | FAIL       |
+| sram_exec      | PASS                | PASS       |
+| spi_master     | PASS                | PASS       |
+| pullupdown     | PASS                | PASS       |
+| pll            | FAIL                | FAIL       |
+| pass_thru_fix  | PASS                | PASS       |
+| mem            | PASS                | PASS       |
+| hkspi_power    | PASS                | PASS       |
+| gpio_mgmt      | PASS                | PASS       |
+| hkspi          | PASS                | PASS       |
+
+### SUMMARY
+
+| Total Tests | PASS | FAIL |
+| ----------- | ---- | ---- |
+| 12          | 10   | 2    |
+
+
+
+
+
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</details>
+
+
+
+
+
+
+
+
+
+</details>
 
 
 

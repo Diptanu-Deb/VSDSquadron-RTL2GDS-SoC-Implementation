@@ -2842,12 +2842,77 @@ Results:
 
 </details>
 
+<details>
+	<summary> PHASE 5 — GTKWave Visualization </summary>
+	
+## Standalone Test:
+### Block: debug
+![debug_gtk_stand](https://github.com/user-attachments/assets/dfca75f8-4fe9-4363-82ad-7a1fd827e03b)
+
+### Block: gpio_mgmt
+![gpio_mgmt_gtk_stand](https://github.com/user-attachments/assets/39175bd5-14de-4154-ac65-d11b3e2a9b80)
+
+### Block: irq
+![irq_gtk_stand](https://github.com/user-attachments/assets/b09a04c1-3336-4e36-83e2-438e8b39d67a)
+
+### Block: mem
+![mem_gtk_stand](https://github.com/user-attachments/assets/ffea41df-781b-4db2-bec7-9b436d41deef)
+
+### Block: spi_master
+![spi_master_gtk_stand](https://github.com/user-attachments/assets/f0026de3-0614-4786-8d61-f2cbbfa62586)
+
+### Block: timer
+![timer_gtk-stand](https://github.com/user-attachments/assets/fecc576c-a1a2-4ab4-80a6-0d7f767ce2e4)
+
+### Block: uart
+![uart_gtk_stand](https://github.com/user-attachments/assets/7916adfe-5758-4c52-8bf5-a6fa10733952)
+
+## Caravel Test:
+### Block: gpio_mgmt
+![gpio_gtk_caravel](https://github.com/user-attachments/assets/1467f364-886d-4fc1-8eaf-0d56dbcb06d7)
+
+### Block:hkspi
+![hkspi_gtk_caravel](https://github.com/user-attachments/assets/4220bf9a-0723-4cb1-ab13-3b6aed3354e3)
+
+### Block:hkspi_power
+![hkspi_power_gtk_caravel](https://github.com/user-attachments/assets/ecd9a400-a54c-4053-b9e9-e8d455f4b9c5)
+
+### Block:mem
+![mem_gtk_caravel](https://github.com/user-attachments/assets/a3ccf581-aaa3-470c-9c5c-75bfa1fb5d51)
+
+### Block:pass_thru_fix
+![pass_thru_fix_gtk_caravel](https://github.com/user-attachments/assets/fb67b7db-e976-4310-bde7-8fe27466c20e)
+![pass_thru_fix_gtk_caravel1](https://github.com/user-attachments/assets/39d014d2-4530-4b00-a8a5-ca8caebe6ea9)
+
+### Block:user_pass_thru
+![user_pass_thru_gtk_caravel](https://github.com/user-attachments/assets/21ea9e27-09de-490c-ad64-1e1f9338730f)
+
+### Block:pll
+![pll_gtk_caravel](https://github.com/user-attachments/assets/0a27c1cf-9cf5-4412-bb22-8b82c07943a1)
+
+### Block:pullupdown
+![pullupdown_gtk_caravel](https://github.com/user-attachments/assets/cc64df49-34fb-467b-99cc-49fab3aaa3ec)
+
+### Block:sramexec
+![sramexec_GL_caravel](https://github.com/user-attachments/assets/993e4a0d-114e-4190-984f-0da108f577d4)
+
+### Block:sysctrl
+![sys_ctrl_gtk_caravel](https://github.com/user-attachments/assets/bc57b2bf-4f38-4fe0-9436-f9419e3861ca)
+
+### Block:uart
+![uart_gtk_caravel](https://github.com/user-attachments/assets/b118c393-cf8f-4098-a938-8fa2b965340b)
 
 
 
+</details>
 
+<details>
+	<summary> PHASE 6 — RTL vs GLS Comparison </summary>
+</details>
 
-
+<details>
+	<summary> Debugging (If Mismatch Occurs) </summary>
+</details>
 
 
 

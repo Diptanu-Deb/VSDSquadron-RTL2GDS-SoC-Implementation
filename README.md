@@ -2529,6 +2529,8 @@ endif
 
 ![make_caravel](https://github.com/user-attachments/assets/f2578bc9-4623-4da2-b0f1-0e374e233e9b)
 
+</details>
+
 <details>
  <summary> PHASE 3 — Run GLS for Standalone Tests </summary>
 
@@ -2643,6 +2645,7 @@ Result:
 | debug      | FAIL                | FAIL       |
 | spi_master | PASS                | PASS       |
 
+</details>
 
 <details>
  <summary> PHASE 4 — Run GLS for Caravel Integrated Tests </summary>
@@ -2835,38 +2838,6 @@ Results:
 | Total Tests | PASS | FAIL |
 | ----------- | ---- | ---- |
 | 12          | 10   | 2    |
-
-
-
-
-
-
-
-</details>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</details>
-
-
-
-
-
-
-
 
 
 </details>

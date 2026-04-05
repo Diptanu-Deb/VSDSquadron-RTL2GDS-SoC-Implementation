@@ -3163,6 +3163,142 @@ But we got some error.
 
 To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS and power pads. Now it is defined.
 
+![error_solve](https://github.com/user-attachments/assets/81cecb92-c39a-4667-b389-118a292ede48)
+
+### Evidence:
+
+#### Synthesis:
+
+![synth](https://github.com/user-attachments/assets/849c05d8-4f29-4af6-8178-3bad4a2acf42)
+![synth1](https://github.com/user-attachments/assets/3833265f-956b-42b4-9715-e5d30758e908)
+![GUI_SYNTH](https://github.com/user-attachments/assets/c21209cc-ed86-49af-9245-b4de96d427c3)
+![synth_stat](https://github.com/user-attachments/assets/1df345cb-3996-489a-8e64-3d07053dd9cb)
+![synth_stat1](https://github.com/user-attachments/assets/c426131f-44d6-40e8-842a-60ee22435e0f)
+![synth_stat2](https://github.com/user-attachments/assets/a1256dce-5b5a-48b0-9836-2086fab17ca9)
+
+### Floorplan:
+
+![floorplan](https://github.com/user-attachments/assets/f336f56c-ec9c-4f21-9466-74fae798fc77)
+![floorplan1](https://github.com/user-attachments/assets/5e86e973-6db1-4a13-b875-afeb4f6bdfb7)
+![floorplan2](https://github.com/user-attachments/assets/2586f8e2-ae10-4f46-a39b-aef6b8511c36)
+![gui_floorplan](https://github.com/user-attachments/assets/52d672c8-c826-42d1-94ce-03f49d003f39)
+![gui_floorplan1](https://github.com/user-attachments/assets/721c9ffa-3b61-40e6-a14f-78259d0b8732)
+
+### Placement:
+
+![place](https://github.com/user-attachments/assets/c8fd6af1-9542-4fc0-bc55-f7945968f3c1)
+![place1](https://github.com/user-attachments/assets/0eed27d8-fbb9-403c-b3fc-b0cbbd660553)
+![place2](https://github.com/user-attachments/assets/96a47983-4ecc-44cd-aa17-8bad374e397d)
+![gui_place](https://github.com/user-attachments/assets/fff619af-4a09-450d-b666-ff35e13853e0)
+![gui_place1](https://github.com/user-attachments/assets/c87f8342-39d7-4f52-882a-562d0270099d)
+![gui_place2](https://github.com/user-attachments/assets/e9cc179d-5b42-4d1d-9db7-eb0c08f484b0)
+![gui_place3](https://github.com/user-attachments/assets/f1acfaa1-3ac6-420b-9c56-6766d8084bbb)
+
+### CTS:
+
+![cts](https://github.com/user-attachments/assets/0f314d28-c1ce-4c27-be23-54c4b5e5d91d)
+![cts1](https://github.com/user-attachments/assets/3f776e56-6e3b-4915-ba67-eb988394f5e6)
+![cts2](https://github.com/user-attachments/assets/91092271-47e2-4f65-83cd-ab958d3a6e0e)
+![gui_cts](https://github.com/user-attachments/assets/c90f6e41-f6d3-4eed-814d-f86ffc2a63ac)
+![gui_cts1](https://github.com/user-attachments/assets/c49d8e03-8a79-43ab-abc0-e9f1dd789e96)
+![gui_cts2](https://github.com/user-attachments/assets/eefab43f-fd82-48ea-85f9-0a77eae7251f)
+
+### Route:
+
+![route](https://github.com/user-attachments/assets/25bbd751-04c5-44d4-bd29-4cac5113c16b)
+![route1](https://github.com/user-attachments/assets/fe5fd22c-5201-4524-9879-2102230357d2)
+![route2](https://github.com/user-attachments/assets/42912bbe-8a2a-466d-814a-7da7a29c1815)
+![gui_route](https://github.com/user-attachments/assets/c0fa9dac-08a9-4216-892e-20c452301f34)
+![gui_route1](https://github.com/user-attachments/assets/f28978d6-7f34-4381-ab11-ec3496e9b880)
+
+### Final:
+
+![final](https://github.com/user-attachments/assets/ab7c99df-d03a-4851-9573-2bd24076b265)
+![final1](https://github.com/user-attachments/assets/926eee9b-fda5-4aa0-8c59-ff62d81cb86c)
+![final2](https://github.com/user-attachments/assets/91b4d8e8-cefe-4183-b481-f95a264c128f)
+![final3](https://github.com/user-attachments/assets/cb8cbe87-8e7b-45d2-afca-5b839daba60c)
+![gui_final](https://github.com/user-attachments/assets/2ffe9cf8-ee14-40aa-ac9f-649f058e73c3)
+![gui_final1](https://github.com/user-attachments/assets/2f08dfaf-0b9b-48c4-ab7e-dc14ac3ef38d)
+
+
+### GDSII:
+
+![klayout_housekeeping](https://github.com/user-attachments/assets/66d8eb2c-09aa-41a5-8541-fb52f6bc00f8)
+
+</details>
+
+<details>
+<summary> PHASE 3 — Generate Implementation Outputs </summary>
+	
+Here we have to collect the key outputs from the implementation flow.
+
+Required Outputs (With Exact ORFS Paths):
+
+### Stage: Synthesis
+Output:Synthesized Netlist
+ Purpose: Logic after synthesis (no physical info)
+ Location:
+results/sky130hd/housekeeping/base/2_1_yosys.v
+
+ Generated during: make synth
+
+### Stage:Routing
+Final Netlist (Post-Implementation)
+Purpose: Netlist after placement, CTS, routing
+ Location:
+results/sky130hd/housekeeping/base/5_1_route.v
+Generated during:
+make route
+
+
+### Stage:Routing
+
+Routed Database (ODB)
+Purpose: Physical design database after routing
+Location:
+results/sky130hd/housekeeping/base/5_1_route.odb
+Generated during
+make route
+
+### Stage:Fill
+Final Filled Database
+Purpose: Includes metal fill (needed for verification)
+ Location:
+results/sky130hd/housekeeping/base/6_1_fill.odb
+Generated after:
+Fill insertion stage
+
+### GDSII (Final Layout)
+Stage : Merge
+Purpose: Tapeout-ready layout
+Location:
+results/sky130hd/housekeeping/base/6_1_merged.gds
+
+### Timing Report
+ Purpose: Setup & hold timing results
+Locations:
+reports/sky130hd/housekeeping/base/5_1_route_sta.rpt
+
+| **Output**            | **Output File** | **File Path**                                                                                     | **Stage** | **Purpose**                           |
+| --------------------- | --------------- | ------------------------------------------------------------------------------------------------- | --------- | ------------------------------------- |
+| Synthesized Netlist   | 1_2_yosys.v     | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/1_2_yosys.v    | Synthesis | Logic representation after synthesis  |
+| Final Netlist         | 6_final.v       | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/6_final.v      | Routing   | Netlist after physical implementation |
+| DEF / Database        | 5_2_route.odb   | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/5_2_route.odb  | Routing   | Physical design database              |
+| Final Filled Database | 6_1_fill.odb    | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/6_1_fill.odb   | Fill      | Required for downstream verification  |
+| GDSII                 | 6_1_merged.gds  | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/6_1_merged.gds | Merge     | Final layout                          |
+| Timing Report         | 6_finish.rpt    | /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/reports/sky130hd/housekeeping/base/6_finish.rpt   | Routing   | Setup and hold timing results         |
+
+### Reports:
+
+
+![reportss](https://github.com/user-attachments/assets/80db59a0-52ec-4456-8c1e-7b4c1ea18e6d)
+
+Results:
+
+![results](https://github.com/user-attachments/assets/1118496f-f82b-44d7-8541-c5767fcac4cc)
+
+
+
 </details>
 
 

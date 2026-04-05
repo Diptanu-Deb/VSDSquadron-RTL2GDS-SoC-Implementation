@@ -2956,163 +2956,160 @@ We must take it from RTL → GDS → GLS
 
 	We have selected the housekeeping.v block. After studying RTL block thoroughly we identified:
 
-### Top Module:
-module housekeeping
- This is the top-level RTL block for:
-Housekeeping SPI
-GPIO configuration
-System control (PLL, reset, IRQ) 
-The housekeeping block is a control module that manages configuration, clocking, GPIO, SPI access, and system-level signals of the Caravel SoC through both Wishbone and SPI interfaces.
+### Top Module:  
+module housekeeping  
+This is the top-level RTL block for:  
+Housekeeping SPI.  
+GPIO configuration.  
+System control (PLL, reset, IRQ)  
+The housekeeping block is a control module that manages configuration, clocking, GPIO, SPI access, and system-level signals of the Caravel SoC through both Wishbone and SPI interfaces.  
 
 ### List of Dependent RTL Files:
-housekeeping_spi.v
-user_defines.v
 
- ## Inputs and Outputs
-### Inputs
-Clock & Reset
-wb_clk_i → Wishbone clock
-wb_rstn_i → Active-low reset
-porb → Power-on reset (active low)
-Wishbone Interface
-wb_adr_i [31:0]
-wb_dat_i [31:0]
-wb_sel_i [3:0]
-wb_we_i
-wb_cyc_i
-wb_stb_i
-System Inputs
-qspi_enabled
-uart_enabled
-spi_enabled
-debug_mode
-ser_tx
-spi_csb, spi_sck, spi_sdo, spi_sdoenb
-trap
-user_clock
-mask_rev_in [31:0]
-GPIO Inputs
-mgmt_gpio_in [MPRJ_IO_PADS-1:0]
-Flash Interface Inputs
-spimemio_flash_* signals
-pad_flash_io*_di
-Power Monitoring
-usr1_vcc_pwrgood, usr2_vcc_pwrgood
-usr1_vdd_pwrgood, usr2_vdd_pwrgood
+housekeeping_spi.v  
+user_defines.v  
 
-### Outputs
-Wishbone
-wb_ack_o
-wb_dat_o [31:0]
-PLL Control
-pll_ena
-pll_dco_ena
-pll_div [4:0]
-pll_sel [2:0]
-pll90_sel [2:0]
-pll_trim [25:0]
-pll_bypass
-SPI / UART / Debug
-ser_rx
-spi_sdi
-debug_in
-Interrupt & Reset
-irq [2:0]
-reset
-GPIO Control
-mgmt_gpio_out [ ]
-mgmt_gpio_oeb [ ]
-Serial Loader
-serial_clock
-serial_load
-serial_resetn
-serial_data_1
-serial_data_2
-Flash Pad Interface
-pad_flash_*
-Power Control
-pwr_ctrl_out
+ ## Inputs and Outputs  
+### Inputs  
+Clock & Reset  
+wb_clk_i → Wishbone clock  
+wb_rstn_i → Active-low reset  
+porb → Power-on reset (active low)  
+Wishbone Interface  
+wb_adr_i [31:0]  
+wb_dat_i [31:0]  
+wb_sel_i [3:0]  
+wb_we_i  
+wb_cyc_i  
+wb_stb_i  
+System Inputs  
+qspi_enabled  
+uart_enabled  
+spi_enabled  
+debug_mode  
+ser_tx  
+spi_csb, spi_sck, spi_sdo, spi_sdoenb  
+trap  
+user_clock  
+mask_rev_in [31:0]  
+GPIO Inputs  
+mgmt_gpio_in [MPRJ_IO_PADS-1:0]  
+Flash Interface Inputs  
+spimemio_flash_* signals  
+pad_flash_io*_di  
+Power Monitoring  
+usr1_vcc_pwrgood, usr2_vcc_pwrgood  
+usr1_vdd_pwrgood, usr2_vdd_pwrgood  
+
+### Outputs  
+Wishbone  
+wb_ack_o  
+wb_dat_o [31:0]  
+PLL Control  
+pll_ena  
+pll_dco_ena  
+pll_div [4:0]  
+pll_sel [2:0]  
+pll90_sel [2:0]  
+pll_trim [25:0]  
+pll_bypass  
+SPI / UART / Debug  
+ser_rx  
+spi_sdi  
+debug_in  
+Interrupt & Reset  
+irq [2:0]  
+reset  
+GPIO Control  
+mgmt_gpio_out [ ]  
+mgmt_gpio_oeb [ ]  
+Serial Loader  
+serial_clock  
+serial_load  
+serial_resetn  
+serial_data_1  
+serial_data_2  
+Flash Pad Interface  
+pad_flash_*  
+Power Control  
+pwr_ctrl_out  
 
 
 ### Internal Hierarchy:
 
-Submodule Instantiation
-Only one explicit child module:
-housekeeping_spi hkspi
+Submodule Instantiation  
+Only one explicit child module:  
+housekeeping_spi hkspi  
 
-Purpose:
-SPI protocol handling
-Decodes SPI transactions
-Generates:
-iaddr, idata, rdstb, wrstb
-pass-through modes
+Purpose:  
+SPI protocol handling  
+Decodes SPI transactions  
+Generates:  
+iaddr, idata, rdstb, wrstb  
+pass-through modes  
 
-Other Internal Logic Blocks
+### Other Internal Logic Blocks  
+#### 1. Wishbone Backdoor FSM  
+States:  
+WBBD_IDLE → SETUP → RW → DONE → RESET  
+Converts 32-bit WB → 8-bit SPI transactions  
 
-#### 1. Wishbone Backdoor FSM
-States:
-WBBD_IDLE → SETUP → RW → DONE → RESET
-Converts 32-bit WB → 8-bit SPI transactions
+##### 2. Register Map Logic  
+Function:  
+function [7:0] fdata(input [7:0] address);  
+Implements:  
+PLL registers  
+GPIO config  
+ID registers  
+Status registers  
 
-##### 2. Register Map Logic
-Function:
-function [7:0] fdata(input [7:0] address);
-Implements:
-PLL registers
-GPIO config
-ID registers
-Status registers
+#### 3. Address Translator  
+function [7:0] spiaddr(input [31:0] wbaddress);  
+Converts WB address → SPI address  
 
-#### 3. Address Translator
-function [7:0] spiaddr(input [31:0] wbaddress);
-Converts WB address → SPI address
+##### 4. GPIO Control Block  
+gpio_configure[]  
+mgmt_gpio_data  
+Serial loading FSM  
 
-##### 4. GPIO Control Block
-gpio_configure[]
-mgmt_gpio_data
-Serial loading FSM
+#### 5. Serial Configuration FSM  
+States:  
+GPIO_IDLE → GPIO_START → GPIO_XBYTE → GPIO_LOAD  
 
-#### 5. Serial Configuration FSM
-States:
-GPIO_IDLE → GPIO_START → GPIO_XBYTE → GPIO_LOAD
+#### 6. Pass-through Logic  
+Routes SPI flash signals  
+Enables bypass modes:  
+Management pass-through  
+User pass-through  
 
-#### 6. Pass-through Logic
-Routes SPI flash signals
-Enables bypass modes:
-Management pass-through
-User pass-through
+#### 7. Clock Buffer Cells (Physical Cells)  
+sky130_fd_sc_hd__clkbuf_8  
 
-#### 7. Clock Buffer Cells (Physical Cells)
-sky130_fd_sc_hd__clkbuf_8
+### Block diagram (hand-drawn):  
+<img width="1024" height="1536" alt="Housekeeping" src="https://github.com/user-attachments/assets/5a02e5c2-3db3-4f7c-a52b-91034c6e0977" />  
 
-### Block diagram (hand-drawn):
+### RTL hierarchy explanation:  
+housekeeping.v  is the top-level control module of Caravel system configuration.  
+It interfaces with:  
 
-<img width="1024" height="1536" alt="Housekeeping" src="https://github.com/user-attachments/assets/5a02e5c2-3db3-4f7c-a52b-91034c6e0977" />
+### Wishbone bus (from SoC)  
+SPI (external control)  
+#### It internally uses:  
+housekeeping_spi for SPI decoding  
 
-### RTL hierarchy explanation:
+### FSMs for:  
+Wishbone backdoor access  
+GPIO serial configuration  
+#### It controls:  
+PLL configuration  
+GPIO modes  
+Flash routing  
+System monitoring signals  
 
-housekeeping.v  is the top-level control module of Caravel system configuration.
-
-It interfaces with:
-
-### Wishbone bus (from SoC)
-SPI (external control)
-#### It internally uses:
-housekeeping_spi for SPI decoding
-
-### FSMs for:
-Wishbone backdoor access
-GPIO serial configuration
-#### It controls:
-PLL configuration
-GPIO modes
-Flash routing
-System monitoring signals
-
-### List of Dependent RTL Files:
-housekeeping.v          (Top module)
-housekeeping_spi.v      (SPI protocol)
-user_defines.v        (Macros)
+### List of Dependent RTL Files:  
+housekeeping.v          (Top module)  
+housekeeping_spi.v      (SPI protocol)  
+user_defines.v        (Macros)  
 
 
 </details>
@@ -3120,46 +3117,40 @@ user_defines.v        (Macros)
 <details>
 	<summary>PHASE 2 — RTL-to-GDS Implementation</summary>
 
-## Prepare the ORFS Design Environment
-### Design Workspace Preparation
-A new design directory called housekeeping is created inside the OpenROAD Flow Scripts design directory.
+## Prepare the ORFS Design Environment  
+### Design Workspace Preparation  
+A new design directory called housekeeping is created inside the OpenROAD Flow Scripts design directory.  
+![directory](https://github.com/user-attachments/assets/ac6a1d71-c63d-4c48-a386-b9e9ab43a1dd)  
+Design directory is modified in such a way that  verilog files are kept in src directory which is inside housekeeping directory and  new .sdc, config.mk is created for proper flow.  
 
-![directory](https://github.com/user-attachments/assets/ac6a1d71-c63d-4c48-a386-b9e9ab43a1dd)
+### RTL Source Integration  
+Only the required RTL files were included based on dependency analysis:  
+### RTL Files Used
+housekeeping.v          (Top module)  
+housekeeping_spi.v      (SPI protocol)  
+user_defines.v        (Macros)  
 
-Design directory is modified in such a way that  verilog files are kept in src directory which is inside housekeeping directory and  new .sdc, config.mk is created for proper flow.
+### My Design Locations  
+/flow/designs/sky130hd/housekeeping        → config + constraints  
+/flow/designs/src/housekeeping                    → RTL files  
 
-### RTL Source Integration
+To define the clock signal, a new constraint.sdc file is created.  
+![clock](https://github.com/user-attachments/assets/4500ad48-e5fa-4cf1-a28d-62fd7d9da782)  
 
-Only the required RTL files were included based on dependency analysis:
+For proper execution of housekeeping module we have to make some changes in makefile. Screenshot of updated makefile is attached below:  
 
-RTL Files Used
-housekeeping.v          (Top module)
-housekeeping_spi.v      (SPI protocol)
-user_defines.v        (Macros)
+![config mk](https://github.com/user-attachments/assets/8ec5eb01-2a8b-4949-b834-158bb87219a3)  
 
-### My Design Locations
-/flow/designs/sky130hd/housekeeping        → config + constraints
-/flow/designs/src/housekeeping                    → RTL files
+ORFS to execute this Config.mk file, we need to add this path inside Makefile which is inside flow directory.  
 
-To define the clock signal, a new constraint.sdc file is created.
+![make_flow](https://github.com/user-attachments/assets/557de434-9934-42b5-9cb2-ac7ded2aa92d)  
 
-![clock](https://github.com/user-attachments/assets/4500ad48-e5fa-4cf1-a28d-62fd7d9da782)
-
-For proper execution of housekeeping module we have to make some changes in makefile. Screenshot of updated makefile is attached below:
-
-![config mk](https://github.com/user-attachments/assets/8ec5eb01-2a8b-4949-b834-158bb87219a3)
-
-ORFS to execute this Config.mk file, we need to add this path inside Makefile which is inside flow directory.
-
-![make_flow](https://github.com/user-attachments/assets/557de434-9934-42b5-9cb2-ac7ded2aa92d)
-
-To run synthesis,
-
-We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and execute command
+To run synthesis,  
+We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and execute command  
 ```
 run synth
 ```
-But we got some error.
+But we got some error.  
 
 To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS and power pads. Now it is defined.
 
@@ -3234,50 +3225,50 @@ Here we have to collect the key outputs from the implementation flow.
 
 Required Outputs (With Exact ORFS Paths):
 
-### Stage: Synthesis
-Output:Synthesized Netlist
- Purpose: Logic after synthesis (no physical info)
- Location:
+### Stage: Synthesis  
+Output:Synthesized Netlist  
+ Purpose: Logic after synthesis (no physical info)  
+ Location:  
 results/sky130hd/housekeeping/base/2_1_yosys.v
 
  Generated during: make synth
 
-### Stage:Routing
-Final Netlist (Post-Implementation)
-Purpose: Netlist after placement, CTS, routing
- Location:
-results/sky130hd/housekeeping/base/5_1_route.v
-Generated during:
-make route
+### Stage:Routing  
+Final Netlist (Post-Implementation)  
+Purpose: Netlist after placement, CTS, routing  
+ Location:  
+results/sky130hd/housekeeping/base/5_1_route.v  
+Generated during:  
+make route  
 
 
 ### Stage:Routing
 
-Routed Database (ODB)
-Purpose: Physical design database after routing
-Location:
-results/sky130hd/housekeeping/base/5_1_route.odb
-Generated during
-make route
+Routed Database (ODB)  
+Purpose: Physical design database after routing  
+Location:  
+results/sky130hd/housekeeping/base/5_1_route.odb  
+Generated during  
+make route  
 
-### Stage:Fill
-Final Filled Database
-Purpose: Includes metal fill (needed for verification)
- Location:
-results/sky130hd/housekeeping/base/6_1_fill.odb
-Generated after:
-Fill insertion stage
+### Stage:Fill  
+Final Filled Database  
+Purpose: Includes metal fill (needed for verification)  
+ Location:  
+results/sky130hd/housekeeping/base/6_1_fill.odb  
+Generated after:  
+Fill insertion stage  
 
-### GDSII (Final Layout)
-Stage : Merge
-Purpose: Tapeout-ready layout
-Location:
-results/sky130hd/housekeeping/base/6_1_merged.gds
+### GDSII (Final Layout)  
+Stage : Merge  
+Purpose: Tapeout-ready layout  
+Location:  
+results/sky130hd/housekeeping/base/6_1_merged.gds  
 
-### Timing Report
- Purpose: Setup & hold timing results
-Locations:
-reports/sky130hd/housekeeping/base/5_1_route_sta.rpt
+### Timing Report  
+ Purpose: Setup & hold timing results  
+Locations:  
+reports/sky130hd/housekeeping/base/5_1_route_sta.rpt  
 
 | **Output**            | **Output File** | **File Path**                                                                                     | **Stage** | **Purpose**                           |
 | --------------------- | --------------- | ------------------------------------------------------------------------------------------------- | --------- | ------------------------------------- |
@@ -3304,9 +3295,8 @@ Results:
 <details>
 	<summary> PHASE 4 — Gate-Level Simulation (GLS)</summary>
 	
- We have to carry out RTL simulation and  GL simulation and  compare both.
-
-### Changes in Makefile for RTL simulation:
+ We have to carry out RTL simulation and  GL simulation and  compare both.  
+ ### Changes in Makefile for RTL simulation:
 ```
 
 ifeq ($(SIM),RTL)
@@ -3397,85 +3387,83 @@ endif
  
 #### VCD Generation during GLS
 
-Gate-Level Simulation (GLS) was executed for housekeeping in  the hkspi testbench.
-During simulation, a Value Change Dump (.vcd) file was generated:
-Example: GL-hkspi.vcd
-The VCD file captures all signal transitions at gate level, including delays and unknown states.
- Outcome: Successful generation of VCD file during GLS
-
-
+Gate-Level Simulation (GLS) was executed for housekeeping in  the hkspi testbench.  
+During simulation, a Value Change Dump (.vcd) file was generated:  
+Example: GL-hkspi.vcd  
+The VCD file captures all signal transitions at gate level, including delays and unknown states.  
+ Outcome: Successful generation of VCD file during GLS  
 
 #### Waveform Visualization using GTKWave
 
-The generated .vcd file was opened using GTKWave
-Command used:
-gtkwave GL-hkspi.vcd
-Signals from the caravel DUT were explored, including:
-Clock signals
-Reset signals
-SPI interface signals
-GPIO signals
-Outcome: Waveform successfully visualized and analyzed
- Key Signal Trace Analysis
- 1. Clock Signal (clock, clock_core)
-**Observation:**
-Continuous periodic toggling observed.
-Slight delay in transitions compared to RTL.
+The generated .vcd file was opened using GTKWave  
+Command used:  
+gtkwave GL-hkspi.vcd  
+Signals from the caravel DUT were explored, including:  
+Clock signals  
+Reset signals  
+SPI interface signals  
+GPIO signals  
+Outcome: Waveform successfully visualized and analyzed  
+ Key Signal Trace Analysis  
+ 1. Clock Signal (clock, clock_core)  
+**Observation:**  
+Continuous periodic toggling observed.  
+Slight delay in transitions compared to RTL.  
 
-**Analysis:**
-Delay is due to gate-level buffering and clock tree effects
-No glitches or missing pulses observed
- Conclusion: Clock is functioning correctly in GLS
+**Analysis:**  
+Delay is due to gate-level buffering and clock tree effects  
+No glitches or missing pulses observed  
+ Conclusion: Clock is functioning correctly in GLS  
 
- 3. Reset Signals (resetb, porb_h, rstb_h)
-Observation:
-Reset assertion/deassertion is delayed compared to RTL
-Signals stabilize after a few cycles
-Analysis:
-Delay caused by gate propagation and buffering
-Initial instability is expected in GLS due to lack of initialization
-Conclusion: Reset behavior is correct and consistent with gate-level effects
+ 3. Reset Signals (resetb, porb_h, rstb_h)  
+Observation:  
+Reset assertion/deassertion is delayed compared to RTL  
+Signals stabilize after a few cycles  
+Analysis:  
+Delay caused by gate propagation and buffering  
+Initial instability is expected in GLS due to lack of initialization  
+Conclusion: Reset behavior is correct and consistent with gate-level effects  
 
- 4. SPI Data Signals (flash_io0_di, flash_io0_do, flash_clk, flash_csb)
-Observation:
-Initial X (unknown) states observed
-Valid transitions appear after initialization phase
-SPI clock and chip select behave correctly
-Analysis:
-X states caused by:
-Uninitialized flip-flops
-Bidirectional IO contention
-Once stabilized, SPI protocol operates correctly
-Conclusion: SPI communication is functionally correct in GLS
+ 4. SPI Data Signals (flash_io0_di, flash_io0_do, flash_clk, flash_csb)  
+Observation:  
+Initial X (unknown) states observed  
+Valid transitions appear after initialization phase  
+SPI clock and chip select behave correctly  
+Analysis:  
+X states caused by:  
+Uninitialized flip-flops  
+Bidirectional IO contention  
+Once stabilized, SPI protocol operates correctly  
+Conclusion: SPI communication is functionally correct in GLS  
 
- 5. GPIO Signals (gpio_out_core, gpio_outenb_core)
-Observation:
-Signals remain stable throughout simulation
-No unexpected toggles or glitches
-Analysis:
-Indicates correct control logic and no functional errors
-Conclusion: GPIO behavior matches expected functionality
+ 5. GPIO Signals (gpio_out_core, gpio_outenb_core)  
+Observation:  
+Signals remain stable throughout simulation  
+No unexpected toggles or glitches  
+Analysis:  
+Indicates correct control logic and no functional errors  
+Conclusion: GPIO behavior matches expected functionality  
 
 GTKWave Screenshot (Mandatory Evidence)
 
-GLS waveform screenshot showing:
-Clock activity
-Reset stabilization
-SPI signal transitions
-Presence of initial X states
- Final Observation
-Gate-level waveform confirms:
-Proper signal propagation
-Expected timing delays
-No functional anomalies
-Although initial unknown (X) states are observed, all critical signals stabilize and operate correctly, confirming successful gate-level behavior.
+GLS waveform screenshot showing:  
+Clock activity  
+Reset stabilization  
+SPI signal transitions  
+Presence of initial X states  
+ Final Observation  
+Gate-level waveform confirms:  
+Proper signal propagation  
+Expected timing delays  
+No functional anomalies  
+Although initial unknown (X) states are observed, all critical signals stabilize and operate correctly, confirming successful gate-level behavior.  
 
 ### Summary
 
- VCD file generated successfully.
- Waveform analyzed using GTKWave.
- Multiple key signals verified.
- Functional correctness confirmed at gate level.
+ VCD file generated successfully.  
+ Waveform analyzed using GTKWave.  
+ Multiple key signals verified.  
+ Functional correctness confirmed at gate level.  
 
 
 </details>
@@ -3483,71 +3471,71 @@ Although initial unknown (X) states are observed, all critical signals stabilize
 <details>
 <summary>PHASE 6 — RTL vs GLS Validation</summary>
 
-From the waveforms, it looks like a correct and expected RTL vs GLS behavior, not a failure. 
-Explanation:
- Key Observations
-1. Flash IO signals (flash_io0_*)
-RTL:
-Clean transitions (0/1)
-Deterministic behavior
-GLS:
-Showing X (unknown states) initially
- This is NORMAL in GLS because:
-Gate-level netlists don’t initialize registers
-No reset → signals start as X
-Tri-state / bidirectional pins (io0) cause contention → X
- Not a mismatch
+From the waveforms, it looks like a correct and expected RTL vs GLS behavior, not a failure.  
+Explanation:  
+ Key Observations  
+1. Flash IO signals (flash_io0_*)  
+RTL:  
+Clean transitions (0/1)  
+Deterministic behavior  
+GLS:  
+Showing X (unknown states) initially  
+ This is NORMAL in GLS because:  
+Gate-level netlists don’t initialize registers  
+No reset → signals start as X  
+Tri-state / bidirectional pins (io0) cause contention → X  
+ Not a mismatch  
 
-2. Clock behavior
-Both RTL and GLS show proper clock toggling
-No glitch or missing clock
- Correct
+2. Clock behavior  
+Both RTL and GLS show proper clock toggling  
+No glitch or missing clock  
+ Correct  
 
-3. Reset signals (resetb, rstb_h, porb_h)
-In GLS:
-Slight delay in assertion/deassertion
-In RTL:
-Immediate response
- Reason:
-GLS includes gate delays + buffering
- Expected timing difference, NOT functional mismatch
+3. Reset signals (resetb, rstb_h, porb_h)  
+In GLS:  
+Slight delay in assertion/deassertion  
+In RTL:  
+Immediate response  
+ Reason:  
+GLS includes gate delays + buffering  
+ Expected timing difference, NOT functional mismatch  
 
-4. GPIO signals
-gpio_outenb_core, gpio_out_core
-Stable in both cases
-No unexpected toggles
- Behavior matches
+4. GPIO signals  
+gpio_outenb_core, gpio_out_core  
+Stable in both cases  
+No unexpected toggles  
+ Behavior matches  
 
-5. SPI activity
-RTL:
-Clean SPI waveform
-GLS:
-Delayed + slightly distorted edges
-Some X before valid data
- Reason:
-Gate delays + uninitialized flops
-Still functionally same
+5. SPI activity  
+RTL:  
+Clean SPI waveform  
+GLS:  
+Delayed + slightly distorted edges  
+Some X before valid data  
+ Reason:  
+Gate delays + uninitialized flops  
+Still functionally same  
 
-The main confusion is:
- X in GLS ≠ Failure
-GLS introduces:
-X-propagation
-Timing delays
-Unknown startup states
-Only consider it a failure if:
-Outputs remain X forever 
-Protocol breaks (SPI not toggling) 
-Final result differs 
-None of that is happening here.
-Functional correctness is preserved because:
-SPI communication occurs correctly in both RTL and GLS
-Clock and reset behave as expected
-No divergence in logical behavior
- Differences observed:
-X states in GLS due to uninitialized registers
-Timing delay due to gate-level modeling
- Final Statement:
-"No functional mismatch is observed between RTL and GLS. Differences are limited to initialization and timing effects inherent to gate-level simulation."
+#### The main confusion is:  
+ X in GLS ≠ Failure  
+GLS introduces:  
+X-propagation  
+Timing delays  
+Unknown startup states  
+Only consider it a failure if:  
+Outputs remain X forever  
+Protocol breaks (SPI not toggling)  
+Final result differs  
+None of that is happening here.  
+Functional correctness is preserved because:  
+SPI communication occurs correctly in both RTL and GLS  
+Clock and reset behave as expected  
+No divergence in logical behavior  
+ Differences observed:  
+X states in GLS due to uninitialized registers  
+Timing delay due to gate-level modeling  
+ Final Statement:  
+"No functional mismatch is observed between RTL and GLS. Differences are limited to initialization and timing effects inherent to gate-level simulation."  
 
 
 </details>
@@ -3555,122 +3543,125 @@ Timing delay due to gate-level modeling
 <details>
 <summary>PHASE 7 — Debugging and Insights</summary>
     
-Issues Faced, Debugging Steps & Key Learnings
-Issues Faced
-1. RTL vs GLS Mismatch (Initial Observation)
-Gate-Level Simulation (GLS) showed unknown (X) values in signals such as:
-flash_io0_di
-flash_io0_do
-flash_io0_oeb
-RTL simulation showed clean 0/1 transitions, creating confusion about mismatch
+### Issues Faced, Debugging Steps & Key Learnings  
 
-2. Simulation Failure When Disabling Power Pins
-Disabling vpwr and vgnd in the housekeeping module caused:
-GLS simulation failure
-Incorrect or undefined outputs
+### Issues Faced  
 
-3. Missing File / Path Errors in Flow
-Encountered errors such as:
-Missing synthesis scripts (synth_preamble.tcl)
-Incorrect file paths in ORFS setup
+1. RTL vs GLS Mismatch (Initial Observation)  
+Gate-Level Simulation (GLS) showed unknown (X) values in signals such as:  
+flash_io0_di  
+flash_io0_do  
+flash_io0_oeb  
+RTL simulation showed clean 0/1 transitions, creating confusion about mismatch  
 
-4. Waveform Interpretation Difficulty
-Difficulty in comparing RTL and GLS waveforms due to:
-Timing shifts
-X-propagation
-Signal delays
+2. Simulation Failure When Disabling Power Pins  
+Disabling vpwr and vgnd in the housekeeping module caused:  
+GLS simulation failure  
+Incorrect or undefined outputs  
 
-5. Reset Behavior Differences
-In GLS:
-Reset signals (resetb, porb_h, rstb_h) showed delayed response
-In RTL:
-Immediate reset behavior
+3. Missing File / Path Errors in Flow  
+Encountered errors such as:  
+Missing synthesis scripts (synth_preamble.tcl)  
+Incorrect file paths in ORFS setup  
 
-Debugging Steps Taken
-1. Analyzing Waveforms in GTKWave
-Compared RTL and GLS waveforms side-by-side
-Focused on:
-Clock
-Reset
-SPI signals
+4. Waveform Interpretation Difficulty  
+Difficulty in comparing RTL and GLS waveforms due to:  
+Timing shifts  
+X-propagation  
+Signal delays  
+
+5. Reset Behavior Differences  
+In GLS:  
+Reset signals (resetb, porb_h, rstb_h) showed delayed response  
+In RTL:  
+Immediate reset behavior  
+
+### Debugging Steps Taken  
+1. Analyzing Waveforms in GTKWave  
+Compared RTL and GLS waveforms side-by-side  
+Focused on:  
+Clock  
+Reset  
+SPI signals  
 GPIO outputs
-2. Identifying X-Propagation Cause
-Verified that:
-Registers in GLS are not initialized
-Bidirectional SPI pins cause contention → X states
-Confirmed that X values disappear after stabilization
 
-3. Verifying Functional Behavior Instead of Exact Matching
-Checked:
-Whether SPI communication occurs correctly
-Whether outputs stabilize to valid values
-Ensured:
-No permanent X states
-No protocol failure
+3. Identifying X-Propagation Cause  
+Verified that:  
+Registers in GLS are not initialized  
+Bidirectional SPI pins cause contention → X states  
+Confirmed that X values disappear after stabilization  
 
-4. Fixing Power Pin Issue
-Restored proper connection of:
-vpwr
-vgnd
-Ensured standard cell models receive correct power supply
+4. Verifying Functional Behavior Instead of Exact Matching  
+Checked:  
+Whether SPI communication occurs correctly  
+Whether outputs stabilize to valid values  
+Ensured:  
+No permanent X states  
+No protocol failure  
 
-5. Resolving Flow Errors
-Corrected file paths in ORFS scripts
-Verified presence of required files:
-RTL sources
-Technology libraries
-Synthesis scripts
+5. Fixing Power Pin Issue  
+Restored proper connection of:  
+vpwr  
+vgnd  
+Ensured standard cell models receive correct power supply  
 
-6. Understanding Timing Differences
-Recognized that GLS includes:
-Gate delays
-Buffer delays
-Avoided treating timing differences as functional errors
+6. Resolving Flow Errors  
+Corrected file paths in ORFS scripts  
+Verified presence of required files:  
+RTL sources  
+Technology libraries  
+Synthesis scripts  
 
- Key Learnings
-1. Difference Between RTL and GLS
-RTL:
-Ideal simulation
-No delays
-Deterministic outputs
-GLS:
-Includes real gate delays
-Shows X-propagation
-More realistic hardware behavior
+7. Understanding Timing Differences  
+Recognized that GLS includes:  
+Gate delays  
+Buffer delays  
+Avoided treating timing differences as functional errors  
 
-2. X-Propagation is Not Always an Error
-Initial unknown states are expected in GLS
-Important to check:
-Whether signals eventually stabilize
-Whether functionality is preserved
+ #### Key Learnings  
+1. Difference Between RTL and GLS  
+RTL:  
+Ideal simulation  
+No delays  
+Deterministic outputs  
+GLS:  
+Includes real gate delays  
+Shows X-propagation  
+More realistic hardware behavior  
 
-3. Importance of Reset and Initialization
-Proper reset design is critical to:
-Avoid prolonged X states
-Ensure predictable startup behavior
+2. X-Propagation is Not Always an Error  
+Initial unknown states are expected in GLS  
+Important to check:  
+Whether signals eventually stabilize  
+Whether functionality is preserved  
 
-4. Power Pins are Critical in GLS
-Standard cells require:
-vpwr and vgnd
-Removing them leads to:
-Simulation failure or undefined outputs
+3. Importance of Reset and Initialization  
+Proper reset design is critical to:  
+Avoid prolonged X states  
+Ensure predictable startup behavior  
 
-5. Functional Verification vs Signal Matching
-Exact waveform matching between RTL and GLS is not required
-Focus should be on:
-Functional correctness
-Protocol integrity
+4. Power Pins are Critical in GLS  
+Standard cells require:  
+vpwr and vgnd  
+Removing them leads to:  
+Simulation failure or undefined outputs  
 
-6. Importance of Debugging Methodology
-Systematic debugging approach:
-Observe waveform
-Identify anomaly
-Trace signal origin
-Understand simulation differences
-Helps in efficient issue resolution
+5. Functional Verification vs Signal Matching  
+Exact waveform matching between RTL and GLS is not required  
+Focus should be on:  
+Functional correctness  
+Protocol integrity  
 
- Final Reflection
-The debugging process helped in understanding the practical differences between RTL and gate-level simulations. It reinforced the importance of analyzing functionality rather than relying solely on waveform similarity, and highlighted critical aspects such as power connections, reset design, and timing awareness in VLSI design flow.
+6. Importance of Debugging Methodology  
+Systematic debugging approach:  
+Observe waveform  
+Identify anomaly  
+Trace signal origin  
+Understand simulation differences  
+Helps in efficient issue resolution  
+
+ ### Final Reflection  
+The debugging process helped in understanding the practical differences between RTL and gate-level simulations. It reinforced the importance of analyzing functionality rather than relying solely on waveform similarity, and highlighted critical aspects such as power connections, reset design, and timing awareness in VLSI design flow.  
 
 
 </details>

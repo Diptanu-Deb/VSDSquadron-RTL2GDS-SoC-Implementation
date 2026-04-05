@@ -2358,7 +2358,8 @@ Modify Makefiles to use gate-level netlist instead of RTL.
 Re-run all standalone and Caravel-integrated test cases.
 Compare GLS outputs with Week–3 functional simulation results.
 Visualize gate-level behavior using GTKWave with generated VCD files.
-This task ensures participants understand the transition from RTL simulation → gate-level verification.
+
+This task ensures we understand the transition from RTL simulation → gate-level verification.
 ```
 This task ensures participants understand the transition from RTL simulation → gate-level verification.
 
@@ -2371,25 +2372,40 @@ orfs/flow/results/sky130hd/usr_wrapper/base/6_final.v
 
 
 How the Correct Netlist Was Chosen
+
 The file 6_final.v was selected because:
+
 It is the final routed gate-level netlist generated after placement and routing (Week–4).
+
 It contains:
+
 Standard cell instances
+
 Real interconnects
+
 Final design structure used for fabrication-level verification
+
 Compared to earlier outputs like:
+
 1_2_yosys.v → only synthesized (no physical effects)
+
 Therefore, 6_final.v gives the most accurate representation for Gate-Level Simulation (GLS).
 
 
 ## Dependencies (Standard Cells & Libraries)
+
 The following libraries are required for simulation:
+
  /home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
+ 
 /home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
+
 /home/diptanu/.volare/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_io.v
 
 These include:
+
 Standard cells (AND, OR, DFF, etc.)
+
 Required for resolving all instances in the netlist
 
 ### Include path(-I):
@@ -2911,10 +2927,243 @@ Results:
 </details>
 
 <details>
-	<summary> Debugging (If Mismatch Occurs) </summary>
+	<summary> PHASE 7 — Debugging (If Mismatch Occurs) </summary>
 </details>
 
+# WEEK–6: Independent Block Implementation + Gate-Level Validation
+	
+## Objective
 
+The objective of Week–6 is to validate whether we can independently execute a complete chip design cycle on a chosen block.
+
+Here we will:
+```
+Select one RTL block from the VSDSquadron SoC.
+Perform complete RTL-to-GDS implementation using OpenROAD flow.
+Generate final implementation outputs.
+Perform Gate-Level Simulation (GLS) on the implemented block.
+Validate that GLS matches expected functional behavior.
+This is a full-cycle execution task combining:
+●       RTL understanding
+●       Physical design
+●       Verification
+●       Debugging
+```
+We must take it from RTL → GDS → GLS
+
+<details>
+	<summary>PHASE 1 — Block Selection and Analysis</summary>
+
+	We have selected the housekeeping.v block. After studying RTL block thoroughly we identified:
+
+### Top Module:
+module housekeeping
+ This is the top-level RTL block for:
+Housekeeping SPI
+GPIO configuration
+System control (PLL, reset, IRQ) 
+The housekeeping block is a control module that manages configuration, clocking, GPIO, SPI access, and system-level signals of the Caravel SoC through both Wishbone and SPI interfaces.
+
+### List of Dependent RTL Files:
+housekeeping_spi.v
+user_defines.v
+
+ ## Inputs and Outputs
+### Inputs
+Clock & Reset
+wb_clk_i → Wishbone clock
+wb_rstn_i → Active-low reset
+porb → Power-on reset (active low)
+Wishbone Interface
+wb_adr_i [31:0]
+wb_dat_i [31:0]
+wb_sel_i [3:0]
+wb_we_i
+wb_cyc_i
+wb_stb_i
+System Inputs
+qspi_enabled
+uart_enabled
+spi_enabled
+debug_mode
+ser_tx
+spi_csb, spi_sck, spi_sdo, spi_sdoenb
+trap
+user_clock
+mask_rev_in [31:0]
+GPIO Inputs
+mgmt_gpio_in [MPRJ_IO_PADS-1:0]
+Flash Interface Inputs
+spimemio_flash_* signals
+pad_flash_io*_di
+Power Monitoring
+usr1_vcc_pwrgood, usr2_vcc_pwrgood
+usr1_vdd_pwrgood, usr2_vdd_pwrgood
+
+### Outputs
+Wishbone
+wb_ack_o
+wb_dat_o [31:0]
+PLL Control
+pll_ena
+pll_dco_ena
+pll_div [4:0]
+pll_sel [2:0]
+pll90_sel [2:0]
+pll_trim [25:0]
+pll_bypass
+SPI / UART / Debug
+ser_rx
+spi_sdi
+debug_in
+Interrupt & Reset
+irq [2:0]
+reset
+GPIO Control
+mgmt_gpio_out [ ]
+mgmt_gpio_oeb [ ]
+Serial Loader
+serial_clock
+serial_load
+serial_resetn
+serial_data_1
+serial_data_2
+Flash Pad Interface
+pad_flash_*
+Power Control
+pwr_ctrl_out
+
+
+### Internal Hierarchy:
+
+Submodule Instantiation
+Only one explicit child module:
+housekeeping_spi hkspi
+
+Purpose:
+SPI protocol handling
+Decodes SPI transactions
+Generates:
+iaddr, idata, rdstb, wrstb
+pass-through modes
+
+Other Internal Logic Blocks
+
+#### 1. Wishbone Backdoor FSM
+States:
+WBBD_IDLE → SETUP → RW → DONE → RESET
+Converts 32-bit WB → 8-bit SPI transactions
+
+##### 2. Register Map Logic
+Function:
+function [7:0] fdata(input [7:0] address);
+Implements:
+PLL registers
+GPIO config
+ID registers
+Status registers
+
+#### 3. Address Translator
+function [7:0] spiaddr(input [31:0] wbaddress);
+Converts WB address → SPI address
+
+##### 4. GPIO Control Block
+gpio_configure[]
+mgmt_gpio_data
+Serial loading FSM
+
+#### 5. Serial Configuration FSM
+States:
+GPIO_IDLE → GPIO_START → GPIO_XBYTE → GPIO_LOAD
+
+#### 6. Pass-through Logic
+Routes SPI flash signals
+Enables bypass modes:
+Management pass-through
+User pass-through
+
+#### 7. Clock Buffer Cells (Physical Cells)
+sky130_fd_sc_hd__clkbuf_8
+
+### Block diagram (hand-drawn):
+
+<img width="1024" height="1536" alt="Housekeeping" src="https://github.com/user-attachments/assets/5a02e5c2-3db3-4f7c-a52b-91034c6e0977" />
+
+### RTL hierarchy explanation:
+
+housekeeping.v  is the top-level control module of Caravel system configuration.
+
+It interfaces with:
+
+### Wishbone bus (from SoC)
+SPI (external control)
+#### It internally uses:
+housekeeping_spi for SPI decoding
+
+### FSMs for:
+Wishbone backdoor access
+GPIO serial configuration
+#### It controls:
+PLL configuration
+GPIO modes
+Flash routing
+System monitoring signals
+
+### List of Dependent RTL Files:
+housekeeping.v          (Top module)
+housekeeping_spi.v      (SPI protocol)
+user_defines.v        (Macros)
+
+
+</details>
+
+<details>
+	<summary>PHASE 2 — RTL-to-GDS Implementation</summary>
+
+## Prepare the ORFS Design Environment
+### Design Workspace Preparation
+A new design directory called housekeeping is created inside the OpenROAD Flow Scripts design directory.
+
+![directory](https://github.com/user-attachments/assets/ac6a1d71-c63d-4c48-a386-b9e9ab43a1dd)
+
+Design directory is modified in such a way that  verilog files are kept in src directory which is inside housekeeping directory and  new .sdc, config.mk is created for proper flow.
+
+### RTL Source Integration
+
+Only the required RTL files were included based on dependency analysis:
+
+RTL Files Used
+housekeeping.v          (Top module)
+housekeeping_spi.v      (SPI protocol)
+user_defines.v        (Macros)
+
+### My Design Locations
+/flow/designs/sky130hd/housekeeping        → config + constraints
+/flow/designs/src/housekeeping                    → RTL files
+
+To define the clock signal, a new constraint.sdc file is created.
+
+![clock](https://github.com/user-attachments/assets/4500ad48-e5fa-4cf1-a28d-62fd7d9da782)
+
+For proper execution of housekeeping module we have to make some changes in makefile. Screenshot of updated makefile is attached below:
+
+![config mk](https://github.com/user-attachments/assets/8ec5eb01-2a8b-4949-b834-158bb87219a3)
+
+ORFS to execute this Config.mk file, we need to add this path inside Makefile which is inside flow directory.
+
+![make_flow](https://github.com/user-attachments/assets/557de434-9934-42b5-9cb2-ac7ded2aa92d)
+
+To run synthesis,
+
+We navigated to path /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow and execute command
+```
+run synth
+```
+But we got some error.
+
+To overcome this error, we have modified user_defines.v file as earlier there was undefined macro `MPRJ_IO_PADS and power pads. Now it is defined.
+
+</details>
 
 
 

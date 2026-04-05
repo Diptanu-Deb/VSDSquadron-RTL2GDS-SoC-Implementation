@@ -2924,10 +2924,66 @@ Results:
 
 <details>
 	<summary> PHASE 6 — RTL vs GLS Comparison </summary>
+
+Comparing with a single block "hkspi_power" following observations are done:  
+RTL vs Gate-Level Simulation (GLS) Comparison Report  
+### Whether Outputs Match Exactly
+Clock signals (clock, clock_core, flash_clk)  
+Behavior is consistent in both RTL and GLS  
+Proper toggling observed with no distortion  
+Control signals (flash_clk_frame, flash_clk_oeb, porb_h, rstb_h)  
+Transitions appear aligned between RTL and GLS  
+ No unexpected glitches observed  
+Data path signals (recv_buf_data, recv_state)  
+RTL shows stable initialization and expected transitions  
+GLS also shows stable values (mostly zero/idle state in your case)  
+
+### Conclusion:  
+Overall, functional behavior matches between RTL and GLS for the observed signals.  
+### Signal Activity Difference  
+RTL (ser_rx, recv_buf_data)  
+ → Clean logic-level transitions (ideal behavior)  
+GLS  
+ → Signals appear static or inactive (mostly 0)  
+ This may indicate:  
+Stimulus not propagating correctly in GLS  
+Timing delays affecting capture  
+
+### Gate Delays in GLS  
+RTL → zero-delay model  
+GLS → includes:  
+propagation delay  
+setup/hold effects  
+ This can cause:  
+Slight timing shifts  
+Data not captured correctly  
+
 </details>
 
 <details>
 	<summary> PHASE 7 — Debugging (If Mismatch Occurs) </summary>
+
+### Description of Issue
+During Gate-Level Simulation (GLS), the observed behavior does not fully match RTL:  
+user_analog_io[28:0] shows high-impedance (Z) / unknown states  
+Some signals (e.g., recv_buf_data, ser_rx) appear inactive or stuck  
+RTL simulation shows expected functional activity, but GLS appears partially non-functional  
+ This indicates a functional mismatch between RTL and synthesized netlist behavior  
+### Debugging Steps Taken
+Step 1: Checked Netlist Completeness  
+Verified synthesized netlist (*.v) is generated correctly  
+Confirmed:  
+No missing modules  
+No black-box warnings during compilation  
+ Result: Netlist is structurally complete  
+
+ Step 2: Verified Standard Cell Libraries  
+Included required libraries:  
+sky130_fd_sc_hd.v  
+primitives.v  
+sky130_fd_io.v  
+Ensured correct inclusion in simulation command  
+Result: Libraries are properly linked  
 </details>
 
 # WEEK–6: Independent Block Implementation + Gate-Level Validation

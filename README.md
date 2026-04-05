@@ -3301,9 +3301,379 @@ Results:
 
 </details>
 
+<details>
+	<summary> PHASE 4 — Gate-Level Simulation (GLS)</summary>
+	
+ We have to carry out RTL simulation and  GL simulation and  compare both.
+
+### Changes in Makefile for RTL simulation:
+```
+
+ifeq ($(SIM),RTL)
+ifeq ($(CONFIG),caravel_user_project)
+	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -f$(VERILOG_PATH)/includes/includes.rtl.caravel \
+	  -f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) \
+	  -o $@ $(CARAVEL_PATH)/rtl/__user_project_wrapper.v $<
+else
+	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	  -y $(CARAVEL_PATH)/rtl \
+	  -I $(CARAVEL_PATH)/rtl \
+	  -f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
+	  /home/diptanu/Desktop/vsdsquadron-soc/caravel/verilog/rtl/housekeeping.v \
+	  -o $@ $<
+endif
+endif
+```
+
+![RTL_make](https://github.com/user-attachments/assets/d34d9462-fcea-48fa-b0d2-e92e01a67f5d)
+
+### Changes in Makefile for GL simulation:
+```
+ifeq ($(SIM),GL)
+ifeq ($(CONFIG),caravel_user_project)
+iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	-DOPENFRAME_IO_PADS=1 \
+	  -I $(CARAVEL_PATH)/gl \
+	  -I $(VERILOG_PATH)/rtl \
+	  -I $(VERILOG_PATH)/gl \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog \
+	  -y $(VERILOG_PATH)/rtl \
+	  -y $(VERILOG_PATH)/gl \
+	  -f $(VERILOG_PATH)/includes/includes.gl.caravel \
+	  -f $(USER_PROJECT_VERILOG)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog/sky130_fd_io.v \
+	  -o $@ $<
+else
+	iverilog -Ttyp -DFUNCTIONAL -DGL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	 -DOPENFRAME_IO_PADS=1 \
+	  -I $(CARAVEL_PATH)/gl \
+	  -I $(VERILOG_PATH)/gl \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog \
+	  -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog \
+	  -y $(VERILOG_PATH)/gl \
+	  -f $(VERILOG_PATH)/includes/includes.gl.$(CONFIG) \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v \
+	   $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/verilog/sky130_fd_io.v \
+	  -o $@ /home/diptanu/Desktop/vsd-scl180-orfs/orfs/flow/results/sky130hd/housekeeping/base/6_final.v $<
+endif
+endif
+```
+![gl_make](https://github.com/user-attachments/assets/c7bfa949-4c5a-4fd2-9043-740a233bc5cf)
+
+### RTL output:
+
+![make_rtL](https://github.com/user-attachments/assets/3237cea0-86db-4d4d-ae59-61f6451f70ad)
+![rtl_pass](https://github.com/user-attachments/assets/a0f78366-8666-4b69-893a-c508b05693e4)
+
+
+### GL output:
+
+![make_GL](https://github.com/user-attachments/assets/5e24b32c-6c49-4a4c-a49b-7856e2411a1c)
+![gL_pass](https://github.com/user-attachments/assets/0bfef857-a49b-41b7-8b2c-56d61f19e1fa)
+
+
+	
+</details>
+
+<details>
+<summary> PHASE 5 — Waveform Validation</summary>
+
+### RTL.vcd:
+
+![rtl_vcd](https://github.com/user-attachments/assets/841aa026-23de-44f8-9cb5-fa7d2211186a)
+![rtl_vcd1](https://github.com/user-attachments/assets/30129e37-86d6-4677-b9c2-977bcaa707d2)
+
+
+### GL.vcd:
+
+![gl_vcd](https://github.com/user-attachments/assets/48a9bd44-9c23-4ba6-b72a-1abb28d00bb9)
+
+ ### Gate-Level Simulation Waveform Analysis 
+ 
+#### VCD Generation during GLS
+
+Gate-Level Simulation (GLS) was executed for housekeeping in  the hkspi testbench.
+During simulation, a Value Change Dump (.vcd) file was generated:
+Example: GL-hkspi.vcd
+The VCD file captures all signal transitions at gate level, including delays and unknown states.
+ Outcome: Successful generation of VCD file during GLS
 
 
 
+#### Waveform Visualization using GTKWave
+
+The generated .vcd file was opened using GTKWave
+Command used:
+gtkwave GL-hkspi.vcd
+Signals from the caravel DUT were explored, including:
+Clock signals
+Reset signals
+SPI interface signals
+GPIO signals
+Outcome: Waveform successfully visualized and analyzed
+ Key Signal Trace Analysis
+ 1. Clock Signal (clock, clock_core)
+**Observation:**
+Continuous periodic toggling observed.
+Slight delay in transitions compared to RTL.
+
+**Analysis:**
+Delay is due to gate-level buffering and clock tree effects
+No glitches or missing pulses observed
+ Conclusion: Clock is functioning correctly in GLS
+
+ 3. Reset Signals (resetb, porb_h, rstb_h)
+Observation:
+Reset assertion/deassertion is delayed compared to RTL
+Signals stabilize after a few cycles
+Analysis:
+Delay caused by gate propagation and buffering
+Initial instability is expected in GLS due to lack of initialization
+Conclusion: Reset behavior is correct and consistent with gate-level effects
+
+ 4. SPI Data Signals (flash_io0_di, flash_io0_do, flash_clk, flash_csb)
+Observation:
+Initial X (unknown) states observed
+Valid transitions appear after initialization phase
+SPI clock and chip select behave correctly
+Analysis:
+X states caused by:
+Uninitialized flip-flops
+Bidirectional IO contention
+Once stabilized, SPI protocol operates correctly
+Conclusion: SPI communication is functionally correct in GLS
+
+ 5. GPIO Signals (gpio_out_core, gpio_outenb_core)
+Observation:
+Signals remain stable throughout simulation
+No unexpected toggles or glitches
+Analysis:
+Indicates correct control logic and no functional errors
+Conclusion: GPIO behavior matches expected functionality
+
+GTKWave Screenshot (Mandatory Evidence)
+
+GLS waveform screenshot showing:
+Clock activity
+Reset stabilization
+SPI signal transitions
+Presence of initial X states
+ Final Observation
+Gate-level waveform confirms:
+Proper signal propagation
+Expected timing delays
+No functional anomalies
+Although initial unknown (X) states are observed, all critical signals stabilize and operate correctly, confirming successful gate-level behavior.
+
+### Summary
+
+ VCD file generated successfully.
+ Waveform analyzed using GTKWave.
+ Multiple key signals verified.
+ Functional correctness confirmed at gate level.
+
+
+</details>
+
+<details>
+<summary>PHASE 6 — RTL vs GLS Validation</summary>
+
+From the waveforms, it looks like a correct and expected RTL vs GLS behavior, not a failure. 
+Explanation:
+ Key Observations
+1. Flash IO signals (flash_io0_*)
+RTL:
+Clean transitions (0/1)
+Deterministic behavior
+GLS:
+Showing X (unknown states) initially
+ This is NORMAL in GLS because:
+Gate-level netlists don’t initialize registers
+No reset → signals start as X
+Tri-state / bidirectional pins (io0) cause contention → X
+ Not a mismatch
+
+2. Clock behavior
+Both RTL and GLS show proper clock toggling
+No glitch or missing clock
+ Correct
+
+3. Reset signals (resetb, rstb_h, porb_h)
+In GLS:
+Slight delay in assertion/deassertion
+In RTL:
+Immediate response
+ Reason:
+GLS includes gate delays + buffering
+ Expected timing difference, NOT functional mismatch
+
+4. GPIO signals
+gpio_outenb_core, gpio_out_core
+Stable in both cases
+No unexpected toggles
+ Behavior matches
+
+5. SPI activity
+RTL:
+Clean SPI waveform
+GLS:
+Delayed + slightly distorted edges
+Some X before valid data
+ Reason:
+Gate delays + uninitialized flops
+Still functionally same
+
+The main confusion is:
+ X in GLS ≠ Failure
+GLS introduces:
+X-propagation
+Timing delays
+Unknown startup states
+Only consider it a failure if:
+Outputs remain X forever 
+Protocol breaks (SPI not toggling) 
+Final result differs 
+None of that is happening here.
+Functional correctness is preserved because:
+SPI communication occurs correctly in both RTL and GLS
+Clock and reset behave as expected
+No divergence in logical behavior
+ Differences observed:
+X states in GLS due to uninitialized registers
+Timing delay due to gate-level modeling
+ Final Statement:
+"No functional mismatch is observed between RTL and GLS. Differences are limited to initialization and timing effects inherent to gate-level simulation."
+
+
+</details>
+
+<details>
+<summary>PHASE 7 — Debugging and Insights</summary>
+    
+Issues Faced, Debugging Steps & Key Learnings
+Issues Faced
+1. RTL vs GLS Mismatch (Initial Observation)
+Gate-Level Simulation (GLS) showed unknown (X) values in signals such as:
+flash_io0_di
+flash_io0_do
+flash_io0_oeb
+RTL simulation showed clean 0/1 transitions, creating confusion about mismatch
+
+2. Simulation Failure When Disabling Power Pins
+Disabling vpwr and vgnd in the housekeeping module caused:
+GLS simulation failure
+Incorrect or undefined outputs
+
+3. Missing File / Path Errors in Flow
+Encountered errors such as:
+Missing synthesis scripts (synth_preamble.tcl)
+Incorrect file paths in ORFS setup
+
+4. Waveform Interpretation Difficulty
+Difficulty in comparing RTL and GLS waveforms due to:
+Timing shifts
+X-propagation
+Signal delays
+
+5. Reset Behavior Differences
+In GLS:
+Reset signals (resetb, porb_h, rstb_h) showed delayed response
+In RTL:
+Immediate reset behavior
+
+Debugging Steps Taken
+1. Analyzing Waveforms in GTKWave
+Compared RTL and GLS waveforms side-by-side
+Focused on:
+Clock
+Reset
+SPI signals
+GPIO outputs
+2. Identifying X-Propagation Cause
+Verified that:
+Registers in GLS are not initialized
+Bidirectional SPI pins cause contention → X states
+Confirmed that X values disappear after stabilization
+
+3. Verifying Functional Behavior Instead of Exact Matching
+Checked:
+Whether SPI communication occurs correctly
+Whether outputs stabilize to valid values
+Ensured:
+No permanent X states
+No protocol failure
+
+4. Fixing Power Pin Issue
+Restored proper connection of:
+vpwr
+vgnd
+Ensured standard cell models receive correct power supply
+
+5. Resolving Flow Errors
+Corrected file paths in ORFS scripts
+Verified presence of required files:
+RTL sources
+Technology libraries
+Synthesis scripts
+
+6. Understanding Timing Differences
+Recognized that GLS includes:
+Gate delays
+Buffer delays
+Avoided treating timing differences as functional errors
+
+ Key Learnings
+1. Difference Between RTL and GLS
+RTL:
+Ideal simulation
+No delays
+Deterministic outputs
+GLS:
+Includes real gate delays
+Shows X-propagation
+More realistic hardware behavior
+
+2. X-Propagation is Not Always an Error
+Initial unknown states are expected in GLS
+Important to check:
+Whether signals eventually stabilize
+Whether functionality is preserved
+
+3. Importance of Reset and Initialization
+Proper reset design is critical to:
+Avoid prolonged X states
+Ensure predictable startup behavior
+
+4. Power Pins are Critical in GLS
+Standard cells require:
+vpwr and vgnd
+Removing them leads to:
+Simulation failure or undefined outputs
+
+5. Functional Verification vs Signal Matching
+Exact waveform matching between RTL and GLS is not required
+Focus should be on:
+Functional correctness
+Protocol integrity
+
+6. Importance of Debugging Methodology
+Systematic debugging approach:
+Observe waveform
+Identify anomaly
+Trace signal origin
+Understand simulation differences
+Helps in efficient issue resolution
+
+ Final Reflection
+The debugging process helped in understanding the practical differences between RTL and gate-level simulations. It reinforced the importance of analyzing functionality rather than relying solely on waveform similarity, and highlighted critical aspects such as power connections, reset design, and timing awareness in VLSI design flow.
+
+
+</details>
 
 
 
